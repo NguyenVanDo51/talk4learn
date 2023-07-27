@@ -5,7 +5,7 @@ interface IProps {
   back: ReactNode
 }
 
-export const FlastCard: FC<IProps> = ({ back, front }) => {
+export const FlashCard: FC<IProps> = ({ back, front }) => {
   return (
     <div className="flashcard-container">
       <div className="flashcard">

@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { IVocabulary } from '@/app/types/vocabulary'
+import { IVocabulary } from '@/types/vocabulary'
 import { AppButton } from '@/components/level1/AppButton'
 import { Lesson, lessons } from '@/components/level3/VideoSelectionScreen'
 import { Spin } from 'antd'
@@ -8,7 +8,7 @@ import { StepOne } from './components/StepOne'
 import { SecondStep } from './components/SecondStep'
 
 const steps: { [key in number]: string } = {
-  1: 'Step 1: Watch the Video and Add Vocabulary',
+  1: 'Step 1: Watch the Video with english subtitle and add vocabulary',
   2: 'Step 2: Vocabulary List',
   3: 'Step 3: Listen and Transcribe',
 }
@@ -16,7 +16,7 @@ const steps: { [key in number]: string } = {
 export function LessonPractice({ id }: { id: number }) {
   const [currentStep, setCurrentStep] = useState<number>(1)
   const [lesson, setLesson] = useState<Lesson>()
-  const [vocabularies, setVocabularies] = useState<IVocabulary[]>([])
+  const [vocabularies, setVocabularies] = useState<IVocabulary[]>(JSON.parse(localStorage.getItem(String(id)) ?? '[]'))
   const [transcription, setTranscription] = useState<string>('')
 
   // Function to handle next step
@@ -33,6 +33,10 @@ export function LessonPractice({ id }: { id: number }) {
   }
 
   useEffect(() => {
+    localStorage.setItem(String(id), JSON.stringify(vocabularies))
+  }, [id, vocabularies])
+
+  useEffect(() => {
     getLesson()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -40,10 +44,9 @@ export function LessonPractice({ id }: { id: number }) {
   if (!lesson) return <Spin />
 
   return (
-    <div className="container mx-auto p-4 h-[100vh] flex flex-col gap-3 justify-between">
+    <div className="flex-1 flex flex-col gap-3 justify-between">
+      <h1 className="text-2xl font-bold mb-4 text-center">{steps[currentStep]}</h1>
       <div className="flex-1">
-        <h1 className="text-2xl font-bold mb-4 text-center">{steps[currentStep]}</h1>
-
         {currentStep === 1 && <StepOne lesson={lesson} vocabularies={vocabularies} setVocabularies={setVocabularies} />}
 
         {currentStep === 2 && <SecondStep vocabularies={vocabularies} />}

@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import React from 'react'
-import { AppButton } from '../level1/AppButton'
 import Link from 'next/link'
 
 export interface Lesson {
@@ -32,9 +31,8 @@ export const lessons: Lesson[] = [
     duration: '8 minutes',
     image: 'https://via.placeholder.com/150',
     videoUrl: 'https://www.youtube.com/embed/VIDEO_ID_2',
-    youtubeId: 'YUlNbVLJTJo'
+    youtubeId: 'lTfZ_wXkB_A'
   },
-  // Add more lessons here
 ]
 
 const VideoSelectionScreen: React.FC = () => {
