@@ -37,7 +37,6 @@ export const StepOne: FC<IProps> = ({ lesson, vocabularies, setVocabularies }) =
   return (
     <div className="flex flex-col justify-between gap-3 h-full">
       <div className="flex-1">
-        <h1 className="text-2xl font-bold mb-4">Step 1: Watch the Video and Add Vocabulary</h1>
         <Row gutter={[24, 24]} className="flex-1">
           <Col xs={24} xl={12} xxl={14}>
             <div className="h-full min-h-[40vh]">

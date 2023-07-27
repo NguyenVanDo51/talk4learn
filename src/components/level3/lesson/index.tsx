@@ -3,10 +3,15 @@ import { useEffect, useState } from 'react'
 import { IVocabulary } from '@/app/types/vocabulary'
 import { AppButton } from '@/components/level1/AppButton'
 import { Lesson, lessons } from '@/components/level3/VideoSelectionScreen'
-import { VocabularyList } from './components/VocabularyList'
-import { Button, Spin } from 'antd'
+import { Spin } from 'antd'
 import { StepOne } from './components/StepOne'
 import { SecondStep } from './components/SecondStep'
+
+const steps: { [key in number]: string } = {
+  1: 'Step 1: Watch the Video and Add Vocabulary',
+  2: 'Step 2: Vocabulary List',
+  3: 'Step 3: Listen and Transcribe',
+}
 
 export function LessonPractice({ id }: { id: number }) {
   const [currentStep, setCurrentStep] = useState<number>(1)
@@ -37,13 +42,14 @@ export function LessonPractice({ id }: { id: number }) {
   return (
     <div className="container mx-auto p-4 h-[100vh] flex flex-col gap-3 justify-between">
       <div className="flex-1">
+        <h1 className="text-2xl font-bold mb-4 text-center">{steps[currentStep]}</h1>
+
         {currentStep === 1 && <StepOne lesson={lesson} vocabularies={vocabularies} setVocabularies={setVocabularies} />}
 
         {currentStep === 2 && <SecondStep vocabularies={vocabularies} />}
 
         {currentStep === 3 && (
           <>
-            <h1 className="text-2xl font-bold mb-4">Step 3: Listen and Transcribe</h1>
             {/* Video player component for transcription */}
             <video controls>
               <source src={lesson?.videoUrl} type="video/mp4" />
