@@ -38,8 +38,8 @@ export const StepOne: FC<IProps> = ({ lesson, vocabularies, setVocabularies }) =
     <div className="flex flex-col justify-between gap-3 h-full">
       <div className="flex-1">
         <Row gutter={[24, 24]} className="flex-1">
-          <Col xs={24} xl={12} xxl={14}>
-            <div className="h-full min-h-[40vh]">
+          <Col xs={24} lg={12} xxl={12}>
+            <div className="h-full min-h-[40vh] max-h-[50vh]">
               <iframe
                 width="100%"
                 height="100%"
@@ -51,7 +51,11 @@ export const StepOne: FC<IProps> = ({ lesson, vocabularies, setVocabularies }) =
             </div>
           </Col>
 
-          <Col xs={24} xl={12} xxl={10}>
+          <Col xs={24} lg={12} xxl={12}>
+            <p>{lesson.textTranscription}</p>
+          </Col>
+
+          <Col xs={24}>
             <h2 className="text-xl font-medium">Your vocabularies: </h2>
             <VocabularyList vocabularies={vocabularies} />
           </Col>
