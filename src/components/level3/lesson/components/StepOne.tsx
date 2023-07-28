@@ -1,11 +1,10 @@
-import { FC, useRef, useState } from 'react'
+import { FC, useRef } from 'react'
 import { VocabularyList } from './VocabularyList'
 import { Lesson } from '../../VideoSelectionScreen'
-import { IVocabulary } from '@/app/types/vocabulary'
-import { AppInput } from '@/components/level1/AppInput'
-import { Button, Col, Form, Input, InputRef, Row } from 'antd'
+import { IVocabulary } from '@/types/vocabulary'
+import { Col, Form, InputRef, Row } from 'antd'
 import { uniqueId } from 'lodash'
-import { FloatingLabel } from '@/components/level1/FloadingLabel'
+import { FloatingLabel } from '@/components/level1/FloatingLabel'
 import { AppButton } from '@/components/level1/AppButton'
 
 interface IProps {
@@ -20,7 +19,6 @@ export const StepOne: FC<IProps> = ({ lesson, vocabularies, setVocabularies }) =
   const [form] = Form.useForm()
 
   const handleAddVocabulary = (values: any) => {
-    console.log('handleAddVocabulary', values)
     setVocabularies([
       ...vocabularies,
       {
@@ -32,6 +30,10 @@ export const StepOne: FC<IProps> = ({ lesson, vocabularies, setVocabularies }) =
     setTimeout(() => {
       vocabularyRef.current?.focus()
     }, 0)
+  }
+
+  const onDeleteVocabulary = (id: IVocabulary['id']) => {
+    setVocabularies([...vocabularies].filter((v) => v.id !== id))
   }
 
   return (
@@ -57,7 +59,7 @@ export const StepOne: FC<IProps> = ({ lesson, vocabularies, setVocabularies }) =
 
           <Col xs={24}>
             <h2 className="text-xl font-medium">Your vocabularies: </h2>
-            <VocabularyList vocabularies={vocabularies} />
+            <VocabularyList vocabularies={vocabularies} onDeleteVocabulary={onDeleteVocabulary} />
           </Col>
         </Row>
       </div>
@@ -68,7 +70,7 @@ export const StepOne: FC<IProps> = ({ lesson, vocabularies, setVocabularies }) =
           onFinish={handleAddVocabulary}
           layout="inline"
           className="grid w-full"
-          style={{ gridTemplateColumns: 'auto auto 60px' }}
+          style={{ gridTemplateColumns: 'auto auto 200px' }}
         >
           <FloatingLabel
             ref={vocabularyRef as any}
@@ -78,7 +80,7 @@ export const StepOne: FC<IProps> = ({ lesson, vocabularies, setVocabularies }) =
             form={form}
           />
           <FloatingLabel name="translated" rules={[{ required: true, message: '' }]} label="Meaning" form={form} />
-          <AppButton htmlType="submit">Add</AppButton>
+          <AppButton htmlType="submit">Add Your vocabulary</AppButton>
         </Form>
       </div>
     </div>

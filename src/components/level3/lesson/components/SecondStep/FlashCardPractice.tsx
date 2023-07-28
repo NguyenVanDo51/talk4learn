@@ -1,6 +1,6 @@
-import { IVocabulary } from '@/app/types/vocabulary'
+import { IVocabulary } from '@/types/vocabulary'
 import { AppButton } from '@/components/level1/AppButton'
-import { FlastCard } from '@/components/level2/FlashCard'
+import { FlashCard } from '@/components/level2/FlashCard'
 import { FC, useState } from 'react'
 
 interface IProps {
@@ -13,17 +13,15 @@ export const FlashCardPractice: FC<IProps> = ({ vocabularies }) => {
   const currentWord = vocabularies[currentIndex]
 
   const nextWord = () => {
-    if (currentIndex > vocabularies.length - 2) return
-
     setCurrentIndex(currentIndex + 1)
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-3 h-full">
-      {currentIndex < vocabularies.length - 1 ? (
+    <div className="flex flex-col items-center gap-3 h-full">
+      {currentIndex < vocabularies.length ? (
         <>
           <div>
-            <FlastCard front={currentWord.en} back={currentWord.translated} />
+            <FlashCard front={currentWord.en} back={currentWord.translated} />
           </div>
 
           <div className="flex gap-3">
@@ -43,7 +41,14 @@ export const FlashCardPractice: FC<IProps> = ({ vocabularies }) => {
           <p>
             Remembered words: {rememberedWords.length}/{vocabularies.length}
           </p>
-          <AppButton>Restart</AppButton>
+          <AppButton
+            onClick={() => {
+              setRememberedWords([])
+              setCurrentIndex(0)
+            }}
+          >
+            Restart
+          </AppButton>
         </div>
       )}
     </div>

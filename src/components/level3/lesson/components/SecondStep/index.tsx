@@ -1,4 +1,4 @@
-import { IVocabulary } from '@/app/types/vocabulary'
+import { IVocabulary } from '@/types/vocabulary'
 import { Col, Row } from 'antd'
 import { FC } from 'react'
 import { VocabularyList } from '../VocabularyList'
@@ -9,14 +9,13 @@ interface IProps {
 }
 
 export const SecondStep: FC<IProps> = ({ vocabularies }) => {
-
   return (
     <>
-      <Row className='h-full'>
-        <Col xs={24} xl={12}>
+      <Row className="h-full">
+        <Col xs={24} lg={12}>
           <VocabularyList vocabularies={vocabularies} />
         </Col>
-        <Col xs={24} xl={12} className='h-full'>
+        <Col xs={24} lg={12} className="h-full">
           <FlashCardPractice vocabularies={vocabularies} />
         </Col>
       </Row>
