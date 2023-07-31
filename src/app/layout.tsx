@@ -6,6 +6,7 @@ import StyledComponentsRegistry from '../../lib/AntdRegistry'
 import Link from 'next/link'
 import { Layout, Menu } from 'antd'
 import { MainHeader } from '@/components/level2/Header'
+import Head from 'next/head'
 
 const inter = Inter({ subsets: ['latin'] })
 const { Header, Content, Footer } = Layout
@@ -17,6 +18,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous" />
+      </Head>
       <body className={inter.className}>
         <StyledComponentsRegistry>
           <MainHeader />

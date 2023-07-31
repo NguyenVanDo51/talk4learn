@@ -1,4 +1,5 @@
-import { FC, ReactNode } from 'react'
+import { speak } from '@/helps/speech'
+import { FC, ReactNode, useEffect } from 'react'
 
 interface IProps {
   front: ReactNode
@@ -6,6 +7,10 @@ interface IProps {
 }
 
 export const FlashCard: FC<IProps> = ({ back, front }) => {
+  useEffect(() => {
+    speak(String(front))
+  }, [front])
+
   return (
     <div className="flashcard-container">
       <div className="flashcard">

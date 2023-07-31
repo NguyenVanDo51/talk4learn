@@ -4,7 +4,7 @@ import { FC } from 'react'
 import { Button as AntButton, ButtonProps } from 'antd'
 
 interface IProps extends ButtonProps {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 export const AppButton: FC<IProps> = ({ children, type = 'primary', size = 'large', ...props }) => {
