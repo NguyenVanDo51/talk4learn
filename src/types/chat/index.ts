@@ -4,6 +4,7 @@ export interface IMessage {
   id?: string
   role: 'system' | 'user' | 'assistant'
   content: string
+  comment?: string
 }
 
 export interface IAIModel {

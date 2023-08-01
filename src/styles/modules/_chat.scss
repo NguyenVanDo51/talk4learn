@@ -1,0 +1,11 @@
+.message-item {
+  button {
+    display: none;
+  }
+
+  &:hover {
+    button {
+      display: inline;
+    }
+  }
+}

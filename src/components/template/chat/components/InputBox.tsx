@@ -1,14 +1,42 @@
+"use client"
 import { AppButton } from '@/components/level1/AppButton'
 import { AppInput } from '@/components/level1/AppInput'
-import { FC, MutableRefObject, useRef, useState } from 'react'
+import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 
 interface IProps {
   sendMessage: (message: string) => void
 }
 
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+
 export const InputBox: FC<IProps> = ({ sendMessage }) => {
   const [message, setMessage] = useState('')
+  const [transcript, setTranscript] = useState<string>('')
+  const [isRecording, setIsRecording] = useState(false)
+
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
+
+  useEffect(() => {
+    recognition.onresult = (event: any) => {
+      const speechToText = event.results[0][0].transcript
+      setTranscript(speechToText)
+      if (speechToText) {
+        sendMessage(transcript)
+      }
+    }
+
+    return () => recognition.stop()
+  }, [sendMessage, transcript])
+
+  const handleRecord = () => {
+    if (isRecording) {
+      recognition.stop()
+      setTranscript('')
+    } else {
+      recognition.start()
+    }
+    setIsRecording(!isRecording)
+  }
 
   const handleSendMessage = () => {
     messageRef.current?.focus()
@@ -23,10 +51,20 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
       <div className="flex-grow">
         <AppInput
           ref={messageRef as any}
-          placeholder="Input here"
+          placeholder={isRecording ? 'Recording your voice ...' : 'Input here'}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           type="text"
+          disabled={isRecording}
+          suffix={
+            <i
+              onClick={handleRecord}
+              className={`fa-solid fa-microphone cursor-pointer ${isRecording ? 'text-purple-500' : ''}`}
+            ></i>
+          }
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') handleSendMessage()
+          }}
         />
       </div>
 
@@ -38,7 +76,7 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
           Send
           <span className="ml-2">
             <svg
-              className="w-4 h-4 transform rotate-45 -mt-px"
+              className="w-4 h-4 transform rotate-90 -mt-px"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

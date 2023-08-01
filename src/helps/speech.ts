@@ -1,11 +1,13 @@
 const audio = new SpeechSynthesisUtterance()
 let speeding = false
-export const speak = (phrase: string) => {
+export const speak = (phrase: string, isVocabulary: boolean = true) => {
   if (speeding) return
-  audio.text = phrase
-    .replace(/(\()(.*)(\))/, '')
-    .replace(/(\[)(.*)(\])/, '')
-    .replaceAll('  ', '')
+  audio.text = isVocabulary
+    ? phrase
+        .replace(/(\()(.*)(\))/, '')
+        .replace(/(\[)(.*)(\])/, '')
+        .replaceAll('  ', '')
+    : phrase
 
   audio.onstart = () => {
     speeding = true

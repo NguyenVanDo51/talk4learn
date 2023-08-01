@@ -1,7 +1,4 @@
-button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
+.ant-btn-primary:not(.ant-btn-danger) {
   background-color: var(--main-bg, #1677ff);
 }
 
