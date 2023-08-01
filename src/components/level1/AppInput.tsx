@@ -9,10 +9,12 @@ interface IProps extends InputProps {
 
 // eslint-disable-next-line react/display-name
 export const AppInput: ForwardRefExoticComponent<IProps & RefAttributes<InputRef>> = forwardRef(
-  ({ onEnter, ...props }: IProps, ref: any) => {
+  ({ onEnter, size = 'large', className = '', ...props }: IProps, ref: any) => {
     return (
       <Input
         ref={ref}
+        size={size}
+        className={`rounded-2xl! ${className}`}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             onEnter?.()

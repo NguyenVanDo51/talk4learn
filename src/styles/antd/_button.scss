@@ -1,3 +1,10 @@
-button, [type='button'], [type='reset'], [type='submit'] {
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
   background-color: var(--main-bg, #1677ff);
+}
+
+.ant-btn.ant-btn-lg {
+  border-radius: 20px;
 }

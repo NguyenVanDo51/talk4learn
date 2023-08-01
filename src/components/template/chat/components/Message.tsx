@@ -1,3 +1,4 @@
+import { AppButton } from '@/components/level1/AppButton'
 import { IMessage } from '@/types/chat'
 import { FC } from 'react'
 
@@ -21,7 +22,7 @@ export const Message: FC<IProps> = ({ messages }) => {
 
 const LeftMessage: FC<{ content: string }> = ({ content }) => {
   return (
-    <div className="col-start-1 col-end-8 p-3 rounded-lg">
+    <div className="col-start-1 col-end-8 p-3 rounded-lg relative">
       <div className="flex flex-row items-center">
         <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">A</div>
         <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
