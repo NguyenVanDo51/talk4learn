@@ -71,7 +71,11 @@ const RightMessage: FC<{ message: IMessage; analyst: () => void }> = ({ message,
     <div className="col-start-6 col-end-13 p-3 rounded-lg message-item">
       <div className="flex items-center gap-3 justify-start flex-row-reverse">
         <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">A</div>
-        <Popover trigger="hover" content={message.comment ? <div>{message.comment}</div> : undefined}>
+        <Popover
+          trigger="click"
+          placement="left"
+          content={message.comment ? <div className="max-w-[40vw]">{message.comment}</div> : undefined}
+        >
           <div className="relative text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
             <div>{message.content}</div>
           </div>
