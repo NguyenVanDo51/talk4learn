@@ -7,7 +7,8 @@ interface IProps {
   sendMessage: (message: string) => void
 }
 
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+
+
 
 export const InputBox: FC<IProps> = ({ sendMessage }) => {
   const [message, setMessage] = useState('')
@@ -15,6 +16,11 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
   const [isRecording, setIsRecording] = useState(false)
 
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
+  
+  let recognition: any = null
+  if (window) {
+    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+  }
 
   useEffect(() => {
     recognition.onresult = (event: any) => {
@@ -26,7 +32,7 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
     }
 
     return () => recognition.stop()
-  }, [sendMessage, transcript])
+  }, [recognition, sendMessage, transcript])
 
   const handleRecord = () => {
     if (isRecording) {

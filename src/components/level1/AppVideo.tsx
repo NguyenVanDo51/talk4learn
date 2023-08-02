@@ -1,3 +1,5 @@
+"use client"
+
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import ReactPlayer, { ReactPlayerProps } from 'react-player'
 

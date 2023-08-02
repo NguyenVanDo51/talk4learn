@@ -1,3 +1,5 @@
+'use client'
+
 const audio = new SpeechSynthesisUtterance()
 let speeding = false
 export const speak = (phrase: string, isVocabulary: boolean = true) => {
@@ -15,5 +17,7 @@ export const speak = (phrase: string, isVocabulary: boolean = true) => {
   audio.onend = () => {
     speeding = false
   }
-  window.speechSynthesis.speak(audio)
+  if (window) {
+    window.speechSynthesis.speak(audio)
+  }
 }
