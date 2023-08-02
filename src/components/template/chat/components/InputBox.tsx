@@ -20,8 +20,9 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
   }
 
   useEffect(() => {
+    if (!recognition) return
+
     recognition.onresult = (event: any) => {
-      console.log('event.results', event.results)
       const speechToText = event.results[0][0].transcript
       setTranscript(speechToText)
       setIsRecording(false)

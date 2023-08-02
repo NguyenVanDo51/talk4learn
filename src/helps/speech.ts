@@ -1,9 +1,12 @@
 'use client'
 
-const audio = new SpeechSynthesisUtterance()
+let audio: null | SpeechSynthesisUtterance = null
+
+if (SpeechSynthesisUtterance) audio = new SpeechSynthesisUtterance()
 let speeding = false
+
 export const speak = (phrase: string, isVocabulary: boolean = true) => {
-  if (speeding) return
+  if (speeding || !audio) return
   audio.text = isVocabulary
     ? phrase
         .replace(/(\()(.*)(\))/, '')
