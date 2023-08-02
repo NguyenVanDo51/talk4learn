@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google'
 import { MainHeader } from '@/components/layout/Header'
 import { ReduxProvider } from '@/redux/provider'
 import { InitialApp } from '@/components/layout/InitialApp'
+import StyledComponentsRegistry from '../../lib/AntdRegistry'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,12 +21,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <ReduxProvider>
-          {/* <InitialApp>  */}
-            <MainHeader />
-            <main id="app" className="flex container mx-auto p-4" style={{ minHeight: 'calc(100vh - 46px)' }}>
-              {children}
-            </main>
-           {/* </InitialApp> */}
+          <StyledComponentsRegistry>
+            <InitialApp>
+              <MainHeader />
+              <main id="app" className="flex container mx-auto p-4" style={{ minHeight: 'calc(100vh - 46px)' }}>
+                {children}
+              </main>
+            </InitialApp>
+          </StyledComponentsRegistry>
         </ReduxProvider>
       </body>
     </html>
