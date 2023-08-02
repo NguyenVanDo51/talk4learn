@@ -26,7 +26,6 @@ export const AppVideo: React.FC<IProps> = ({ ...props }) => {
       if (e.ctrlKey && e.code === 'ArrowLeft') {
         e.stopPropagation()
         e.preventDefault()
-        console.log('currentTime', currentTime)
         videoRef.current?.seekTo(currentTime > 6 ? currentTime - 5 : 0)
       }
     },
@@ -45,7 +44,6 @@ export const AppVideo: React.FC<IProps> = ({ ...props }) => {
       ref={videoRef}
       playing={playing}
       onPlay={() => {
-        console.log('onPlay')
         setPlaying(true)
       }}
       width="100%"

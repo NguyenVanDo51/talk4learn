@@ -31,7 +31,6 @@ httpClient.interceptors.response.use(
   function (error: AxiosError) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    console.log('e', error.response?.status)
     const status = error.response?.status
     if (status === 429) {
       AppNotifycation.error({

@@ -38,7 +38,6 @@ export const FirstStep: FC<IProps> = ({ lesson, vocabularies, setVocabularies })
 
   useEffect(() => {
     if (vocabularies.length > 0) {
-      console.log('vocabularies.at(-1)', vocabularies.at(-1)?.id)
       setTimeout(() => {
         document.getElementById(vocabularies.at(-1)?.id as string)?.scrollIntoView()
       }, 100)

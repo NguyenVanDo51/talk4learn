@@ -23,7 +23,6 @@ export async function POST(request: Request) {
       return NextResponse.json(res.data)
     })
     .catch((e: any) => {
-      console.log('e', e)
       return new Response(e, {
         status: e.response.status || 500,
       })

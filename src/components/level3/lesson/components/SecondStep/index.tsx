@@ -12,8 +12,6 @@ export const SecondStep: FC<IProps> = ({ vocabularies }) => {
   const [duringPractice, setDuringPractice] = useState(false)
   const [activeKey, setActiveKey] = useState(['1'])
 
-  console.log('key', activeKey)
-
   return (
     <>
       <Row className="h-full" gutter={[24, 24]}>
