@@ -81,7 +81,6 @@ export const AIChat = () => {
 
   return (
     <div className="flex flex-grow h-screen max-h-[90vh] antialiased shadow">
-      <Link href={'/'}>AA</Link>
       <div className="flex flex-row h-full w-full overflow-x-hidden">
         <Conversations />
         <div className="flex gap-7 flex-auto p-6 pb-0">
@@ -106,7 +105,7 @@ export const AIChat = () => {
           </div>
           {isShowComment && <AnalyistedMessage messages={messages} />}
         </div>
-      L</div>
+      </div>
     </div>
   )
 }
