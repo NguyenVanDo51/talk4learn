@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import { AppButton } from '@/components/level1/AppButton'
 import { AppInput } from '@/components/level1/AppInput'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
@@ -6,9 +6,6 @@ import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 interface IProps {
   sendMessage: (message: string) => void
 }
-
-
-
 
 export const InputBox: FC<IProps> = ({ sendMessage }) => {
   const [message, setMessage] = useState('')
@@ -24,10 +21,13 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
 
   useEffect(() => {
     recognition.onresult = (event: any) => {
+      console.log('event.results', event.results)
       const speechToText = event.results[0][0].transcript
       setTranscript(speechToText)
+      setIsRecording(false)
       if (speechToText) {
-        sendMessage(transcript)
+        sendMessage(speechToText)
+        setTranscript('')
       }
     }
 
@@ -37,7 +37,6 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
   const handleRecord = () => {
     if (isRecording) {
       recognition.stop()
-      setTranscript('')
     } else {
       recognition.start()
     }
