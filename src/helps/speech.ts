@@ -1,8 +1,8 @@
 'use client'
 
-let audio: null | SpeechSynthesisUtterance = null
+let audio: any = null
 
-if (SpeechSynthesisUtterance) audio = new SpeechSynthesisUtterance()
+if (typeof SpeechSynthesisUtterance !== 'undefined') audio = new SpeechSynthesisUtterance()
 let speeding = false
 
 export const speak = (phrase: string, isVocabulary: boolean = true) => {
