@@ -20,7 +20,7 @@ export const speak = (phrase: string, isVocabulary: boolean = true) => {
   audio.onend = () => {
     speeding = false
   }
-  if (window) {
+  if (typeof window !== 'undefined') {
     window.speechSynthesis.speak(audio)
   }
 }

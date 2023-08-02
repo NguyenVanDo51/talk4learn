@@ -13,9 +13,9 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
   const [isRecording, setIsRecording] = useState(false)
 
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
-  
+
   let recognition: any = null
-  if (window) {
+  if (typeof window !== 'undefined') {
     recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
   }
 
