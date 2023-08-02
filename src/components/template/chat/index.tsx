@@ -14,17 +14,19 @@ import { speak } from '@/helps/speech'
 import { AnalyistedMessage } from './components/AnalystedMessage'
 import { AppButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
-import Link from 'next/link'
 
 export const AIChat = () => {
   const [messages, setMessages] = useState<IMessage[]>(initialConversation)
   const [isWaiting, setIsWaiting] = useState(false)
   const [isGettingComment, setIsGettingComment] = useState(false)
-  const [model, setModel] = useState<IAIModel>(AIModels[0])
+  const [model] = useState<IAIModel>(AIModels[0])
   const [isShowComment, setIsShowComment] = useState(false)
+
+  console.log('messages', messages)
 
   const sendMessage = (message: string) => {
     if (!message || isWaiting) return
+    console.log('old', messages)
     setTimeout(() => {
       scrollToBottom('#message-container')
     }, 100)

@@ -1,7 +1,6 @@
 'use client'
 import { AppButton } from '@/components/level1/AppButton'
 import { AppInput } from '@/components/level1/AppInput'
-import { IMessage } from '@/types/chat'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 
 interface IProps {
@@ -9,33 +8,28 @@ interface IProps {
   sendMessage: (message: string) => void
 }
 
+let recognition: any = null
+if (typeof window !== 'undefined') {
+  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+}
+
 export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   const [message, setMessage] = useState('')
-  const [transcript, setTranscript] = useState<string>('')
   const [isRecording, setIsRecording] = useState(false)
 
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
 
-  let recognition: any = null
-  if (typeof window !== 'undefined') {
-    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
-  }
-
   useEffect(() => {
     if (!recognition) return
-
     recognition.onresult = (event: any) => {
       const speechToText = event.results[0][0].transcript
-      setTranscript(speechToText)
       setIsRecording(false)
       if (speechToText) {
         sendMessage(speechToText)
-        setTranscript('')
       }
     }
-
     return () => recognition.stop()
-  }, [recognition, sendMessage, transcript])
+  }, [sendMessage])
 
   const handleRecord = () => {
     if (isRecording) {
