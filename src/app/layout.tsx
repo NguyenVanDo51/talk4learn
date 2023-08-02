@@ -23,12 +23,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ReduxProvider>
           <StyledComponentsRegistry>
-            <ConfigProvider>
               <MainHeader />
-              <main id="app" className="flex container mx-auto p-4" style={{ minHeight: 'calc(100vh - 46px)' }}>
+              <main className="flex container mx-auto p-4" style={{ minHeight: 'calc(100vh - 46px)' }}>
                 {children}
               </main>
-            </ConfigProvider>
           </StyledComponentsRegistry>
         </ReduxProvider>
       </body>
