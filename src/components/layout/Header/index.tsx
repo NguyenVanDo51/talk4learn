@@ -7,10 +7,10 @@ export const MainHeader = () => {
     <nav className="h-[46px]">
       <ul className='flex w-full gap-8 justify-end px-10 py-2'>
         <li>
-          <Link href={'/lessons'}> Lessons</Link>
+          <a href={'/lessons'}> Lessons</a>
         </li>
         <li>
-          <Link href={'/chat'}> Chat</Link>
+          <a href={'/chat'}> Chat</a>
         </li>
       </ul>
     </nav>
