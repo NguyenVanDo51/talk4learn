@@ -7,6 +7,7 @@ import { MainHeader } from '@/components/layout/Header'
 import { ReduxProvider } from '@/redux/provider'
 import { InitialApp } from '@/components/layout/InitialApp'
 import StyledComponentsRegistry from '../../lib/AntdRegistry'
+import { ConfigProvider } from 'antd'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,12 +23,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ReduxProvider>
           <StyledComponentsRegistry>
-            <InitialApp>
+            <ConfigProvider>
               <MainHeader />
               <main id="app" className="flex container mx-auto p-4" style={{ minHeight: 'calc(100vh - 46px)' }}>
                 {children}
               </main>
-            </InitialApp>
+            </ConfigProvider>
           </StyledComponentsRegistry>
         </ReduxProvider>
       </body>

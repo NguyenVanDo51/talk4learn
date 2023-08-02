@@ -14,6 +14,7 @@ import { speak } from '@/helps/speech'
 import { AnalyistedMessage } from './components/AnalystedMessage'
 import { AppButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
+import Link from 'next/link'
 
 export const AIChat = () => {
   const [messages, setMessages] = useState<IMessage[]>(initialConversation)
@@ -80,6 +81,7 @@ export const AIChat = () => {
 
   return (
     <div className="flex flex-grow h-screen max-h-[90vh] antialiased shadow">
+      <Link href={'/'}>AA</Link>
       <div className="flex flex-row h-full w-full overflow-x-hidden">
         <Conversations />
         <div className="flex gap-7 flex-auto p-6 pb-0">
@@ -104,7 +106,7 @@ export const AIChat = () => {
           </div>
           {isShowComment && <AnalyistedMessage messages={messages} />}
         </div>
-      </div>
+      L</div>
     </div>
   )
 }
