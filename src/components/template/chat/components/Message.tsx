@@ -1,8 +1,8 @@
 import { AppButton, AppDeleteButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
-import { AIModels, IAIModel, IMessage } from '@/types/chat'
-import { Avatar, Popover, Spin } from 'antd'
+import { IAIModel, IMessage } from '@/types/chat'
+import { Avatar, Spin } from 'antd'
 import { FC, useEffect, useState } from 'react'
 
 interface IProps {
@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export const Message: FC<IProps> = (props) => {
-  const { messages, isSending, setMessages, handleAnalyst } = props
+  const { messages, isSending, setMessages } = props
 
   const deleteMessage = (messageId: IMessage['id']) => {
     setMessages([...messages].filter((message) => message.id !== messageId))
@@ -86,10 +86,10 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, deleteMessage }) =>
     <>
       <div className="col-start-1 col-end-10 p-3 rounded-lg message-item" id={message.id}>
         <div className="flex gap-3 flex-row items-center">
-          <Avatar size={'default'} className="min-w-[32px] bg-indigo-400">
+          <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
             {model.name.at(0)}
           </Avatar>
-          <div className="text-sm  py-2 px-4 shadow rounded-xl">
+          <div className="text-sm bg-white dark:bg-slate-700 py-2 px-4 shadow rounded-xl">
             <div>{text}</div>
           </div>
           <div className="flex gap-2">
@@ -121,7 +121,7 @@ const RightMessage: FC<RightMessageProps> = ({ message, reStart, deleteMessage, 
         <Avatar size={'default'} className="min-w-[32px] bg-green-500">
           U
         </Avatar>
-        <div className="relative text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+        <div className="relative text-sm bg-indigo-100 dark:bg-black py-2 px-4 shadow rounded-xl">
           <div>{message.content}</div>
         </div>
 

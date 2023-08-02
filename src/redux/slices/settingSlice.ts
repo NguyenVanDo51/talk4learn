@@ -5,7 +5,7 @@ export interface ISetting {
 }
 
 const initialState: ISetting = {
-  theme: 'light',
+  theme: 'dark',
 }
 
 export const settingSlice = createSlice({
