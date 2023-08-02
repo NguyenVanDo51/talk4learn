@@ -1,49 +1,58 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Conversations } from './components/Conversation'
 import { InputBox } from './components/InputBox'
 import { Message } from './components/Message'
-import { AIModels, IMessage, initialConversation } from '@/types/chat'
+import { AIModels, IAIModel, IMessage, initialConversation } from '@/types/chat'
 import { SendMessageBody } from '@/service/chat/type'
 import { ChatService } from '@/service/chat/index.service'
 import { OpenAIMessgaeResponse } from '@/service/chat/openai'
 import { AxiosResponse } from 'axios'
 import { uniqueId } from 'lodash'
 import { speak } from '@/helps/speech'
+import { AnalyistedMessage } from './components/AnalystedMessage'
+import { AppButton } from '@/components/level1/AppButton'
+import { scrollToBottom } from '@/helpers/dom'
 
 export const AIChat = () => {
   const [messages, setMessages] = useState<IMessage[]>(initialConversation)
-  const [isSending, setIsSending] = useState(false)
+  const [isWaiting, setIsWaiting] = useState(false)
+  const [isGettingComment, setIsGettingComment] = useState(false)
+  const [model, setModel] = useState<IAIModel>(AIModels[0])
+  const [isShowComment, setIsShowComment] = useState(false)
 
   const sendMessage = (message: string) => {
-    if (!message || isSending) return
+    if (!message || isWaiting) return
+    setTimeout(() => {
+      scrollToBottom('#message-container')
+    }, 100)
 
-    setIsSending(true)
-    const newMesages: IMessage[] = [
-      ...messages,
-      {
-        id: uniqueId(),
-        role: 'user',
-        content: message,
-      },
-    ]
-    const bodyMessage: SendMessageBody[] = [
-      { role: 'system', content: AIModels[0].getDescription() },
-      ...newMesages,
-    ].map((message) => ({ role: message.role as SendMessageBody['role'], content: message.content }))
+    const messageObject: IMessage = {
+      id: uniqueId(),
+      role: 'user',
+      content: message,
+    }
+    setIsWaiting(true)
+    const newMesages: IMessage[] = [...messages, messageObject]
+    const bodyMessage: SendMessageBody[] = [{ role: 'system', content: model.getDescription() }, ...newMesages].map(
+      (message) => ({ role: message.role as SendMessageBody['role'], content: message.content })
+    )
     setMessages(newMesages)
-
     ChatService.sendMessage(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const messageResponse = res.data?.choices[0]?.message.content
         speak(messageResponse)
-        setMessages([...newMesages, { id: uniqueId(), role: 'assistant', content: messageResponse }])
+        newMesages.push({ id: uniqueId(), role: 'assistant', content: messageResponse })
+        setMessages(newMesages)
       })
-      .finally(() => setIsSending(false))
+      .finally(() => setIsWaiting(false))
   }
 
   const handleAnalyst = (message: IMessage) => {
+    if (isGettingComment) return
+
+    setIsGettingComment(true)
     const bodyMessage: SendMessageBody[] = [
       {
         role: 'system',
@@ -55,26 +64,45 @@ export const AIChat = () => {
         content: message.content,
       },
     ]
-    ChatService.sendMessage(bodyMessage).then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
-      const comment = res.data?.choices[0]?.message.content
-      const newMessage = [...messages].map((m) => (m.id === message.id ? { ...m, comment } : m))
-      setMessages(newMessage)
-    })
+    ChatService.sendMessage(bodyMessage)
+      .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
+        const comment = res.data?.choices[0]?.message.content
+        setIsShowComment(true)
+        setMessages([...messages].map((m) => (m.id === message.id ? { ...m, comment } : m)))
+      })
+      .finally(() => setIsGettingComment(false))
   }
 
+  useEffect(() => {
+    scrollToBottom('#message-container')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages.at(-1)])
+
   return (
-    <div className="flex flex-grow h-screen antialiased text-gray-800">
+    <div className="flex flex-grow h-screen max-h-[90vh] antialiased shadow">
       <div className="flex flex-row h-full w-full overflow-x-hidden">
         <Conversations />
-        <div className="flex flex-col flex-auto h-full p-6 pb-0">
-          <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
-            <div className="flex flex-col h-full overflow-x-auto mb-4">
-              <div className="flex flex-col h-full">
-                <Message messages={messages} isSending={isSending} analyst={handleAnalyst} />
-              </div>
+        <div className="flex gap-7 flex-auto p-6 pb-0">
+          <div className="flex gap-2 flex-grow flex-col">
+            <div className="flex justify-between items-center">
+              <span className="font-medium text-lg">Chat with {model.name}</span>
+              <AppButton onClick={() => setIsShowComment(!isShowComment)} size="small" type="text">
+                <i className={`fa-solid fa-outdent text-xl ${isShowComment ? 'text-primary' : 'text-gray-500'}`}></i>
+              </AppButton>
             </div>
-            <InputBox sendMessage={sendMessage} />
+            <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl max-h-[95%] bg-gray-100 p-3">
+              <Message
+                messages={messages}
+                isSending={isWaiting}
+                isGettingComment={isGettingComment}
+                model={model}
+                setMessages={setMessages}
+                handleAnalyst={handleAnalyst}
+              />
+              <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
+            </div>
           </div>
+          {isShowComment && <AnalyistedMessage messages={messages} />}
         </div>
       </div>
     </div>

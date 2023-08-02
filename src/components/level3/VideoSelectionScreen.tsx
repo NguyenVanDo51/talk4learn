@@ -45,7 +45,7 @@ const VideoSelectionScreen: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">Choose a Video Lesson to Start Learning</h1>
       <div className="grid grid-cols-4 gap-4">
         {lessons.map((lesson) => (
-          <div key={lesson.id} className="bg-white p-4 shadow rounded">
+          <div key={lesson.id} className=" p-4 shadow rounded">
             <Image width={100} height={100} src={lesson.image} alt={lesson.title} className="w-full h-auto mb-2" />
             <h2 className="text-xl font-semibold">{lesson.title}</h2>
             <p className="text-gray-500">{lesson.topic}</p>

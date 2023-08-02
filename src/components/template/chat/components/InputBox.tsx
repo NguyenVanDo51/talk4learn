@@ -1,13 +1,15 @@
 'use client'
 import { AppButton } from '@/components/level1/AppButton'
 import { AppInput } from '@/components/level1/AppInput'
+import { IMessage } from '@/types/chat'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 
 interface IProps {
+  isWaiting: boolean
   sendMessage: (message: string) => void
 }
 
-export const InputBox: FC<IProps> = ({ sendMessage }) => {
+export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   const [message, setMessage] = useState('')
   const [transcript, setTranscript] = useState<string>('')
   const [isRecording, setIsRecording] = useState(false)
@@ -45,6 +47,8 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
   }
 
   const handleSendMessage = () => {
+    if (isWaiting) return
+
     messageRef.current?.focus()
     if (!message.length) return
 
@@ -53,7 +57,7 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
   }
 
   return (
-    <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+    <div className="flex flex-row items-center h-16 rounded-xl  w-full p-3">
       <div className="flex-grow">
         <AppInput
           ref={messageRef as any}
@@ -80,18 +84,18 @@ export const InputBox: FC<IProps> = ({ sendMessage }) => {
           className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
         >
           Send
-          <span className="ml-2">
+          <span>
             <svg
-              className="w-4 h-4 transform rotate-90 -mt-px"
+              className="w-4 h-4 transform rotate-90"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
               ></path>
             </svg>

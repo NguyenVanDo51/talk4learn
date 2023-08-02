@@ -1,37 +1,71 @@
-import { AppButton } from '@/components/level1/AppButton'
+import { AppButton, AppDeleteButton } from '@/components/level1/AppButton'
+import { scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
-import { IMessage } from '@/types/chat'
-import { Popover, Spin } from 'antd'
+import { AIModels, IAIModel, IMessage } from '@/types/chat'
+import { Avatar, Popover, Spin } from 'antd'
 import { FC, useEffect, useState } from 'react'
 
 interface IProps {
   isSending: boolean
-  analyst: (message: IMessage) => void
   messages: IMessage[]
+  isGettingComment: boolean
+  model: IAIModel
+  setMessages: (messages: IMessage[]) => void
+  handleAnalyst: (m: IMessage) => void
 }
 
-export const Message: FC<IProps> = ({ messages, isSending, analyst }) => {
-  console.log('messages', messages)
-  return (
-    <div className="grid grid-cols-12 gap-y-2">
-      {messages.map((message, index) =>
-        message.role === 'assistant' ? (
-          <LeftMessage content={message.content} key={`msg_${index}`} />
-        ) : (
-          <RightMessage message={message} analyst={() => analyst(message)} key={`msg_${index}`} />
-        )
-      )}
+export const Message: FC<IProps> = (props) => {
+  const { messages, isSending, setMessages, handleAnalyst } = props
 
-      {isSending && (
-        <div className="col-start-1 col-end-12 px-3">
-          <Spin spinning />
+  const deleteMessage = (messageId: IMessage['id']) => {
+    setMessages([...messages].filter((message) => message.id !== messageId))
+  }
+
+  const reStart = (index: number) => {
+    setMessages(messages.slice(0, index))
+  }
+
+  return (
+    <div className="flex flex-col h-full overflow-x-auto mb-4" id="message-container">
+      <div className="flex flex-col h-full">
+        <div className="grid grid-cols-12 gap-y-2 pb-4">
+          {messages.map((message, index) =>
+            message.role === 'assistant' ? (
+              <LeftMessage
+                {...props}
+                message={message}
+                key={`msg_${index}`}
+                deleteMessage={() => deleteMessage(message.id)}
+              />
+            ) : (
+              <RightMessage
+                key={`msg_${index}`}
+                {...props}
+                message={message}
+                deleteMessage={() => deleteMessage(message.id)}
+                reStart={() => reStart(index)}
+              />
+            )
+          )}
+
+          {isSending && (
+            <div className="col-start-1 col-end-12 px-3">
+              <Spin spinning />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   )
 }
 
-const LeftMessage: FC<{ content: string }> = ({ content }) => {
+interface LeftMessageProps extends IProps {
+  message: IMessage
+  deleteMessage: () => void
+}
+
+const LeftMessage: FC<LeftMessageProps> = ({ message, model, deleteMessage }) => {
+  const { content } = message
   const contentArray = content.split(' ')
   const [text, setText] = useState(contentArray[0])
 
@@ -42,54 +76,73 @@ const LeftMessage: FC<{ content: string }> = ({ content }) => {
 
       setText(contentArray.slice(0, index).join(' '))
       index++
+      scrollToBottom('#message-container')
     }, 150)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div className="col-start-1 col-end-8 p-3 rounded-lg message-item">
-      <div className="flex flex-row items-center">
-        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">A</div>
-        <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-          <div>{text}</div>
+    <>
+      <div className="col-start-1 col-end-10 p-3 rounded-lg message-item" id={message.id}>
+        <div className="flex gap-3 flex-row items-center">
+          <Avatar size={'default'} className="min-w-[32px] bg-indigo-400">
+            {model.name.at(0)}
+          </Avatar>
+          <div className="text-sm  py-2 px-4 shadow rounded-xl">
+            <div>{text}</div>
+          </div>
+          <div className="flex gap-2">
+            <AppButton
+              onClick={() => speak(content)}
+              size="small"
+              type="link"
+              className="ml-2"
+              icon={<i className="fa-solid fa-volume-low"></i>}
+            />
+            <AppDeleteButton onConfirm={deleteMessage} type="link" />
+          </div>
         </div>
-
-        <AppButton
-          onClick={() => speak(content)}
-          size="small"
-          type="link"
-          className="ml-2"
-          icon={<i className="fa-solid fa-volume-low"></i>}
-        ></AppButton>
       </div>
-    </div>
+    </>
   )
 }
 
-const RightMessage: FC<{ message: IMessage; analyst: () => void }> = ({ message, analyst }) => {
-  return (
-    <div className="col-start-6 col-end-13 p-3 rounded-lg message-item">
-      <div className="flex items-center gap-3 justify-start flex-row-reverse">
-        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">A</div>
-        <Popover
-          trigger="click"
-          placement="left"
-          content={message.comment ? <div className="max-w-[40vw]">{message.comment}</div> : undefined}
-        >
-          <div className="relative text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-            <div>{message.content}</div>
-          </div>
-        </Popover>
+interface RightMessageProps extends IProps {
+  message: IMessage
+  deleteMessage: () => void
+  reStart: () => void
+}
 
-        {!message.comment && (
-          <AppButton
-            onClick={analyst}
-            size="small"
+const RightMessage: FC<RightMessageProps> = ({ message, reStart, deleteMessage, handleAnalyst }) => {
+  return (
+    <div className="col-start-4 col-end-13 p-3 rounded-lg message-item" id={message.id}>
+      <div className="flex items-center gap-3 justify-start flex-row-reverse">
+        <Avatar size={'default'} className="min-w-[32px] bg-green-500">
+          U
+        </Avatar>
+        <div className="relative text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+          <div>{message.content}</div>
+        </div>
+
+        <div className="flex gap-2">
+          <AppDeleteButton onConfirm={deleteMessage} type="link" />
+          <AppDeleteButton
+            description={'Restart from this message?'}
+            onConfirm={reStart}
             type="link"
-            className="ml-2"
-            icon={<i className="fa-solid fa-chart-simple"></i>}
-          ></AppButton>
-        )}
+            icon={<i className="fa-solid fa-rotate-left"></i>}
+          />
+          {!message.comment && (
+            <AppButton
+              onClick={() => handleAnalyst(message)}
+              size="small"
+              type="link"
+              title="Analyist"
+              icon={<i className="fa-solid fa-chart-simple"></i>}
+            ></AppButton>
+          )}
+        </div>
       </div>
     </div>
   )
