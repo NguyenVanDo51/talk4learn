@@ -1,14 +1,17 @@
 'use client'
 import { AppButton } from '@/components/level1/AppButton'
 import { AppInput } from '@/components/level1/AppInput'
+import { getUserMedia } from '@/helpers/mp3'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 
 interface IProps {
   isWaiting: boolean
-  sendMessage: (message: string) => void
+  sendMessage: (message: string, voiceRecoreded?: string) => void
 }
 
 let recognition: any = null
+let audioChunks: any = []
+let rec: any
 if (typeof window !== 'undefined') {
   recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
 }
@@ -16,26 +19,66 @@ if (typeof window !== 'undefined') {
 export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   const [message, setMessage] = useState('')
   const [isRecording, setIsRecording] = useState(false)
+  const [transcript, setTranscript] = useState<string>()
+  const [recording, setRecording] = useState<string>()
+
+  const [inited, setInited] = useState(false)
 
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
 
   useEffect(() => {
-    if (!recognition) return
-    recognition.onresult = (event: any) => {
+    getUserMedia({ audio: true }).then((stream: any) => {
+      rec = new MediaRecorder(stream)
+      rec.ondataavailable = (e: any) => {
+        audioChunks = []
+        audioChunks.push(e.data)
+        if (rec.state == 'inactive') {
+          let blob = new Blob(audioChunks, { type: 'audio/mp3' })
+          console.log(blob, URL.createObjectURL(blob))
+          setRecording(URL.createObjectURL(blob))
+        }
+      }
+      setInited(true)
+    })
+
+    return () => rec.stop()
+  }, [])
+
+  useEffect(() => {
+    if (!recognition || !inited) return
+    console.log('rec', rec)
+    recognition.onresult = (event: { results: SpeechRecognitionResultList }) => {
+      if (rec) {
+        rec.stop()
+      }
+      console.log('event', event.results[0][0].confidence)
       const speechToText = event.results[0][0].transcript
       setIsRecording(false)
       if (speechToText) {
-        sendMessage(speechToText)
+        setTranscript(speechToText)
       }
     }
-    return () => recognition.stop()
-  }, [sendMessage])
+
+    return () => {
+      recognition.stop()
+    }
+  }, [inited, sendMessage])
+
+  useEffect(() => {
+    if (transcript && recording) {
+      sendMessage(transcript, recording)
+      setTranscript('')
+      setRecording('')
+    }
+  }, [recording, sendMessage, transcript])
 
   const handleRecord = () => {
     if (isRecording) {
       recognition.stop()
+      rec.stop()
     } else {
       recognition.start()
+      rec.start()
     }
     setIsRecording(!isRecording)
   }

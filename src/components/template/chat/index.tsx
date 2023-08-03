@@ -14,6 +14,12 @@ import { speak } from '@/helps/speech'
 import { AnalyistedMessage } from './components/AnalystedMessage'
 import { AppButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
+import { SettingModal } from './components/SettingModal'
+
+export interface IChatSetting {
+  type: 'text' | 'voice'
+  style: 'formal' | 'informal'
+}
 
 export const AIChat = () => {
   const [messages, setMessages] = useState<IMessage[]>(initialConversation)
@@ -21,10 +27,12 @@ export const AIChat = () => {
   const [isGettingComment, setIsGettingComment] = useState(false)
   const [model] = useState<IAIModel>(AIModels[0])
   const [isShowComment, setIsShowComment] = useState(false)
+  const [settings, setSettings] = useState<IChatSetting>({
+    type: 'text',
+    style: 'formal',
+  })
 
-  console.log('messages', messages)
-
-  const sendMessage = (message: string) => {
+  const sendMessage = (message: string, recorded?: string) => {
     if (!message || isWaiting) return
     console.log('old', messages)
     setTimeout(() => {
@@ -35,6 +43,7 @@ export const AIChat = () => {
       id: uniqueId(),
       role: 'user',
       content: message,
+      recorded
     }
     setIsWaiting(true)
     const newMesages: IMessage[] = [...messages, messageObject]
@@ -89,9 +98,13 @@ export const AIChat = () => {
           <div className="flex gap-2 flex-grow flex-col">
             <div className="flex justify-between items-center">
               <span className="font-medium text-lg">Chat with {model.name}</span>
-              <AppButton onClick={() => setIsShowComment(!isShowComment)} size="small" type="text">
-                <i className={`fa-solid fa-outdent text-xl ${isShowComment ? 'text-primary' : 'text-gray-500'}`}></i>
-              </AppButton>
+
+              <div className="flex gap-2">
+                <SettingModal settings={settings} setSettings={setSettings} />
+                <AppButton onClick={() => setIsShowComment(!isShowComment)} size="small" type="text">
+                  <i className={`fa-solid fa-outdent text-xl ${isShowComment ? 'text-primary' : 'text-gray-500'}`}></i>
+                </AppButton>
+              </div>
             </div>
             <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl max-h-[95%] bg-gray-100 p-3">
               <Message

@@ -5,6 +5,7 @@ export interface IMessage {
   role: 'system' | 'user' | 'assistant'
   content: string
   comment?: string
+  recorded?: string
 }
 
 export interface IAIModel {

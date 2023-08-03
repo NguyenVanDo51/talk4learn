@@ -142,6 +142,17 @@ const RightMessage: FC<RightMessageProps> = ({ message, reStart, deleteMessage, 
               icon={<i className="fa-solid fa-chart-simple"></i>}
             ></AppButton>
           )}
+          {message.recorded && (
+            <AppButton
+              onClick={() => {
+                new Audio(message.recorded).play()
+              }}
+              size="small"
+              type="link"
+              className="ml-2"
+              icon={<i className="fa-solid fa-volume-low"></i>}
+            />
+          )}
         </div>
       </div>
     </div>
