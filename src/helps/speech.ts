@@ -6,7 +6,9 @@ if (typeof SpeechSynthesisUtterance !== 'undefined') audio = new SpeechSynthesis
 let speeding = false
 
 export const speak = (phrase: string, isVocabulary: boolean = true) => {
+  console.log('phrase', phrase, speeding)
   if (speeding || !audio) return
+  
   audio.text = isVocabulary
     ? phrase
         .replace(/(\()(.*)(\))/, '')

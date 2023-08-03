@@ -4,12 +4,15 @@ import { speak } from '@/helps/speech'
 import { IAIModel, IMessage } from '@/types/chat'
 import { Avatar, Spin } from 'antd'
 import { FC, useEffect, useState } from 'react'
+import { IChatSetting } from '..'
+import { AudioPlayer } from '@/components/level1/AudioPlayer'
 
 interface IProps {
   isSending: boolean
   messages: IMessage[]
   isGettingComment: boolean
   model: IAIModel
+  settings: IChatSetting
   setMessages: (messages: IMessage[]) => void
   handleAnalyst: (m: IMessage) => void
 }
@@ -64,10 +67,11 @@ interface LeftMessageProps extends IProps {
   deleteMessage: () => void
 }
 
-const LeftMessage: FC<LeftMessageProps> = ({ message, model, deleteMessage }) => {
+const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings, deleteMessage }) => {
   const { content } = message
   const contentArray = content.split(' ')
   const [text, setText] = useState(contentArray[0])
+  const [type, setType] = useState(settings.type)
 
   useEffect(() => {
     let index = 2
@@ -82,6 +86,10 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, deleteMessage }) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    setType(settings.type)
+  }, [settings.type])
+
   return (
     <>
       <div className="col-start-1 col-end-10 p-3 rounded-lg message-item" id={message.id}>
@@ -90,7 +98,7 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, deleteMessage }) =>
             {model.name.at(0)}
           </Avatar>
           <div className="text-sm bg-white dark:bg-slate-700 py-2 px-4 shadow rounded-xl">
-            <div>{text}</div>
+            {type === 'voice' ? <AudioPlayer text={content} /> : <div>{text}</div>}
           </div>
           <div className="flex gap-2">
             <AppButton

@@ -15,6 +15,8 @@ import { AnalyistedMessage } from './components/AnalystedMessage'
 import { AppButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
 import { SettingModal } from './components/SettingModal'
+import { getData } from '@/helps/storage'
+import { LocalStorageKey } from '@/types/constants'
 
 export interface IChatSetting {
   type: 'text' | 'voice'
@@ -27,10 +29,12 @@ export const AIChat = () => {
   const [isGettingComment, setIsGettingComment] = useState(false)
   const [model] = useState<IAIModel>(AIModels[0])
   const [isShowComment, setIsShowComment] = useState(false)
-  const [settings, setSettings] = useState<IChatSetting>({
-    type: 'text',
-    style: 'formal',
-  })
+  const [settings, setSettings] = useState<IChatSetting>(
+    getData(LocalStorageKey.CHAT_SETTING) ?? {
+      type: 'text',
+      style: 'formal',
+    }
+  )
 
   const sendMessage = (message: string, recorded?: string) => {
     if (!message || isWaiting) return
@@ -43,7 +47,7 @@ export const AIChat = () => {
       id: uniqueId(),
       role: 'user',
       content: message,
-      recorded
+      recorded,
     }
     setIsWaiting(true)
     const newMesages: IMessage[] = [...messages, messageObject]
@@ -112,6 +116,7 @@ export const AIChat = () => {
                 isSending={isWaiting}
                 isGettingComment={isGettingComment}
                 model={model}
+                settings={settings}
                 setMessages={setMessages}
                 handleAnalyst={handleAnalyst}
               />

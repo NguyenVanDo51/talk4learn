@@ -4,6 +4,8 @@ import { Form, Radio } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { IChatSetting } from '..'
 import { useForm } from 'antd/es/form/Form'
+import { saveData } from '@/helps/storage'
+import { LocalStorageKey } from '@/types/constants'
 
 interface IProps {
   settings: IChatSetting
@@ -22,6 +24,7 @@ export const SettingModal: FC<IProps> = ({ settings, setSettings }) => {
   const onOk = () => {
     setIsOpenSetting(false)
     setSettings(form.getFieldsValue())
+    saveData(LocalStorageKey.CHAT_SETTING, form.getFieldsValue())
   }
 
   useEffect(() => {
