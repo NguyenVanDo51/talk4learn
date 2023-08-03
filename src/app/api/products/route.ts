@@ -15,6 +15,7 @@ export async function GET() {
         sku: 8552515751438644,
         style: 'White T-shirt',
         title: 'Cropped Stay Groovy off white',
+        images: ['https://routine.vn/media/catalog/product/cache/5de180fdba0e830d350bd2803a0413e8/e/c/ecom.21.10_197__1.jpg', 'https://cf.shopee.vn/file/sg-11134201-22120-a93cxmcp8tkv85']
       },
       {
         availableSizes: ['X', 'ML', 'L'],
@@ -28,6 +29,7 @@ export async function GET() {
         sku: 39876704341265610,
         style: 'Wine',
         title: 'Basic Cactus White T-shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['XL'],
@@ -41,6 +43,7 @@ export async function GET() {
         sku: 9197907543445676,
         style: 'Tony Hawk',
         title: 'Skater Black Sweatshirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['M', 'ML'],
@@ -54,6 +57,7 @@ export async function GET() {
         sku: 51498472915966370,
         style: 'Tule',
         title: 'Black Tule Oversized',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['S', 'XS'],
@@ -67,6 +71,7 @@ export async function GET() {
         sku: 12064273040195392,
         style: 'Really Cool T-shirt',
         title: 'Black Batman T-shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['X', 'L', 'XL'],
@@ -80,6 +85,7 @@ export async function GET() {
         sku: 10686354557628304,
         style: 'Mark Zuck have 365 of this one',
         title: 'Blue T-Shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['X', 'L', 'XL', 'XXL'],
@@ -93,6 +99,7 @@ export async function GET() {
         sku: 11033926921508488,
         style: '',
         title: 'Loose Black T-shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['X', 'L', 'XL', 'XXL'],
@@ -106,6 +113,7 @@ export async function GET() {
         sku: 18644119330491310,
         style: 'White T-shirt',
         title: 'Ringer Hall Pass',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['X', 'L'],
@@ -119,6 +127,7 @@ export async function GET() {
         sku: 11854078013954528,
         style: 'You will like this one',
         title: 'Grey T-shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['X', 'L'],
@@ -132,6 +141,7 @@ export async function GET() {
         sku: 876661122392077,
         style: 'Adidas originals',
         title: 'Black T-shirt with white stripes',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['X', 'L', 'XL'],
@@ -145,6 +155,7 @@ export async function GET() {
         sku: 10547961582846888,
         style: 'Cowabunga!',
         title: 'Turtles Ninja T-shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['XL', 'XXL'],
@@ -158,6 +169,7 @@ export async function GET() {
         sku: 6090484789343891,
         style: 'When you wish well',
         title: 'Slim black T-shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['S'],
@@ -171,6 +183,7 @@ export async function GET() {
         sku: 18532669286405344,
         style: 'Very comfy',
         title: 'Blue Sweatshirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['XL'],
@@ -184,6 +197,7 @@ export async function GET() {
         sku: 5619496040738316,
         style: 'Girl the future is all your',
         title: 'White T-shirt Gucci',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['L', 'XL'],
@@ -197,6 +211,7 @@ export async function GET() {
         sku: 11600983276356164,
         style: '',
         title: 'Tropical Wine T-shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
       {
         availableSizes: ['L', 'XL'],
@@ -210,6 +225,7 @@ export async function GET() {
         sku: 27250082398145996,
         style: '',
         title: 'Marine Blue T-shirt',
+        images: ['https://vulcano.sgp1.digitaloceanspaces.com/media/3084/Ao_polo_nam.jpg', 'https://product.hstatic.net/200000056358/product/z2404894355080_ff35dfbe9f8c0e5b0f8f7e5829fb76d8_b1b4c381a191458f8f6322d105ab17c9_1024x1024.jpg']
       },
     ],
   })
