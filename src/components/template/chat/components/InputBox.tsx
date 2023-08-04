@@ -3,9 +3,13 @@ import { AppButton } from '@/components/level1/AppButton'
 import { AppInput } from '@/components/level1/AppInput'
 import { getUserMedia } from '@/helpers/mp3'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
+import { IChatSetting } from '..'
+import { Button, Tooltip } from 'antd'
+import { AppTooltip } from '@/components/level1/AppTooltip'
 
 interface IProps {
   isWaiting: boolean
+  settings: IChatSetting
   sendMessage: (message: string, voiceRecoreded?: string) => void
 }
 
@@ -16,12 +20,12 @@ if (typeof window !== 'undefined') {
   recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
 }
 
-export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
+export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
   const [message, setMessage] = useState('')
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState<string>()
   const [recording, setRecording] = useState<string>()
-
+  const [type, setType] = useState<IChatSetting['type']>(settings.type)
   const [inited, setInited] = useState(false)
 
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
@@ -72,6 +76,10 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
     }
   }, [recording, sendMessage, transcript])
 
+  useEffect(() => {
+    setType(settings.type)
+  }, [settings.type])
+
   const handleRecord = () => {
     if (isRecording) {
       recognition.stop()
@@ -93,52 +101,79 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
     sendMessage(message)
   }
 
-  return (
-    <div className="flex flex-row items-center h-16 rounded-xl  w-full p-3">
-      <div className="flex-grow">
-        <AppInput
-          ref={messageRef as any}
-          placeholder={isRecording ? 'Recording your voice ...' : 'Input here'}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          type="text"
-          disabled={isRecording}
-          suffix={
-            <i
-              onClick={handleRecord}
-              className={`fa-solid fa-microphone cursor-pointer ${isRecording ? 'text-purple-500' : ''}`}
-            ></i>
-          }
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') handleSendMessage()
-          }}
-        />
-      </div>
+  const changeIcon = (
+    <AppTooltip title="Change input type">
+      <i
+        className="fa-solid fa-arrows-rotate cursor-pointer"
+        onClick={() => setType(type === 'text' ? 'voice' : 'text')}
+      ></i>
+    </AppTooltip>
+  )
 
-      <div className="ml-4">
-        <AppButton
-          onClick={handleSendMessage}
-          className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
-        >
-          Send
-          <span>
-            <svg
-              className="w-4 h-4 transform rotate-90"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+  return (
+    <div className="flex flex-row items-center h-16 rounded-xl w-full p-3">
+      {type === 'voice' ? (
+        <div className="flex gap-3 justify-center flex-grow items-center">
+          <Button
+            onClick={handleRecord}
+            className={`w-20 h-20 rounded-full flex items-center justify-center  ${
+              isRecording ? 'bg-primary text-white shadow-lg' : 'bg-white'
+            }`}
+          >
+            <i className={`fa-solid fa-microphone text-3xl cursor-pointer ${isRecording ? 'text-white' : ''}`}></i>
+          </Button>
+          {changeIcon}
+        </div>
+      ) : (
+        <>
+          <div className="flex-grow">
+            <AppInput
+              ref={messageRef as any}
+              placeholder={isRecording ? 'Recording your voice ...' : 'Input here'}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              type="text"
+              disabled={isRecording}
+              suffix={
+                <div className="flex gap-3">
+                  <i
+                    onClick={handleRecord}
+                    className={`fa-solid fa-microphone cursor-pointer ${isRecording ? 'text-purple-500' : ''}`}
+                  ></i>
+                  {changeIcon}
+                </div>
+              }
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSendMessage()
+              }}
+            />
+          </div>
+          <div className="ml-4">
+            <AppButton
+              onClick={handleSendMessage}
+              className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              ></path>
-            </svg>
-          </span>
-        </AppButton>
-      </div>
+              Send
+              <span>
+                <svg
+                  className="w-4 h-4 transform rotate-90"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                  ></path>
+                </svg>
+              </span>
+            </AppButton>
+          </div>
+        </>
+      )}
     </div>
   )
 }

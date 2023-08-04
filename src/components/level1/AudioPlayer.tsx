@@ -1,32 +1,36 @@
 import { useSpeech } from '@/hooks/helpers/useSpeech'
-import { FC, useState } from 'react'
+import { uniqueId } from 'lodash'
+import { FC } from 'react'
 
 interface IProps {
   text: string
+  autoPlay?: boolean
 }
 
 export const AudioPlayer: FC<IProps> = ({ text }) => {
-  const { isPlaying, startSpeak, stopSpeak, reStart } = useSpeech()
+  const { isPlaying, startSpeak, stopSpeak } = useSpeech()
 
-  const play = () => {
-    startSpeak(text, false)
+  const onClick = () => {
+    if (isPlaying) {
+      stopSpeak()
+    } else {
+      startSpeak(text, false)
+    }
   }
+  const id = uniqueId()
 
-  const handleStop = () => {
-    stopSpeak()
-  }
-
+  const waveLength = Math.floor(text?.length / 1.5) || 1
   return (
-    <div>
-      <span className="cursor-pointer inline-flex gap-3">
-        {isPlaying ? (
-          <i className="fa-solid fa-pause" onClick={handleStop}></i>
-        ) : (
-          <i className="fa-solid fa-play" onClick={play}></i>
-        )}
-
-        <i className="fa-solid fa-rotate-left" onClick={() => reStart(text, false)}></i>
+    <div className="flex gap-3 items-center cursor-pointer" onClick={onClick}>
+      <span className="cursor-pointer">
+        {isPlaying ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
       </span>
+
+      <div className={`sound-wave ${isPlaying ? 'playing' : ''}`}>
+        {new Array(waveLength >= 50 ? 50 : waveLength).fill(null).map((_, index) => (
+          <span key={`${id}_${index}`} className="sound-wave-bar"></span>
+        ))}
+      </div>
     </div>
   )
 }

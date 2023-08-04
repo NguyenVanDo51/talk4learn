@@ -1,14 +1,23 @@
-import { IMessage } from '@/types/chat'
 import { Collapse } from 'antd'
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
+import { IAnalystMessage } from '..'
 
 interface IProps {
-  messages: IMessage[]
+  messages: IAnalystMessage[]
 }
 
 export const AnalyistedMessage: FC<IProps> = ({ messages }) => {
+  const [activeKey, setActiveKey] = useState<string[]>([])
+
   const messagesPasred = useMemo(() => {
     return messages.filter((m) => m.comment).map((m) => ({ key: m.id, label: m.content, children: m.comment }))
+  }, [messages])
+
+  useEffect(() => {
+    const newestMessage = messages.at(-1)
+    if (newestMessage) {
+      setActiveKey([newestMessage.id] as any)
+    }
   }, [messages])
 
   return (
@@ -16,7 +25,13 @@ export const AnalyistedMessage: FC<IProps> = ({ messages }) => {
       <div className="grid gap-3 w-full">
         <div className="font-bold mb-3">Comment</div>
         {messagesPasred.length > 0 ? (
-          <Collapse size="small" items={messagesPasred} className="h-fit"></Collapse>
+          <Collapse
+            size="small"
+            items={messagesPasred}
+            className="h-fit"
+            activeKey={activeKey}
+            onChange={(key) => setActiveKey(key as string[])}
+          ></Collapse>
         ) : (
           <span className="text-gray-500">Empty</span>
         )}

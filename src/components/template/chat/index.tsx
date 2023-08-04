@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Conversations } from './components/Conversation'
 import { InputBox } from './components/InputBox'
 import { Message } from './components/Message'
@@ -21,24 +21,32 @@ import { LocalStorageKey } from '@/types/constants'
 export interface IChatSetting {
   type: 'text' | 'voice'
   style: 'formal' | 'informal'
+  isShowAnalyst: boolean
 }
+
+const settingDefault: IChatSetting = {
+  type: 'text',
+  style: 'formal',
+  isShowAnalyst: true,
+}
+
+export type IAnalystMessage = IMessage & { comment: string }
 
 export const AIChat = () => {
   const [messages, setMessages] = useState<IMessage[]>(initialConversation)
   const [isWaiting, setIsWaiting] = useState(false)
   const [isGettingComment, setIsGettingComment] = useState(false)
   const [model] = useState<IAIModel>(AIModels[0])
-  const [isShowComment, setIsShowComment] = useState(false)
-  const [settings, setSettings] = useState<IChatSetting>(
-    getData(LocalStorageKey.CHAT_SETTING) ?? {
-      type: 'text',
-      style: 'formal',
-    }
-  )
+  const [settings, setSettings] = useState<IChatSetting>(getData(LocalStorageKey.CHAT_SETTING) ?? settingDefault)
+  const [analystedMessages, setAnalystMessages] = useState<IAnalystMessage[]>([])
+  const { isShowAnalyst } = settings
+
+  const analystedMessageIds = useMemo(() => {
+    return analystedMessages.map((m) => m.id)
+  }, [analystedMessages])
 
   const sendMessage = (message: string, recorded?: string) => {
     if (!message || isWaiting) return
-    console.log('old', messages)
     setTimeout(() => {
       scrollToBottom('#message-container')
     }, 100)
@@ -65,29 +73,49 @@ export const AIChat = () => {
       .finally(() => setIsWaiting(false))
   }
 
-  const handleAnalyst = (message: IMessage) => {
-    if (isGettingComment) return
-
-    setIsGettingComment(true)
-    const bodyMessage: SendMessageBody[] = [
-      {
-        role: 'system',
-        content:
-          'You will be provided with statements. Your task is to convert them to standard English and point out shortly what and why is wrong with that statements by Vietnamese.',
-      },
-      {
-        role: 'user',
-        content: message.content,
-      },
-    ]
-    ChatService.sendMessage(bodyMessage)
-      .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
-        const comment = res.data?.choices[0]?.message.content
-        setIsShowComment(true)
-        setMessages([...messages].map((m) => (m.id === message.id ? { ...m, comment } : m)))
-      })
-      .finally(() => setIsGettingComment(false))
+  const setIsShowComment = (value: boolean) => {
+    setSettings({ ...settings, isShowAnalyst: value })
   }
+
+  const handleAnalyst = useCallback(
+    (message: IMessage) => {
+      if (isGettingComment) return
+
+      setIsGettingComment(true)
+      const bodyMessage: SendMessageBody[] = [
+        {
+          role: 'system',
+          content:
+            'You will receive statements. Your objective is to transform them into standard English and briefly identify what is incorrect with the statements, along with the reason, from a Vietnamese perspective.',
+        },
+        {
+          role: 'user',
+          content: message.content,
+        },
+      ]
+
+      ChatService.checkGrammar(bodyMessage)
+        .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
+          const comment = res.data?.choices[0]?.message.content
+          setMessages([...messages].map((m) => (m.id === message.id ? { ...m, comment } : m)))
+          setAnalystMessages([...analystedMessages, { ...message, comment }])
+        })
+        .finally(() => setIsGettingComment(false))
+    },
+    [analystedMessages, isGettingComment, messages]
+  )
+
+  useEffect(() => {
+    const newestMessage = messages.at(-1)
+    if (
+      isShowAnalyst &&
+      newestMessage &&
+      newestMessage?.role === 'user' &&
+      !analystedMessageIds.includes(newestMessage.id)
+    ) {
+      handleAnalyst(newestMessage)
+    }
+  }, [analystedMessageIds, handleAnalyst, isShowAnalyst, messages])
 
   useEffect(() => {
     scrollToBottom('#message-container')
@@ -105,11 +133,12 @@ export const AIChat = () => {
 
               <div className="flex gap-2">
                 <SettingModal settings={settings} setSettings={setSettings} />
-                <AppButton onClick={() => setIsShowComment(!isShowComment)} size="small" type="text">
-                  <i className={`fa-solid fa-outdent text-xl ${isShowComment ? 'text-primary' : 'text-gray-500'}`}></i>
+                <AppButton onClick={() => setIsShowComment(!isShowAnalyst)} size="small" type="text">
+                  <i className={`fa-solid fa-outdent text-xl ${isShowAnalyst ? 'text-primary' : 'text-gray-500'}`}></i>
                 </AppButton>
               </div>
             </div>
+
             <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl max-h-[95%] bg-gray-100 p-3">
               <Message
                 messages={messages}
@@ -120,10 +149,11 @@ export const AIChat = () => {
                 setMessages={setMessages}
                 handleAnalyst={handleAnalyst}
               />
-              <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
+              <InputBox sendMessage={sendMessage} isWaiting={isWaiting} settings={settings} />
             </div>
           </div>
-          {isShowComment && <AnalyistedMessage messages={messages} />}
+
+          {isShowAnalyst && <AnalyistedMessage messages={analystedMessages} />}
         </div>
       </div>
     </div>

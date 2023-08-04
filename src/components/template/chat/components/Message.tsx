@@ -97,7 +97,7 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings, deleteMes
           <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
             {model.name.at(0)}
           </Avatar>
-          <div className="text-sm bg-white dark:bg-slate-700 py-2 px-4 shadow rounded-xl">
+          <div className="text-sm bg-white dark:bg-slate-700 py-2 px-4 shadow rounded-full">
             {type === 'voice' ? <AudioPlayer text={content} /> : <div>{text}</div>}
           </div>
           <div className="flex gap-2">
@@ -108,7 +108,7 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings, deleteMes
               className="ml-2"
               icon={<i className="fa-solid fa-volume-low"></i>}
             />
-            <AppDeleteButton onConfirm={deleteMessage} type="link" />
+            <AppDeleteButton onConfirm={deleteMessage} type="link" danger />
           </div>
         </div>
       </div>
@@ -129,7 +129,7 @@ const RightMessage: FC<RightMessageProps> = ({ message, reStart, deleteMessage, 
         <Avatar size={'default'} className="min-w-[32px] bg-green-500">
           U
         </Avatar>
-        <div className="relative text-sm bg-indigo-100 dark:bg-black py-2 px-4 shadow rounded-xl">
+        <div className="relative text-sm bg-indigo-100 dark:bg-black py-2 px-4 shadow rounded-full">
           <div>{message.content}</div>
         </div>
 

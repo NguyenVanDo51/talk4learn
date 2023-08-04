@@ -46,12 +46,13 @@ export const SettingModal: FC<IProps> = ({ settings, setSettings }) => {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item label="Chat mode" name="style">
+          <Form.Item label="Style" name="style">
             <Radio.Group>
               <Radio value={'formal'}>Formal</Radio>
               <Radio value={'informal'}>Informal</Radio>
             </Radio.Group>
           </Form.Item>
+
         </Form>
       </AppModal>
     </>
