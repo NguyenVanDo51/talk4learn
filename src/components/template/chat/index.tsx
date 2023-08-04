@@ -17,6 +17,8 @@ import { scrollToBottom } from '@/helpers/dom'
 import { SettingModal } from './components/SettingModal'
 import { getData } from '@/helps/storage'
 import { LocalStorageKey } from '@/types/constants'
+import { ConfigProvider } from 'antd'
+import { darkTheme } from '@/theme/themeConfig'
 
 export interface IChatSetting {
   type: 'text' | 'voice'
@@ -123,6 +125,7 @@ export const AIChat = () => {
   }, [messages.at(-1)])
 
   return (
+    <ConfigProvider theme={darkTheme}>
     <div className="flex flex-grow h-screen max-h-[90vh] antialiased shadow">
       <div className="flex flex-row h-full w-full overflow-x-hidden">
         <Conversations />
@@ -139,7 +142,7 @@ export const AIChat = () => {
               </div>
             </div>
 
-            <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl max-h-[95%] bg-gray-100 p-3">
+            <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl max-h-[95%] bg-gray-100 dark:bg-black p-3">
               <Message
                 messages={messages}
                 isSending={isWaiting}
@@ -157,5 +160,6 @@ export const AIChat = () => {
         </div>
       </div>
     </div>
+    </ConfigProvider>
   )
 }

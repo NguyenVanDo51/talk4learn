@@ -1,4 +1,5 @@
 import { AIModels } from '@/types/chat'
+import { Avatar } from 'antd'
 
 export const Conversations = () => {
   return (
@@ -11,8 +12,8 @@ export const Conversations = () => {
 
         <div className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
           {AIModels.map((model) => (
-            <button key={model.id} className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
-              <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">H</div>
+            <button key={model.id} className="flex flex-row items-center hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl p-2">
+              <Avatar>{model.name.at(0)}</Avatar>
               <div className="ml-2 text-sm font-semibold">{model.name}</div>
             </button>
           ))}

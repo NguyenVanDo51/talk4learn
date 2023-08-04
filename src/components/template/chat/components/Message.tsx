@@ -97,7 +97,7 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings, deleteMes
           <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
             {model.name.at(0)}
           </Avatar>
-          <div className="text-sm bg-white dark:bg-slate-700 py-2 px-4 shadow rounded-full">
+          <div className="text-sm bg-white dark:bg-black dark:bg-slate-700 py-2 px-4 shadow rounded-full">
             {type === 'voice' ? <AudioPlayer text={content} /> : <div>{text}</div>}
           </div>
           <div className="flex gap-2">

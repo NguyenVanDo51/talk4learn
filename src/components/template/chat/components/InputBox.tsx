@@ -117,7 +117,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
           <Button
             onClick={handleRecord}
             className={`w-20 h-20 rounded-full flex items-center justify-center  ${
-              isRecording ? 'bg-primary text-white shadow-lg' : 'bg-white'
+              isRecording ? 'bg-primary text-white shadow-lg' : 'bg-white dark:bg-black'
             }`}
           >
             <i className={`fa-solid fa-microphone text-3xl cursor-pointer ${isRecording ? 'text-white' : ''}`}></i>
