@@ -4,7 +4,6 @@ import { Form, Radio } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { IChatSetting } from '..'
 import { useForm } from 'antd/es/form/Form'
-import { saveData } from '@/helps/storage'
 import { LocalStorageKey } from '@/types/constants'
 
 interface IProps {
@@ -23,8 +22,7 @@ export const SettingModal: FC<IProps> = ({ settings, setSettings }) => {
 
   const onOk = () => {
     setIsOpenSetting(false)
-    setSettings(form.getFieldsValue())
-    saveData(LocalStorageKey.CHAT_SETTING, form.getFieldsValue())
+    setSettings({ ...settings, ...form.getFieldsValue() })
   }
 
   useEffect(() => {
@@ -52,7 +50,6 @@ export const SettingModal: FC<IProps> = ({ settings, setSettings }) => {
               <Radio value={'informal'}>Informal</Radio>
             </Radio.Group>
           </Form.Item>
-
         </Form>
       </AppModal>
     </>

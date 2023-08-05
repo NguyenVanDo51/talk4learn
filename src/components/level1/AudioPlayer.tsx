@@ -18,7 +18,7 @@ export const AudioPlayer: FC<IProps> = ({ text }) => {
     }
   }
   const id = uniqueId()
-
+  console.log('isPlaying', isPlaying)
   const waveLength = Math.floor(text?.length / 1.5) || 1
   return (
     <div className="flex gap-3 items-center cursor-pointer" onClick={onClick}>

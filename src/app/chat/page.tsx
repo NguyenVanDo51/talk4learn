@@ -1,5 +1,5 @@
-import { AIChat } from "@/components/template/chat";
+import AIChatPage from "@/components/pages/chat";
 
 export default function Lessons() {
-  return <AIChat />
+  return <AIChatPage />
 }

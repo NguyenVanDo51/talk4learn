@@ -6,6 +6,7 @@ export interface IMessage {
   content: string
   comment?: string
   recorded?: string
+  status?: 'success' | 'error'
 }
 
 export interface IAIModel {
