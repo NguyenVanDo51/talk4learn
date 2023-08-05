@@ -38,7 +38,6 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
         audioChunks.push(e.data)
         if (rec.state == 'inactive') {
           let blob = new Blob(audioChunks, { type: 'audio/mp3' })
-          console.log(blob, URL.createObjectURL(blob))
           setRecording(URL.createObjectURL(blob))
         }
       }
@@ -50,12 +49,11 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
 
   useEffect(() => {
     if (!recognition || !inited) return
-    console.log('rec', rec)
+
     recognition.onresult = (event: { results: SpeechRecognitionResultList }) => {
       if (rec) {
         rec.stop()
       }
-      console.log('event', event.results[0][0].confidence)
       const speechToText = event.results[0][0].transcript
       setIsRecording(false)
       if (speechToText) {
@@ -151,10 +149,8 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
           <div className="ml-4">
             <AppButton
               onClick={handleSendMessage}
-              className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
-            >
-              Send
-              <span>
+              className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-1 flex-shrink-0"
+              icon={
                 <svg
                   className="w-4 h-4 transform rotate-90"
                   fill="none"
@@ -169,7 +165,9 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
                   ></path>
                 </svg>
-              </span>
+              }
+            >
+              Send
             </AppButton>
           </div>
         </>

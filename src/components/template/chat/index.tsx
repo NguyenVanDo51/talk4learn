@@ -16,7 +16,7 @@ import { AppButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
 import { SettingModal } from './components/SettingModal'
 import { LocalStorageKey } from '@/types/constants'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, Spin } from 'antd'
 import { darkTheme } from '@/theme/themeConfig'
 
 export interface IChatSetting {
@@ -37,6 +37,7 @@ const AIChat = () => {
   const [messages, setMessages] = useState<IMessage[]>(initialConversation)
   const [isWaiting, setIsWaiting] = useState(false)
   const [isGettingComment, setIsGettingComment] = useState(false)
+  const [initing, setIniting] = useState(true)
   const [model] = useState<IAIModel>(AIModels[0])
   const [settings, setSettings] = useState<IChatSetting>(settingDefault)
   const [analystedMessages, setAnalystMessages] = useState<IAnalystMessage[]>([])
@@ -58,32 +59,38 @@ const AIChat = () => {
       content: message,
       recorded,
     }
-    setIsWaiting(true)
     const newMesages: IMessage[] = [...messages, messageObject]
     setMessages(newMesages)
   }
 
   const getAnswer = useCallback(() => {
-    const userMessage = messages.pop()
+    const newMesages: IMessage[] = [...messages]
+    const userMessage = newMesages.at(-1)
+    console.log('userMessage', userMessage)
     if (userMessage?.role !== 'user') return
+    if (userMessage.status === 'success') return
 
+    setIsWaiting(true)
     const bodyMessage: SendMessageBody[] = [
       { role: 'system', content: model.getDescription() },
       ...messages,
       userMessage,
     ].map((message) => ({ role: message.role as SendMessageBody['role'], content: message.content }))
 
-    return ChatService.sendMessage(bodyMessage)
+    // newMesages[messages.length - 1].status = 'sent'
+    // setMessages(newMesages)
+
+    ChatService.sendMessage(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const messageResponse = res.data?.choices[0]?.message.content
         speak(messageResponse)
 
-        const newMesages: IMessage[] = [...messages, { ...userMessage, status: 'success' }]
+        newMesages[messages.length - 1].status = 'success'
         newMesages.push({ id: uniqueId(), role: 'assistant', content: messageResponse })
         setMessages(newMesages)
       })
       .catch(() => {
-        const newMesages: IMessage[] = [...messages, { ...userMessage, status: 'error' }]
+        newMesages[messages.length - 1].status = 'error'
         setMessages(newMesages)
       })
       .finally(() => setIsWaiting(false))
@@ -108,18 +115,35 @@ const AIChat = () => {
         },
       ]
 
+      const newAnalystedMessages: IAnalystMessage[] = [
+        ...analystedMessages,
+        { ...message, comment: '', status: 'sent' },
+      ]
+      setAnalystMessages(newAnalystedMessages)
+
       ChatService.checkGrammar(bodyMessage)
         .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
           const comment = res.data?.choices[0]?.message.content
             .replaceAll(`AndyStrongBome's`, 'your')
             .replaceAll('AndyStrongBome', 'You')
-          setAnalystMessages([...analystedMessages, { ...message, comment }])
+          newAnalystedMessages[newAnalystedMessages.length - 1].comment = comment
+          newAnalystedMessages[newAnalystedMessages.length - 1].status = 'success'
+          setAnalystMessages(newAnalystedMessages)
+        })
+        .catch(() => {
+          newAnalystedMessages[newAnalystedMessages.length - 1].status = 'error'
+          setAnalystMessages(newAnalystedMessages)
         })
         .finally(() => setIsGettingComment(false))
     },
     [analystedMessageIds, analystedMessages, isGettingComment, messages]
   )
+
   const newestMessage = messages.at(-1)
+
+  const reSend = () => {
+    getAnswer()
+  }
 
   useEffect(() => {
     const userNewestMessage = messages.at(-2)
@@ -131,11 +155,11 @@ const AIChat = () => {
     ) {
       handleAnalyst(userNewestMessage)
     }
-
-    if (newestMessage?.role === 'user') {
+    if (newestMessage?.status !== 'error') {
       getAnswer()
     }
-  }, [getAnswer, handleAnalyst, isShowAnalyst, messages, newestMessage?.role])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages])
 
   useEffect(() => {
     scrollToBottom('#message-container')
@@ -151,12 +175,13 @@ const AIChat = () => {
 
   useEffect(() => {
     localStorage.setItem(LocalStorageKey.CHAT_SETTING, JSON.stringify(settings))
+    setIniting(false)
   }, [settings])
 
   return (
     <ConfigProvider theme={darkTheme}>
       <div className="flex flex-grow h-screen max-h-[90vh] antialiased shadow">
-        <div className="flex flex-row h-full w-full overflow-x-hidden">
+        <div className="flex flex-row h-full w-full">
           <Conversations />
           <div className="grid grid-cols-12 gap-7 p-6 pb-0 w-full">
             <div className={`col-start-1 ${isShowAnalyst ? 'col-end-8' : 'col-end-12'} flex gap-2 flex-grow flex-col`}>
@@ -175,6 +200,7 @@ const AIChat = () => {
 
               <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl max-h-[95%] bg-gray-100 dark:bg-black p-3">
                 <Message
+                  initing={initing}
                   messages={messages}
                   isSending={isWaiting}
                   isGettingComment={isGettingComment}
@@ -182,12 +208,15 @@ const AIChat = () => {
                   settings={settings}
                   setMessages={setMessages}
                   handleAnalyst={handleAnalyst}
+                  reSend={reSend}
                 />
-                <InputBox sendMessage={sendMessage} isWaiting={isWaiting} settings={settings} />
+                {!initing && <InputBox sendMessage={sendMessage} isWaiting={isWaiting} settings={settings} />}
               </div>
             </div>
 
-            {isShowAnalyst && <AnalyistedMessage messages={analystedMessages} />}
+            {isShowAnalyst && (
+              <AnalyistedMessage isGettingComment={isGettingComment} analystedMessages={analystedMessages} />
+            )}
           </div>
         </div>
       </div>

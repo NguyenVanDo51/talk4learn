@@ -1,10 +1,10 @@
 .message-item {
-  button {
+  .message-actions {
     opacity: 0;
   }
 
   &:hover {
-    button {
+    .message-actions {
       opacity: 1;
     }
   }

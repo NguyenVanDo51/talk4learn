@@ -1,24 +1,39 @@
-import { Collapse } from 'antd'
+import { Collapse, Spin } from 'antd'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { IAnalystMessage } from '..'
+import { AppButton } from '@/components/level1/AppButton'
 
 interface IProps {
-  messages: IAnalystMessage[]
+  isGettingComment: boolean
+  analystedMessages: IAnalystMessage[]
 }
 
-export const AnalyistedMessage: FC<IProps> = ({ messages }) => {
+export const AnalyistedMessage: FC<IProps> = ({ isGettingComment, analystedMessages }) => {
   const [activeKey, setActiveKey] = useState<string[]>([])
 
-  const messagesPasred = useMemo(() => {
-    return messages.filter((m) => m.comment).map((m) => ({ key: m.id, label: m.content, children: m.comment }))
-  }, [messages])
+  const messagesPasred = analystedMessages.map((m) => ({
+    key: m.id,
+    label: (
+      <div className="flex justify-between">
+        <span>{m.content}</span>{' '}
+        {m.status === 'error' && (
+          <AppButton type="link" danger={false} icon={<i className="fa-solid fa-arrows-rotate"></i>} />
+        )}
+        {m.status === 'sent' && <Spin spinning />}
+      </div>
+    ),
+    children: m.comment,
+    type: 'divider',
+  }))
 
   useEffect(() => {
-    const newestMessage = messages.at(-1)
+    if (isGettingComment) return
+    
+    const newestMessage = analystedMessages.at(-1)
     if (newestMessage) {
       setActiveKey([newestMessage.id] as any)
     }
-  }, [messages])
+  }, [isGettingComment, analystedMessages])
 
   return (
     <div className="col-start-8 col-end-13">

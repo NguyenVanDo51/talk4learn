@@ -25,16 +25,19 @@ export const AudioPlayer: ForwardRefExoticComponent<IProps & RefAttributes<unkno
     }
   }
 
-  useImperativeHandle(ref, (): IAudioPlayerRef => ({
-    startSpeak: onClick,
-  }))
+  useImperativeHandle(
+    ref,
+    (): IAudioPlayerRef => ({
+      startSpeak: onClick,
+    })
+  )
 
   const id = uniqueId()
   const waveLength = Math.floor(text?.length / 1.5) || 1
 
   return (
-    <div className="flex gap-3 items-center cursor-pointer" onClick={onClick}>
-      <span className="cursor-pointer inline-block w-2">
+    <div className="flex gap-3 items-center cursor-pointer overflow-hidden" onClick={onClick}>
+      <span className="cursor-pointer inline-block w-3">
         {isPlaying ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
       </span>
 
