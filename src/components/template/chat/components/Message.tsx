@@ -3,9 +3,9 @@ import { scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
 import { IAIModel, IMessage } from '@/types/chat'
 import { Avatar, Spin } from 'antd'
-import { FC, useEffect, useState } from 'react'
+import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import { IChatSetting } from '..'
-import { AudioPlayer } from '@/components/level1/AudioPlayer'
+import { AudioPlayer, IAudioPlayerRef } from '@/components/level1/AudioPlayer'
 
 interface IProps {
   isSending: boolean
@@ -72,6 +72,7 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings, deleteMes
   const contentArray = content.split(' ')
   const [text, setText] = useState(contentArray[0])
   const [type, setType] = useState(settings.type)
+  const audioRef: MutableRefObject<IAudioPlayerRef | undefined> = useRef()
 
   useEffect(() => {
     let index = 2
@@ -97,18 +98,27 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings, deleteMes
           <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
             {model.name.at(0)}
           </Avatar>
-          <div className="text-sm bg-white dark:bg-black dark:bg-slate-700 py-2 px-4 shadow rounded-full">
-            {type === 'voice' ? <AudioPlayer text={content} /> : <div>{text}</div>}
+          <div className="text-sm bg-white dark:bg-slate-700 py-2 px-4 shadow rounded-full">
+            {type === 'voice' ? <AudioPlayer ref={audioRef} text={content} /> : <div>{text}</div>}
           </div>
-          <div className="flex gap-2">
+
+          <div className="flex items-center gap-2">
+            {type === 'text' && (
+              <AppButton
+                onClick={() => speak(content)}
+                size="small"
+                type="link"
+                className="ml-2"
+                icon={<i className="fa-solid fa-volume-low"></i>}
+              />
+            )}
+
             <AppButton
-              onClick={() => speak(content)}
-              size="small"
+              onClick={() => setType(type === 'text' ? 'voice' : 'text')}
               type="link"
-              className="ml-2"
-              icon={<i className="fa-solid fa-volume-low"></i>}
+              danger={false}
+              icon={<i className="fa-solid fa-arrows-rotate"></i>}
             />
-            <AppDeleteButton onConfirm={deleteMessage} type="link" danger />
           </div>
         </div>
       </div>
@@ -139,6 +149,7 @@ const RightMessage: FC<RightMessageProps> = ({ message, reStart, deleteMessage, 
             description={'Restart from this message?'}
             onConfirm={reStart}
             type="link"
+            danger={false}
             icon={<i className="fa-solid fa-rotate-left"></i>}
           />
           {!message.comment && (

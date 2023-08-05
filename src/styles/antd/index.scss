@@ -1,9 +1,10 @@
-i[class*="fa-"] {
-  &:not([class*="text-"]) {
-    color: var(--icon-color);
-  }
-}
+// i[class*="fa-"] {
+//   &:not([class*="text-"]) {
+//     color: var(--icon-color);
+//   }
+// }
 
 @import './button';
 @import './collapse';
 @import './input';
+@import './data_viewer';

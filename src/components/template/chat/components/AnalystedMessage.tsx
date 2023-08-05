@@ -21,7 +21,7 @@ export const AnalyistedMessage: FC<IProps> = ({ messages }) => {
   }, [messages])
 
   return (
-    <div className="w-[20%] min-w-[20%]">
+    <div className="col-start-8 col-end-13">
       <div className="grid gap-3 w-full">
         <div className="font-bold mb-3">Comment</div>
         {messagesPasred.length > 0 ? (

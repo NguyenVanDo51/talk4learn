@@ -15,7 +15,6 @@ import { AnalyistedMessage } from './components/AnalystedMessage'
 import { AppButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
 import { SettingModal } from './components/SettingModal'
-// import { getData } from '@/helps/storage'
 import { LocalStorageKey } from '@/types/constants'
 import { ConfigProvider } from 'antd'
 import { darkTheme } from '@/theme/themeConfig'
@@ -96,7 +95,7 @@ const AIChat = () => {
 
   const handleAnalyst = useCallback(
     (message: IMessage) => {
-      if (isGettingComment) return
+      if (isGettingComment || analystedMessageIds.includes(message.id)) return
 
       setIsGettingComment(true)
       const messageIndex = messages.findIndex((m) => m.id === message.id)
@@ -118,17 +117,15 @@ const AIChat = () => {
         })
         .finally(() => setIsGettingComment(false))
     },
-    [analystedMessages, isGettingComment, messages]
+    [analystedMessageIds, analystedMessages, isGettingComment, messages]
   )
+  const newestMessage = messages.at(-1)
 
   useEffect(() => {
-    const newestMessage = messages.at(-1)
     const userNewestMessage = messages.at(-2)
-
     if (
       userNewestMessage &&
       isShowAnalyst &&
-      !analystedMessageIds.includes(userNewestMessage.id) &&
       userNewestMessage?.role === 'user' &&
       userNewestMessage.status === 'success'
     ) {
@@ -138,12 +135,12 @@ const AIChat = () => {
     if (newestMessage?.role === 'user') {
       getAnswer()
     }
-  }, [analystedMessageIds, getAnswer, handleAnalyst, isShowAnalyst, messages])
+  }, [getAnswer, handleAnalyst, isShowAnalyst, messages, newestMessage?.role])
 
   useEffect(() => {
     scrollToBottom('#message-container')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages.at(-1)])
+  }, [newestMessage])
 
   useEffect(() => {
     const value = localStorage.getItem(LocalStorageKey.CHAT_SETTING)
@@ -161,8 +158,8 @@ const AIChat = () => {
       <div className="flex flex-grow h-screen max-h-[90vh] antialiased shadow">
         <div className="flex flex-row h-full w-full overflow-x-hidden">
           <Conversations />
-          <div className="flex gap-7 flex-auto p-6 pb-0">
-            <div className="flex gap-2 flex-grow flex-col">
+          <div className="grid grid-cols-12 gap-7 p-6 pb-0 w-full">
+            <div className={`col-start-1 ${isShowAnalyst ? 'col-end-8' : 'col-end-12'} flex gap-2 flex-grow flex-col`}>
               <div className="flex justify-between items-center">
                 <span className="font-medium text-lg">Chat with {model.name}</span>
 
