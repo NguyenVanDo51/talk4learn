@@ -5,9 +5,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { MainHeader } from '@/components/layout/Header'
 import { ReduxProvider } from '@/redux/provider'
-import { InitialApp } from '@/components/layout/InitialApp'
 import StyledComponentsRegistry from '../../lib/AntdRegistry'
-import { ConfigProvider } from 'antd'
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </StyledComponentsRegistry>
         </ReduxProvider>
       </body>
+      <Analytics />
     </html>
   )
 }
