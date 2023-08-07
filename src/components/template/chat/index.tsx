@@ -18,6 +18,7 @@ import { SettingModal } from './components/SettingModal'
 import { LocalStorageKey } from '@/types/constants'
 import { ConfigProvider, Spin } from 'antd'
 import { darkTheme } from '@/theme/themeConfig'
+import { Header } from './components/Header'
 
 export interface IChatSetting {
   type: 'text' | 'voice'
@@ -180,43 +181,43 @@ const AIChat = () => {
 
   return (
     <ConfigProvider theme={darkTheme}>
-      <div className="flex flex-grow h-screen max-h-[90vh] antialiased shadow">
+      <div className="flex flex-grow h-screen antialiased shadow">
         <div className="flex flex-row h-full w-full">
           <Conversations />
-          <div className="grid grid-cols-12 gap-7 p-6 pb-0 w-full">
-            <div className={`col-start-1 ${isShowAnalyst ? 'col-end-8' : 'col-end-12'} flex gap-2 flex-grow flex-col`}>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-lg">Chat with {model.name}</span>
+          <div className="flex flex-grow justify-center">
+            <div className="container grid grid-cols-12 gap-7 w-full">
+              <div className={`col-start-1 ${isShowAnalyst ? 'col-end-8' : 'col-end-13'} flex flex-grow flex-col`}>
+                <Header
+                  model={model}
+                  settings={settings}
+                  isShowAnalyst={isShowAnalyst}
+                  setIsShowComment={setIsShowComment}
+                  setSettings={setSettings}
+                />
 
-                <div className="flex gap-2">
-                  <SettingModal settings={settings} setSettings={setSettings} />
-                  <AppButton onClick={() => setIsShowComment(!isShowAnalyst)} size="small" type="text">
-                    <i
-                      className={`fa-solid fa-outdent text-xl ${isShowAnalyst ? 'text-primary' : 'text-gray-500'}`}
-                    ></i>
-                  </AppButton>
+                <div
+                  className="grid h-full bg-gray-100 dark:bg-black p-2 md:p-3 pb-4"
+                  style={{ gridTemplateRows: 'auto 52px' }}
+                >
+                  <Message
+                    initing={initing}
+                    messages={messages}
+                    isSending={isWaiting}
+                    isGettingComment={isGettingComment}
+                    model={model}
+                    settings={settings}
+                    setMessages={setMessages}
+                    handleAnalyst={handleAnalyst}
+                    reSend={reSend}
+                  />
+                  {!initing && <InputBox sendMessage={sendMessage} isWaiting={isWaiting} settings={settings} />}
                 </div>
               </div>
 
-              <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl max-h-[95%] bg-gray-100 dark:bg-black p-3">
-                <Message
-                  initing={initing}
-                  messages={messages}
-                  isSending={isWaiting}
-                  isGettingComment={isGettingComment}
-                  model={model}
-                  settings={settings}
-                  setMessages={setMessages}
-                  handleAnalyst={handleAnalyst}
-                  reSend={reSend}
-                />
-                {!initing && <InputBox sendMessage={sendMessage} isWaiting={isWaiting} settings={settings} />}
-              </div>
+              {isShowAnalyst && (
+                <AnalyistedMessage isGettingComment={isGettingComment} analystedMessages={analystedMessages} />
+              )}
             </div>
-
-            {isShowAnalyst && (
-              <AnalyistedMessage isGettingComment={isGettingComment} analystedMessages={analystedMessages} />
-            )}
           </div>
         </div>
       </div>

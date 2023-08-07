@@ -27,7 +27,7 @@ export const Message: FC<IProps> = (props) => {
   }
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden max-h-[75vh] mb-4" id="message-container">
+    <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden mb-2 md:mb-4" id="message-container">
       <div className="flex flex-col h-full">
         <div className="grid grid-cols-12 gap-y-2 pb-4">
           {initing ? (
@@ -83,8 +83,8 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings }) => {
 
   return (
     <>
-      <div className="col-start-1 col-end-10 p-3 rounded-lg message-item" id={message.id}>
-        <div className="flex gap-3 flex-row items-center">
+      <div className="col-start-1 col-end-13 p-1 md:p-3 rounded-lg message-item" id={message.id}>
+        <div className="flex gap-2 md:gap-3 flex-row items-center">
           <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
             {model.name.at(0)}
           </Avatar>

@@ -1,9 +1,16 @@
+import { useAppSelector } from '@/hooks/redux'
 import { AIModels } from '@/types/chat'
 import { Avatar } from 'antd'
 
 export const Conversations = () => {
+  const isOpenMenu = useAppSelector((state) => state.app.isOpenMenu)
+
   return (
-    <div className="flex flex-col py-8 pl-6 pr-2 w-40 flex-shrink-0 h-full">
+    <div
+      className={`${
+        isOpenMenu ? 'flex fixed left-0 top-0' : 'hidden'
+      } md:flex flex-col py-8 pl-6 pr-2 w-40 flex-shrink-0 h-full`}
+    >
       <div className="flex flex-col">
         <div className="flex flex-row items-center justify-between text-xs">
           <span className="font-bold">Conversations</span>

@@ -44,7 +44,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
       setInited(true)
     })
 
-    return () => rec.stop()
+    return () => rec?.stop()
   }, [])
 
   useEffect(() => {
@@ -130,15 +130,37 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
               placeholder={isRecording ? 'Recording your voice ...' : 'Input here'}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              className="p-1 pl-4"
               type="text"
               disabled={isRecording}
               suffix={
-                <div className="flex gap-3">
+                <div className="flex items-center gap-4">
                   <i
                     onClick={handleRecord}
                     className={`fa-solid fa-microphone cursor-pointer ${isRecording ? 'text-purple-500' : ''}`}
                   ></i>
                   {changeIcon}
+
+                  <AppButton
+                    onClick={handleSendMessage}
+                    className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white"
+                    icon={
+                      <svg
+                        className="w-4 h-4 transform rotate-90"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                        ></path>
+                      </svg>
+                    }
+                  />
                 </div>
               }
               onKeyDown={(e) => {
@@ -146,30 +168,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
               }}
             />
           </div>
-          <div className="ml-4">
-            <AppButton
-              onClick={handleSendMessage}
-              className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-1 flex-shrink-0"
-              icon={
-                <svg
-                  className="w-4 h-4 transform rotate-90"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                  ></path>
-                </svg>
-              }
-            >
-              Send
-            </AppButton>
-          </div>
+          <div className="ml-4"></div>
         </>
       )}
     </div>
