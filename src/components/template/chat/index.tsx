@@ -5,20 +5,19 @@ import { Conversations } from './components/Conversation'
 import { InputBox } from './components/InputBox'
 import { Message } from './components/Message'
 import { AIModels, IAIModel, IMessage, initialConversation } from '@/types/chat'
-import { SendMessageBody } from '@/service/chat/type'
+import { SendMessageBody } from '@/service/chat/request'
 import { ChatService } from '@/service/chat/index.service'
-import { OpenAIMessgaeResponse } from '@/service/chat/openai'
+import { OpenAIMessgaeResponse } from '@/service/chat/response'
 import { AxiosResponse } from 'axios'
 import { uniqueId } from 'lodash'
 import { speak } from '@/helps/speech'
 import { AnalyistedMessage } from './components/AnalystedMessage'
-import { AppButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
-import { SettingModal } from './components/SettingModal'
 import { LocalStorageKey } from '@/types/constants'
-import { ConfigProvider, Spin } from 'antd'
+import { ConfigProvider } from 'antd'
 import { darkTheme } from '@/theme/themeConfig'
 import { Header } from './components/Header'
+import { useSpeech } from '@/hooks/helpers/useSpeech'
 
 export interface IChatSetting {
   type: 'text' | 'voice'
@@ -43,6 +42,8 @@ const AIChat = () => {
   const [settings, setSettings] = useState<IChatSetting>(settingDefault)
   const [analystedMessages, setAnalystMessages] = useState<IAnalystMessage[]>([])
   const { isShowAnalyst } = settings
+  
+  useSpeech()
 
   const analystedMessageIds = useMemo(() => {
     return analystedMessages.map((m) => m.id)
@@ -67,7 +68,6 @@ const AIChat = () => {
   const getAnswer = useCallback(() => {
     const newMesages: IMessage[] = [...messages]
     const userMessage = newMesages.at(-1)
-    console.log('userMessage', userMessage)
     if (userMessage?.role !== 'user') return
     if (userMessage.status === 'success') return
 
@@ -182,11 +182,15 @@ const AIChat = () => {
   return (
     <ConfigProvider theme={darkTheme}>
       <div className="flex flex-grow h-screen antialiased shadow">
-        <div className="flex flex-row h-full w-full">
+        <div className="flex flex-row h-full w-full gap-4">
           <Conversations />
           <div className="flex flex-grow justify-center">
-            <div className="container grid grid-cols-12 gap-7 w-full">
-              <div className={`col-start-1 ${isShowAnalyst ? 'col-end-8' : 'col-end-13'} flex flex-grow flex-col`}>
+            <div className="container grid grid-cols-12 gap-4 w-full">
+              <div
+                className={`col-start-1 col-end-13 ${
+                  isShowAnalyst ? 'lg:col-end-8' : 'lg:col-end-13'
+                } flex flex-grow flex-col`}
+              >
                 <Header
                   model={model}
                   settings={settings}
@@ -195,10 +199,7 @@ const AIChat = () => {
                   setSettings={setSettings}
                 />
 
-                <div
-                  className="grid h-full bg-gray-100 dark:bg-black p-2 md:p-3 pb-4"
-                  style={{ gridTemplateRows: 'auto 52px' }}
-                >
+                <div className="flex flex-col h-full bg-gray-100 dark:bg-black p-2 lg:p-3">
                   <Message
                     initing={initing}
                     messages={messages}
@@ -214,8 +215,13 @@ const AIChat = () => {
                 </div>
               </div>
 
-              {isShowAnalyst && (
-                <AnalyistedMessage isGettingComment={isGettingComment} analystedMessages={analystedMessages} />
+              {!initing && (
+                <AnalyistedMessage
+                  isShowAnalyst={isShowAnalyst}
+                  isGettingComment={isGettingComment}
+                  analystedMessages={analystedMessages}
+                  setIsShowComment={setIsShowComment}
+                />
               )}
             </div>
           </div>

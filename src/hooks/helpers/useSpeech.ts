@@ -1,47 +1,44 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../redux'
+import { IAppSlice, setTextSpeaking } from '@/redux/slices/appSlice'
 
-let audio: any = null
-if (typeof SpeechSynthesisUtterance !== 'undefined') audio = new SpeechSynthesisUtterance()
+let audio: null | SpeechSynthesisUtterance = null
+if (typeof SpeechSynthesisUtterance !== 'undefined' && !audio) audio = new SpeechSynthesisUtterance()
 
 export const useSpeech = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
+  // nếu có nhiều thằng gọi, đây chỉ là status chung, ko phân biệt đc thằng nào đang đc speak
+  const dispatch = useAppDispatch()
+  const textSpeaking = useAppSelector((state) => state.app.textSpeaking)
 
-  useEffect(() => {
-    audio.onstart = () => {
-      setIsPlaying(true)
-    }
-    audio.onend = () => {
-      setIsPlaying(false)
-    }
-  }, [])
-
-  const speak = (phrase: string, isVocabulary: boolean = true) => {
-    audio.text = isVocabulary
-      ? phrase
-          .replace(/(\()(.*)(\))/, '')
-          .replace(/(\[)(.*)(\])/, '')
-          .replaceAll('  ', '')
-      : phrase
-    window.speechSynthesis.speak(audio)
-  }
-
-  const startSpeak = useCallback(
-    (phrase: string, isVocabulary: boolean = true) => {
-      if (isPlaying || !audio) return
-      speak(phrase, isVocabulary)
+  const setTextSpeakingState = useCallback(
+    (value: IAppSlice['textSpeaking']) => {
+      dispatch(setTextSpeaking(value))
     },
-    [isPlaying]
+    [dispatch]
   )
 
-  const stopSpeak = useCallback(() => {
-    window.speechSynthesis.cancel()
-    setIsPlaying(false)
+  const speak = useCallback((phrase: string) => {
+    audio!.text = phrase
+    window.speechSynthesis.speak(audio!)
   }, [])
 
-  const reStart = (phrase: string, isVocabulary: boolean = true) => {
-    stopSpeak()
-    speak(phrase, isVocabulary)
-  }
+  useEffect(() => {
+    if (!audio) return
 
-  return { isPlaying, startSpeak, stopSpeak, reStart }
+    audio.onend = () => {
+      setTextSpeakingState(null)
+    }
+    audio.onerror = () => {
+      setTextSpeakingState(null)
+    }
+  }, [setTextSpeakingState])
+
+  useEffect(() => {
+    if (!textSpeaking) return
+
+    window.speechSynthesis.cancel()
+    speak(atob(textSpeaking))
+  }, [textSpeaking, speak])
+
+  return {}
 }

@@ -2,7 +2,7 @@ import { AppButton, AppDeleteButton } from '@/components/level1/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
 import { IAIModel, IMessage } from '@/types/chat'
-import { Avatar, Spin, Tooltip } from 'antd'
+import { Avatar, Spin } from 'antd'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import { IChatSetting } from '..'
 import { AudioPlayer, IAudioPlayerRef } from '@/components/level1/AudioPlayer'
@@ -21,13 +21,13 @@ interface IProps {
 
 export const Message: FC<IProps> = (props) => {
   const { messages, initing, isSending, setMessages } = props
-
+  console.log(messages)
   const reStart = (index: number) => {
     setMessages(messages.slice(0, index))
   }
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden mb-2 md:mb-4" id="message-container">
+    <div className="flex flex-1 flex-col h-full overflow-y-auto overflow-x-hidden mb-2 lg:mb-4" id="message-container">
       <div className="flex flex-col h-full">
         <div className="grid grid-cols-12 gap-y-2 pb-4">
           {initing ? (
@@ -35,7 +35,7 @@ export const Message: FC<IProps> = (props) => {
           ) : (
             messages.map((message, index) =>
               message.role === 'assistant' ? (
-                <LeftMessage {...props} message={message} key={`msg_${index}`} />
+                <LeftMessage {...props} message={message} key={message.id || `msg_${index}`} />
               ) : (
                 <RightMessage key={`msg_${index}`} {...props} message={message} reStart={() => reStart(index)} />
               )
@@ -62,7 +62,6 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings }) => {
   const contentArray = content.split(' ')
   const [text, setText] = useState(contentArray[0])
   const [type, setType] = useState(settings.type)
-  const audioRef: MutableRefObject<IAudioPlayerRef | undefined> = useRef()
 
   useEffect(() => {
     let index = 2
@@ -83,13 +82,13 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings }) => {
 
   return (
     <>
-      <div className="col-start-1 col-end-13 p-1 md:p-3 rounded-lg message-item" id={message.id}>
-        <div className="flex gap-2 md:gap-3 flex-row items-center">
+      <div className="col-start-1 col-end-13 p-1 lg:p-3 rounded-lg message-item" id={message.id}>
+        <div className="flex gap-2 lg:gap-3 flex-row items-center">
           <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
             {model.name.at(0)}
           </Avatar>
-          <div className="text-sm bg-white dark:bg-slate-700 py-3 px-5 shadow rounded-3xl max-w-full overflow-hidden">
-            {type === 'voice' ? <AudioPlayer ref={audioRef} text={content} /> : <div>{text}</div>}
+          <div className="text-sm bg-white dark:bg-slate-700 py-1 px-5 shadow rounded-3xl max-w-full overflow-hidden">
+            {type === 'voice' ? <AudioPlayer text={content} /> : <div className="py-1">{text}</div>}
           </div>
 
           <div className="message-actions flex items-center gap-2">

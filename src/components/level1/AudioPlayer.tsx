@@ -1,38 +1,39 @@
-import { useSpeech } from '@/hooks/helpers/useSpeech'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { IAppSlice, setTextSpeaking } from '@/redux/slices/appSlice'
 import { uniqueId } from 'lodash'
-import { ForwardRefExoticComponent, RefAttributes, forwardRef, useImperativeHandle } from 'react'
+import { useCallback, useMemo } from 'react'
 
 interface IProps {
   text: string
-  autoPlay?: boolean
 }
 
 export interface IAudioPlayerRef {
   startSpeak: () => void
 }
 
-export const AudioPlayer: ForwardRefExoticComponent<IProps & RefAttributes<unknown>> = forwardRef(function AudioPlayer(
-  { text }: IProps,
-  ref: any
-) {
-  const { isPlaying, startSpeak, stopSpeak } = useSpeech()
+export const AudioPlayer = ({ text }: IProps) => {
+  const dispatch = useAppDispatch()
+  const textSpeaking = useAppSelector((state) => state.app.textSpeaking)
+
+  const textBase64 = useMemo(() => btoa(text), [text])
+  const isPlaying = useMemo(() => textBase64 === textSpeaking, [textSpeaking, textBase64])
+
+  const setIsGlobalPlayingState = useCallback(
+    (value: IAppSlice['textSpeaking']) => {
+      dispatch(setTextSpeaking(value))
+    },
+    [dispatch]
+  )
 
   const onClick = () => {
     if (isPlaying) {
-      stopSpeak()
+      setIsGlobalPlayingState(null)
     } else {
-      startSpeak(text, false)
+      setIsGlobalPlayingState(textBase64)
     }
   }
 
-  useImperativeHandle(
-    ref,
-    (): IAudioPlayerRef => ({
-      startSpeak: onClick,
-    })
-  )
-
-  const id = uniqueId()
+  const id = useMemo(() => uniqueId(), [])
   const waveLength = Math.floor(text?.length / 1.5) || 1
 
   return (
@@ -43,9 +44,9 @@ export const AudioPlayer: ForwardRefExoticComponent<IProps & RefAttributes<unkno
 
       <div className={`sound-wave ${isPlaying ? 'playing' : ''}`}>
         {new Array(waveLength >= 50 ? 50 : waveLength).fill(null).map((_, index) => (
-          <span key={`${id}_${index}`} className="sound-wave-bar"></span>
+          <span key={`node_${id}_${index}`} className="sound-wave-bar"></span>
         ))}
       </div>
     </div>
   )
-})
+}

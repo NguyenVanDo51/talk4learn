@@ -109,9 +109,10 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
   )
 
   return (
-    <div className="flex flex-row items-center h-16 rounded-xl w-full p-3">
+    <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-3">
       {type === 'voice' ? (
-        <div className="flex gap-3 justify-center flex-grow items-center">
+        <div className="pr-4 flex gap-4 justify-center flex-grow items-center">
+          {changeIcon}
           <Button
             onClick={handleRecord}
             className={`w-20 h-20 rounded-full flex items-center justify-center  ${
@@ -120,10 +121,10 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
           >
             <i className={`fa-solid fa-microphone text-3xl cursor-pointer ${isRecording ? 'text-white' : ''}`}></i>
           </Button>
-          {changeIcon}
         </div>
       ) : (
         <>
+          {changeIcon}
           <div className="flex-grow">
             <AppInput
               ref={messageRef as any}
@@ -134,13 +135,11 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
               type="text"
               disabled={isRecording}
               suffix={
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 lg:gap-5">
                   <i
                     onClick={handleRecord}
                     className={`fa-solid fa-microphone cursor-pointer ${isRecording ? 'text-purple-500' : ''}`}
                   ></i>
-                  {changeIcon}
-
                   <AppButton
                     onClick={handleSendMessage}
                     className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white"
@@ -168,7 +167,6 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
               }}
             />
           </div>
-          <div className="ml-4"></div>
         </>
       )}
     </div>

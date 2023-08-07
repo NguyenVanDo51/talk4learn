@@ -15,7 +15,7 @@ export interface IAIModel {
   age: number
   job: string
   interest: string[]
-  avatar?: string
+  avatar?: string | null
   getDescription: () => string
 }
 
@@ -35,7 +35,7 @@ export const AIModels: IAIModel[] = [
     age: 18,
     job: 'student',
     interest: ['music', 'shopping', 'game'],
-    avatar: '',
+    avatar: null,
     getDescription() {
       return getModelTask(this)
     },
@@ -48,4 +48,27 @@ export const initialConversation: IMessage[] = [
     role: 'assistant',
     content: 'Hello! How are you today?',
   },
+  {
+    id: '8',
+    role: 'user',
+    content: 'hello',
+    status: 'success',
+  },
+  {
+    id: '11',
+    role: 'assistant',
+    content: 'Hi there! How are you doing today?',
+  },
+  {
+    id: '20',
+    role: 'user',
+    content: 'a',
+    status: 'success',
+  },
+  {
+    id: '25',
+    role: 'assistant',
+    content: "I see. Is there anything specific you'd like to talk about or any questions you have?",
+  },
+  
 ]

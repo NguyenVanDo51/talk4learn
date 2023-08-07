@@ -1,15 +1,24 @@
-import { Collapse, Spin } from 'antd'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { Collapse, Drawer, Spin } from 'antd'
+import { FC, useEffect, useState } from 'react'
 import { IAnalystMessage } from '..'
 import { AppButton } from '@/components/level1/AppButton'
+import { useDimention } from '@/hooks/helpers/useDimention'
 
 interface IProps {
   isGettingComment: boolean
+  isShowAnalyst: boolean
   analystedMessages: IAnalystMessage[]
+  setIsShowComment: (isShowAnalyst: boolean) => void
 }
 
-export const AnalyistedMessage: FC<IProps> = ({ isGettingComment, analystedMessages }) => {
+export const AnalyistedMessage: FC<IProps> = ({
+  isGettingComment,
+  isShowAnalyst,
+  analystedMessages,
+  setIsShowComment,
+}) => {
   const [activeKey, setActiveKey] = useState<string[]>([])
+  const { isDesktop } = useDimention()
 
   const messagesPasred = analystedMessages.map((m) => ({
     key: m.id,
@@ -28,29 +37,47 @@ export const AnalyistedMessage: FC<IProps> = ({ isGettingComment, analystedMessa
 
   useEffect(() => {
     if (isGettingComment) return
-    
+
     const newestMessage = analystedMessages.at(-1)
     if (newestMessage) {
       setActiveKey([newestMessage.id] as any)
     }
   }, [isGettingComment, analystedMessages])
 
-  return (
-    <div className="col-start-8 col-end-13">
-      <div className="grid gap-3 w-full">
-        <div className="font-bold mb-3">Comment</div>
-        {messagesPasred.length > 0 ? (
-          <Collapse
-            size="small"
-            items={messagesPasred}
-            className="h-fit"
-            activeKey={activeKey}
-            onChange={(key) => setActiveKey(key as string[])}
-          ></Collapse>
-        ) : (
-          <span className="text-gray-500">Empty</span>
-        )}
+  const renderContent = () =>
+    messagesPasred.length > 0 ? (
+      <Collapse
+        size="small"
+        items={messagesPasred}
+        className="h-fit"
+        activeKey={activeKey}
+        onChange={(key) => setActiveKey(key as string[])}
+      ></Collapse>
+    ) : (
+      <span className="text-gray-500">Empty</span>
+    )
+
+  if (isDesktop && isShowAnalyst) {
+    return (
+      <div className="col-start-8 col-end-13">
+        <div className="grid gap-3 w-full">
+          <div className="font-bold flex justify-center items-center h-[54px]">Comment</div>
+          {renderContent()}
+        </div>
       </div>
-    </div>
+    )
+  }
+
+  return (
+    <Drawer
+      placement="right"
+      open={isShowAnalyst}
+      onClose={() => setIsShowComment(false)}
+      headerStyle={{ height: 56 }}
+      closeIcon={<i className="fa-solid fa-xmark text-xl text-white"></i>}
+      title={<div className="flex justify-center pr-4">Comments</div>}
+    >
+      {renderContent()}
+    </Drawer>
   )
 }

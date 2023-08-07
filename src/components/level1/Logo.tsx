@@ -1,0 +1,1 @@
+export const Logo = () => <span className="font-bold">LamdaAI</span>

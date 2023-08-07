@@ -1,4 +1,4 @@
-import { SendMessageBody } from './type'
+import { SendMessageBody } from './request'
 import { httpClient } from '../httpClient'
 
 export class ChatService {
