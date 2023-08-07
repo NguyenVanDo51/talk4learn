@@ -128,7 +128,7 @@ const RightMessage: FC<RightMessageProps> = ({ message, reStart, reSend, handleA
         <Avatar size={'default'} className="min-w-[32px] bg-green-500">
           U
         </Avatar>
-        <div className="relative text-sm bg-indigo-100 dark:bg-slate-700 py-2 px-4 shadow rounded-full">
+        <div className="relative text-sm bg-indigo-100 dark:bg-slate-700 py-2 px-4 shadow rounded-3xl">
           <div>{message.content}</div>
         </div>
 
