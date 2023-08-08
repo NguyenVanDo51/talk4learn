@@ -3,7 +3,7 @@ import { scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
 import { IAIModel, IMessage } from '@/types/chat'
 import { Avatar, Spin } from 'antd'
-import { FC, useEffect, useState } from 'react'
+import { FC, memo, useEffect, useState } from 'react'
 import { IChatSetting } from '..'
 import { AudioPlayer } from '@/components/level1/AudioPlayer'
 
@@ -23,13 +23,15 @@ export const Message: FC<IProps> = (props) => {
   const reStart = (index: number) => {
     setMessages(messages.slice(0, index))
   }
-  console.log('settings.inputType', settings.inputType, settings.inputType !== 'voice' ? '156px' : '120px')
+
+  const inputHeight = settings.inputType === 'voice' ? 156 : 127
+
   return (
     <div
-      className="flex flex-1 flex-col h-full overflow-y-auto overflow-x-hidden lg:mb-4 p-2 lg:p-3"
+      className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden p-2 lg:p-3"
       id="message-container"
       style={{
-        height: `calc(100vh - ${settings.inputType !== 'voice' ? '156px' : '120px'}) !important`,
+        height: `calc(100vh - ${inputHeight}px)`,
       }}
     >
       <div className="flex flex-col h-full">
@@ -61,7 +63,7 @@ interface LeftMessageProps extends IProps {
   message: IMessage
 }
 
-const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings }) => {
+const LeftMessage = memo(function LeftMessage({ message, model, settings }: LeftMessageProps) {
   const { content } = message
   const contentArray = content.split(' ')
   const [text, setText] = useState(contentArray[0])
@@ -86,13 +88,13 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings }) => {
 
   return (
     <>
-      <div className="col-start-1 col-end-13 p-1 lg:p-3 rounded-lg message-item" id={message.id}>
+      <div className="col-start-1 col-end-12 p-1 rounded-lg message-item" id={message.id}>
         <div className="flex gap-2 lg:gap-3 flex-row items-center">
           <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
             {model.name.at(0)}
           </Avatar>
 
-          <div className="text-sm bg-white dark:bg-slate-700 py-1 px-5 shadow rounded-3xl max-w-full overflow-hidden">
+          <div className="text-sm bg-white dark:bg-slate-700 py-1 px-4 shadow rounded-3xl max-w-full overflow-hidden">
             {type === 'voice' ? <AudioPlayer text={content} /> : <div className="py-1">{text}</div>}
           </div>
 
@@ -118,21 +120,21 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings }) => {
       </div>
     </>
   )
-}
+})
 
 interface RightMessageProps extends IProps {
   message: IMessage
   reStart: () => void
 }
 
-const RightMessage: FC<RightMessageProps> = ({ message, reStart, reSend }) => {
+const RightMessage = memo(function RightMessage({ message, reStart, reSend }: RightMessageProps) {
   return (
-    <div className="col-start-4 col-end-13 p-3 rounded-lg message-item" id={message.id}>
-      <div className="flex items-center gap-3 justify-start flex-row-reverse">
+    <div className="col-start-2 col-end-13 p-1 rounded-lg  message-item" id={message.id}>
+      <div className="flex items-center gap-3 justify-start  flex-row-reverse">
         <Avatar size={'default'} className="min-w-[32px] bg-green-500">
           U
         </Avatar>
-        <div className="relative text-sm bg-indigo-100 dark:bg-slate-700 py-2 px-4 shadow rounded-3xl">
+        <div className="relative text-sm bg-indigo-100 dark:bg-dark-primary py-2 px-4 shadow rounded-3xl">
           <div>{message.content}</div>
         </div>
 
@@ -165,4 +167,4 @@ const RightMessage: FC<RightMessageProps> = ({ message, reStart, reSend }) => {
       </div>
     </div>
   )
-}
+})

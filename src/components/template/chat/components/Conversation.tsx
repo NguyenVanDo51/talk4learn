@@ -11,7 +11,7 @@ const ConversationList = () => {
       {AIModels.map((model) => (
         <button
           key={model.id}
-          className="flex flex-row items-center hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl p-2"
+          className="flex flex-row items-center  hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-700 rounded-xl p-2"
         >
           <Avatar>{model.name.at(0)}</Avatar>
           <div className="ml-2 text-sm font-semibold">{model.name}</div>

@@ -24,4 +24,8 @@ button.ant-btn.ant-btn-lg {
       background-color: #64748b;
     }
   }
+
+  .ant-btn-text.ant-btn-dangerous:not(:disabled):not(.ant-btn-disabled):hover {
+    background-color: transparent;
+  }
 }

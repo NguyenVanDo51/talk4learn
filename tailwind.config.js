@@ -12,6 +12,7 @@ module.exports = {
         primary: '#4096ff',
         muted: '#a1a1a1',
         'dark-main': '#1b1b1d',
+        'dark-primary': '#6366f1'
       },
       spacing: {
         inline: '0.5rem',

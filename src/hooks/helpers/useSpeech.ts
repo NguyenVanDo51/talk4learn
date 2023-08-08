@@ -34,9 +34,11 @@ export const useSpeech = () => {
   }, [setTextSpeakingState])
 
   useEffect(() => {
-    if (!textSpeaking) return
-
     window.speechSynthesis.cancel()
+    if (!textSpeaking) {
+      return
+    }
+
     speak(atob(textSpeaking))
   }, [textSpeaking, speak])
 

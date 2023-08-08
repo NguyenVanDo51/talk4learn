@@ -1,8 +1,9 @@
+import { VIP_KEY } from '@/types/constants/openapikey'
 import { NextResponse } from 'next/server'
 const { Configuration, OpenAIApi } = require('openai')
 
 const configuration = new Configuration({
-  apiKey: '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',
+  apiKey: VIP_KEY[0],
 })
 const openai = new OpenAIApi(configuration)
 

@@ -24,7 +24,6 @@ if (typeof window !== 'undefined') {
 export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMessage }) => {
   const [message, setMessage] = useState('')
   const [isRecording, setIsRecording] = useState(false)
-  const [transcript, setTranscript] = useState<string>()
   const [recording, setRecording] = useState<string>()
   const [inited, setInited] = useState(false)
 
@@ -57,22 +56,14 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
       const speechToText = event.results[0][0].transcript
       setIsRecording(false)
       if (speechToText) {
-        setTranscript(speechToText)
+        setMessage(speechToText)
       }
     }
 
     return () => {
       recognition.stop()
     }
-  }, [inited, sendMessage])
-
-  useEffect(() => {
-    if (transcript && recording) {
-      sendMessage(transcript, recording)
-      setTranscript('')
-      setRecording('')
-    }
-  }, [recording, sendMessage, transcript])
+  }, [inited])
 
   const handleRecord = () => {
     if (isRecording) {
@@ -90,9 +81,9 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
 
     messageRef.current?.focus()
     if (!message.length) return
-
+    sendMessage(message, recording)
     setMessage('')
-    sendMessage(message)
+    setRecording('')
   }
 
   const type = settings.inputType
@@ -110,7 +101,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   )
 
   return (
-    <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 pl-4 lg:p-3">
+    <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 pl-4 lg:pl-6 lg:p-3">
       {type === 'voice' ? (
         <div className="pr-4 flex gap-4 justify-center flex-grow items-center">
           {changeIcon}
@@ -146,7 +137,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
                     className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white"
                     icon={
                       <svg
-                        className="w-4 h-4 transform rotate-90"
+                        className="ml-1 w-4 h-4 transform rotate-90"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

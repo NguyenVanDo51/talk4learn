@@ -49,7 +49,7 @@ const AIChat = () => {
   useSpeech()
 
   const analystedMessageIds = useMemo(() => {
-    return analystedMessages.map((m) => m.id)
+    return analystedMessages.filter((m) => !m.content).map((m) => m.id)
   }, [analystedMessages])
 
   const sendMessage = (message: string, recorded?: string) => {
@@ -104,53 +104,54 @@ const AIChat = () => {
     setSettings({ ...settings, isShowAnalyst: value })
   }
 
-  const handleAnalyst = useCallback(
-    (message: IMessage) => {
-      if (isGettingComment || analystedMessageIds.includes(message.id)) return
+  const handleAnalyst = useCallback(() => {
+    const message = messages.at(-2)
+    console.log('message', message, analystedMessageIds)
+    if (!message || isGettingComment || analystedMessageIds.includes(message.id)) return
 
-      setIsGettingComment(true)
-      const messageIndex = messages.findIndex((m) => m.id === message.id)
-      if (messageIndex === -1) return
+    setIsGettingComment(true)
+    const messageIndex = messages.findIndex((m) => m.id === message.id)
+    if (messageIndex === -1) return
 
-      const bodyMessage: SendMessageBody[] = [
-        {
-          role: 'user',
-          content: `Jenny: ${messages[messageIndex - 1].content}\n AndyStrongBome: ${message.content}`,
-        },
-      ]
+    const bodyMessage: SendMessageBody[] = [
+      {
+        role: 'user',
+        content: `Jenny: ${messages[messageIndex - 1].content}\n AndyStrongBome: ${message.content}`,
+      },
+    ]
 
-      const newAnalystedMessages: IAnalystMessage[] = [
-        ...analystedMessages,
-        { ...message, comment: '', status: 'sent' },
-      ]
-      setAnalystMessages(newAnalystedMessages)
+    const newAnalystedMessages: IAnalystMessage[] = [...analystedMessages]
+    if (newAnalystedMessages.at(-1)?.id === message.id) {
+      newAnalystedMessages.at(-1)!.comment = ''
+      newAnalystedMessages.at(-1)!.status = 'sent'
+    } else {
+      newAnalystedMessages.push({ ...message, comment: '', status: 'sent' })
+    }
+    setAnalystMessages(newAnalystedMessages)
 
-      ChatService.checkGrammar(bodyMessage)
-        .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
-          const comment = res.data?.choices[0]?.message.content
-            .replaceAll(`AndyStrongBome's`, 'your')
-            .replaceAll('AndyStrongBome', 'You')
-          newAnalystedMessages[newAnalystedMessages.length - 1].comment = comment
-          newAnalystedMessages[newAnalystedMessages.length - 1].status = 'success'
-          setAnalystMessages(newAnalystedMessages)
-        })
-        .catch(() => {
-          newAnalystedMessages[newAnalystedMessages.length - 1].status = 'error'
-          setAnalystMessages(newAnalystedMessages)
-        })
-        .finally(() => setIsGettingComment(false))
-    },
-    [analystedMessageIds, analystedMessages, isGettingComment, messages]
-  )
-
-  const newestMessage = messages.at(-1)
+    ChatService.checkGrammar(bodyMessage)
+      .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
+        const comment = res.data?.choices[0]?.message.content
+          .replaceAll(`AndyStrongBome's`, 'your')
+          .replaceAll('AndyStrongBome', 'You')
+        newAnalystedMessages.at(-1)!.comment = comment
+        newAnalystedMessages.at(-1)!.status = 'success'
+        setAnalystMessages(newAnalystedMessages)
+      })
+      .catch(() => {
+        newAnalystedMessages.at(-1)!.status = 'error'
+        setAnalystMessages(newAnalystedMessages)
+      })
+      .finally(() => setIsGettingComment(false))
+  }, [analystedMessageIds, analystedMessages, isGettingComment, messages])
 
   const reSend = () => {
     getAnswer()
   }
+  const userNewestMessage = messages.at(-2)
+  const newestMessage = messages.at(-1)
 
   useEffect(() => {
-    const userNewestMessage = messages.at(-2)
     if (
       userNewestMessage &&
       // isShowAnalyst &&
@@ -158,9 +159,9 @@ const AIChat = () => {
       userNewestMessage.status === 'success'
     ) {
       if (isDesktop) {
-        if (isShowAnalyst) handleAnalyst(userNewestMessage)
+        if (isShowAnalyst) handleAnalyst()
       } else {
-        handleAnalyst(userNewestMessage)
+        handleAnalyst()
       }
     }
 
@@ -234,6 +235,7 @@ const AIChat = () => {
                   isShowAnalyst={isShowAnalyst}
                   isGettingComment={isGettingComment}
                   analystedMessages={analystedMessages}
+                  setAnalystMessages={setAnalystMessages}
                   setIsShowComment={setIsShowComment}
                   handleAnalyst={handleAnalyst}
                 />
