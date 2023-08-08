@@ -3,9 +3,9 @@ import { scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
 import { IAIModel, IMessage } from '@/types/chat'
 import { Avatar, Spin } from 'antd'
-import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { IChatSetting } from '..'
-import { AudioPlayer, IAudioPlayerRef } from '@/components/level1/AudioPlayer'
+import { AudioPlayer } from '@/components/level1/AudioPlayer'
 
 interface IProps {
   isSending: boolean
@@ -15,19 +15,23 @@ interface IProps {
   settings: IChatSetting
   initing: boolean
   setMessages: (messages: IMessage[]) => void
-  handleAnalyst: (m: IMessage) => void
   reSend: () => void
 }
 
 export const Message: FC<IProps> = (props) => {
-  const { messages, initing, isSending, setMessages } = props
-  console.log(messages)
+  const { messages, initing, isSending, setMessages, settings } = props
   const reStart = (index: number) => {
     setMessages(messages.slice(0, index))
   }
-
+  console.log('settings.inputType', settings.inputType, settings.inputType !== 'voice' ? '156px' : '120px')
   return (
-    <div className="flex flex-1 flex-col h-full overflow-y-auto overflow-x-hidden mb-2 lg:mb-4" id="message-container">
+    <div
+      className="flex flex-1 flex-col h-full overflow-y-auto overflow-x-hidden lg:mb-4 p-2 lg:p-3"
+      id="message-container"
+      style={{
+        height: `calc(100vh - ${settings.inputType !== 'voice' ? '156px' : '120px'}) !important`,
+      }}
+    >
       <div className="flex flex-col h-full">
         <div className="grid grid-cols-12 gap-y-2 pb-4">
           {initing ? (
@@ -87,6 +91,7 @@ const LeftMessage: FC<LeftMessageProps> = ({ message, model, settings }) => {
           <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
             {model.name.at(0)}
           </Avatar>
+
           <div className="text-sm bg-white dark:bg-slate-700 py-1 px-5 shadow rounded-3xl max-w-full overflow-hidden">
             {type === 'voice' ? <AudioPlayer text={content} /> : <div className="py-1">{text}</div>}
           </div>
@@ -120,7 +125,7 @@ interface RightMessageProps extends IProps {
   reStart: () => void
 }
 
-const RightMessage: FC<RightMessageProps> = ({ message, reStart, reSend, handleAnalyst }) => {
+const RightMessage: FC<RightMessageProps> = ({ message, reStart, reSend }) => {
   return (
     <div className="col-start-4 col-end-13 p-3 rounded-lg message-item" id={message.id}>
       <div className="flex items-center gap-3 justify-start flex-row-reverse">

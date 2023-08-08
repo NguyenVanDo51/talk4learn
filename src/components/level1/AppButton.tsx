@@ -2,7 +2,6 @@
 
 import { FC, ReactNode } from 'react'
 import { Button as AntButton, ButtonProps, Popconfirm } from 'antd'
-import { Collapse, CollapseProps } from 'antd'
 interface AppButtonProps extends ButtonProps {
   children?: React.ReactNode
 }

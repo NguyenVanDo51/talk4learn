@@ -10,6 +10,7 @@ import { AppTooltip } from '@/components/level1/AppTooltip'
 interface IProps {
   isWaiting: boolean
   settings: IChatSetting
+  setSettings: (settings: IChatSetting) => void
   sendMessage: (message: string, voiceRecoreded?: string) => void
 }
 
@@ -20,12 +21,11 @@ if (typeof window !== 'undefined') {
   recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
 }
 
-export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
+export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMessage }) => {
   const [message, setMessage] = useState('')
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState<string>()
   const [recording, setRecording] = useState<string>()
-  const [type, setType] = useState<IChatSetting['type']>(settings.type)
   const [inited, setInited] = useState(false)
 
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
@@ -74,10 +74,6 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
     }
   }, [recording, sendMessage, transcript])
 
-  useEffect(() => {
-    setType(settings.type)
-  }, [settings.type])
-
   const handleRecord = () => {
     if (isRecording) {
       recognition.stop()
@@ -99,6 +95,11 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
     sendMessage(message)
   }
 
+  const type = settings.inputType
+  const setType = (value: IChatSetting['inputType']) => {
+    setSettings({ ...settings, inputType: value })
+  }
+
   const changeIcon = (
     <AppTooltip title="Change input type">
       <i
@@ -109,7 +110,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, sendMessage }) => {
   )
 
   return (
-    <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-3">
+    <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 pl-4 lg:p-3">
       {type === 'voice' ? (
         <div className="pr-4 flex gap-4 justify-center flex-grow items-center">
           {changeIcon}

@@ -27,30 +27,36 @@ export const Header: FC<IProps> = ({ model, settings, isShowAnalyst, setIsShowCo
 
   return (
     <>
-      <div className="flex items-center justify-between h-[56px] lg:pr-3">
+      <div className={`flex items-center justify-between h-[56px] ${isShowAnalyst ? '' : 'lg:pr-4'} `}>
         <AppButton
-          className="lg:hidden"
+          className="pl-2 lg:hidden"
           onClick={toggleMenu}
+          size="small"
           icon={<i className="fa-solid fa-bars text-xl"></i>}
           type="text"
         />
+
         <div className="flex justify-center flex-grow">
           <span
             className="font-medium cursor-pointer flex gap-2 items-center"
             onClick={() => settingRef.current?.open()}
           >
-            <Avatar src={model.avatar}>
-              {model.name.at(0)}
-            </Avatar>
+            <Avatar src={model.avatar}>{model.name.at(0)}</Avatar>
             <span className="text-lg">
               {model.name} <i className="fa-solid fa-angle-right text-xs"></i>
             </span>
           </span>
         </div>
         <div className="flex gap-2">
-          <AppButton onClick={() => setIsShowComment(!isShowAnalyst)} size="small" type="text">
-            <i className={`fa-solid fa-outdent text-xl ${isShowAnalyst ? 'text-primary' : 'text-gray-500'}`}></i>
-          </AppButton>
+          <AppButton
+            className="mr-3 lg:w-[30px]"
+            onClick={() => setIsShowComment(!isShowAnalyst)}
+            size="small"
+            type="text"
+            icon={
+              <i className={`fa-regular fa-layer-group text-xl ${isShowAnalyst ? 'text-primary' : 'text-white'}`} />
+            }
+          />
         </div>
       </div>
 

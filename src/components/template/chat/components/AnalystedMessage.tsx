@@ -3,12 +3,14 @@ import { FC, useEffect, useState } from 'react'
 import { IAnalystMessage } from '..'
 import { AppButton } from '@/components/level1/AppButton'
 import { useDimention } from '@/hooks/helpers/useDimention'
+import { IMessage } from '@/types/chat'
 
 interface IProps {
   isGettingComment: boolean
   isShowAnalyst: boolean
   analystedMessages: IAnalystMessage[]
   setIsShowComment: (isShowAnalyst: boolean) => void
+  handleAnalyst: (m: IMessage) => void
 }
 
 export const AnalyistedMessage: FC<IProps> = ({
@@ -16,6 +18,7 @@ export const AnalyistedMessage: FC<IProps> = ({
   isShowAnalyst,
   analystedMessages,
   setIsShowComment,
+  handleAnalyst,
 }) => {
   const [activeKey, setActiveKey] = useState<string[]>([])
   const { isDesktop } = useDimention()
@@ -24,14 +27,21 @@ export const AnalyistedMessage: FC<IProps> = ({
     key: m.id,
     label: (
       <div className="flex justify-between">
-        <span>{m.content}</span>{' '}
+        <span>{m.content}</span>
         {m.status === 'error' && (
-          <AppButton type="link" danger={false} icon={<i className="fa-solid fa-arrows-rotate"></i>} />
+          <AppButton
+            size="small"
+            danger
+            type="text"
+            className=""
+            onClick={() => handleAnalyst(m)}
+            icon={<i className="fa-regular fa-rotate-right"></i>}
+          ></AppButton>
         )}
         {m.status === 'sent' && <Spin spinning />}
       </div>
     ),
-    children: m.comment,
+    children: <>{m.status === 'error' ? 'Analyst error. Try again' : m.comment}</>,
     type: 'divider',
   }))
 
@@ -39,7 +49,7 @@ export const AnalyistedMessage: FC<IProps> = ({
     if (isGettingComment) return
 
     const newestMessage = analystedMessages.at(-1)
-    if (newestMessage) {
+    if (newestMessage?.comment) {
       setActiveKey([newestMessage.id] as any)
     }
   }, [isGettingComment, analystedMessages])
@@ -49,7 +59,7 @@ export const AnalyistedMessage: FC<IProps> = ({
       <Collapse
         size="small"
         items={messagesPasred}
-        className="h-fit"
+        className="h-fit no-top-border-collapse"
         activeKey={activeKey}
         onChange={(key) => setActiveKey(key as string[])}
       ></Collapse>
@@ -60,7 +70,7 @@ export const AnalyistedMessage: FC<IProps> = ({
   if (isDesktop && isShowAnalyst) {
     return (
       <div className="col-start-8 col-end-13">
-        <div className="grid gap-3 w-full">
+        <div className="grid gap-3 w-full pr-4">
           <div className="font-bold flex justify-center items-center h-[54px]">Comment</div>
           {renderContent()}
         </div>

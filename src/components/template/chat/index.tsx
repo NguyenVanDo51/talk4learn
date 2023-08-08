@@ -18,15 +18,18 @@ import { ConfigProvider } from 'antd'
 import { darkTheme } from '@/theme/themeConfig'
 import { Header } from './components/Header'
 import { useSpeech } from '@/hooks/helpers/useSpeech'
+import { useDimention } from '@/hooks/helpers/useDimention'
 
 export interface IChatSetting {
   type: 'text' | 'voice'
+  inputType: 'text' | 'voice'
   style: 'formal' | 'informal'
   isShowAnalyst: boolean
 }
 
 const settingDefault: IChatSetting = {
   type: 'text',
+  inputType: 'text',
   style: 'formal',
   isShowAnalyst: true,
 }
@@ -42,7 +45,7 @@ const AIChat = () => {
   const [settings, setSettings] = useState<IChatSetting>(settingDefault)
   const [analystedMessages, setAnalystMessages] = useState<IAnalystMessage[]>([])
   const { isShowAnalyst } = settings
-  
+  const { isDesktop } = useDimention()
   useSpeech()
 
   const analystedMessageIds = useMemo(() => {
@@ -150,12 +153,17 @@ const AIChat = () => {
     const userNewestMessage = messages.at(-2)
     if (
       userNewestMessage &&
-      isShowAnalyst &&
+      // isShowAnalyst &&
       userNewestMessage?.role === 'user' &&
       userNewestMessage.status === 'success'
     ) {
-      handleAnalyst(userNewestMessage)
+      if (isDesktop) {
+        if (isShowAnalyst) handleAnalyst(userNewestMessage)
+      } else {
+        handleAnalyst(userNewestMessage)
+      }
     }
+
     if (newestMessage?.status !== 'error') {
       getAnswer()
     }
@@ -199,7 +207,7 @@ const AIChat = () => {
                   setSettings={setSettings}
                 />
 
-                <div className="flex flex-col h-full bg-gray-100 dark:bg-black p-2 lg:p-3">
+                <div className="grid h-full bg-gray-100 dark:bg-black">
                   <Message
                     initing={initing}
                     messages={messages}
@@ -208,10 +216,16 @@ const AIChat = () => {
                     model={model}
                     settings={settings}
                     setMessages={setMessages}
-                    handleAnalyst={handleAnalyst}
                     reSend={reSend}
                   />
-                  {!initing && <InputBox sendMessage={sendMessage} isWaiting={isWaiting} settings={settings} />}
+                  {!initing && (
+                    <InputBox
+                      sendMessage={sendMessage}
+                      setSettings={setSettings}
+                      isWaiting={isWaiting}
+                      settings={settings}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -221,6 +235,7 @@ const AIChat = () => {
                   isGettingComment={isGettingComment}
                   analystedMessages={analystedMessages}
                   setIsShowComment={setIsShowComment}
+                  handleAnalyst={handleAnalyst}
                 />
               )}
             </div>

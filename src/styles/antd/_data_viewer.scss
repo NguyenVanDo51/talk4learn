@@ -4,8 +4,24 @@
 
 .ant-drawer-content-wrapper {
   max-width: 75vw !important;
+
+  .ant-drawer-body {
+    padding: 16px;
+  }
 }
 
 .ant-avatar {
   background-color: rgb(30 41 59) !important;
+}
+
+.no-top-border-collapse {
+  &.ant-collapse {
+    .ant-collapse-content {
+      border-top: 0;
+
+      .ant-collapse-content-box {
+        padding-top: 0;
+      }
+    }
+  }
 }

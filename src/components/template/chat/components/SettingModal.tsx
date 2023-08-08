@@ -25,7 +25,8 @@ export const SettingModal = forwardRef(function SettingModal({ settings, setSett
 
   const onOk = () => {
     setIsOpenSetting(false)
-    setSettings({ ...settings, ...form.getFieldsValue() })
+    const values = form.getFieldsValue()
+    setSettings({ ...settings, ...values, inputType: values.type })
   }
 
   useEffect(() => {
