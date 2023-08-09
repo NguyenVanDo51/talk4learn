@@ -15,6 +15,8 @@ export const Feedback = () => {
       FeedbackService.send({ content: values.feedback })
     }
     AppNotifycation.success({ message: 'Thank you for your feedback.' })
+    form.resetFields()
+    setOpen(false)
   }
 
   return (
