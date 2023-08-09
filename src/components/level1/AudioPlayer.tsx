@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { IAppSlice, setTextSpeaking } from '@/redux/slices/appSlice'
 import { uniqueId } from 'lodash'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 interface IProps {
   text: string
@@ -15,10 +15,9 @@ export const AudioPlayer = ({ text }: IProps) => {
   const dispatch = useAppDispatch()
   const textSpeaking = useAppSelector((state) => state.app.textSpeaking)
 
-  const textBase64 = useMemo(() => btoa(text), [text])
-  const isPlaying = useMemo(() => textBase64 === textSpeaking, [textSpeaking, textBase64])
+  const isPlaying = useMemo(() => text === textSpeaking, [textSpeaking, text])
 
-  const setIsGlobalPlayingState = useCallback(
+  const setGlobalPlayingState = useCallback(
     (value: IAppSlice['textSpeaking']) => {
       dispatch(setTextSpeaking(value))
     },
@@ -27,11 +26,16 @@ export const AudioPlayer = ({ text }: IProps) => {
 
   const onClick = () => {
     if (isPlaying) {
-      setIsGlobalPlayingState(null)
+      setGlobalPlayingState(null)
     } else {
-      setIsGlobalPlayingState(textBase64)
+      setGlobalPlayingState(text)
     }
   }
+
+  useEffect(() => {
+    setGlobalPlayingState(text)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const id = useMemo(() => uniqueId(), [])
   const waveLength = Math.floor(text?.length / 1.5) || 1

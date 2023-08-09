@@ -27,7 +27,7 @@ export const Header: FC<IProps> = ({ model, settings, isShowAnalyst, setIsShowCo
 
   return (
     <>
-      <div className={`flex items-center justify-between h-[56px]`}>
+      <div className={`flex items-center justify-between min-h-[54px] dark:bg-dark-active-main-bg`}>
         <AppButton
           className="ml-4 lg:hidden"
           onClick={toggleMenu}
@@ -48,11 +48,11 @@ export const Header: FC<IProps> = ({ model, settings, isShowAnalyst, setIsShowCo
           </span>
         </div>
         <AppButton
-          className={`transition-none ${isShowAnalyst ? 'lg:mr-0' : ''} mr-4 lg:w-[30px]`}
+          className={`transition-none ${isShowAnalyst ? 'lg:mr-3' : ''} mr-4 lg:w-[30px]`}
           onClick={() => setIsShowComment(!isShowAnalyst)}
           size="small"
           type="text"
-          icon={<i className={`fa-regular fa-layer-group text-xl ${isShowAnalyst ? 'text-primary' : 'text-white'}`} />}
+          icon={<i className={`fa-regular fa-sidebar-flip text-xl ${isShowAnalyst ? 'text-primary' : 'text-white'}`} />}
         />
       </div>
 

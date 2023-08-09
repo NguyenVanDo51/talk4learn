@@ -20,12 +20,7 @@ export interface IAIModel {
 }
 
 const getModelTask = (model: IAIModel) => {
-  const lastInterest = model.interest.pop()
-  return `Your task is to practice English with users. You are a model with following characteristic: Your name is ${
-    model.name
-  }, ${model.age} years old and you are a student, your interest are ${model.interest.join(
-    ', '
-  )} and ${lastInterest}. Your role is to ask the user a few questions about their life or their interests. If the user asks you a question, you should answer them with a short response and follow up with a new question for them.`
+  return 'You will impersonate a character to practice English with users. Do not tell that you are an AI model. You are a model with following characteristic: \n: Your name: Jenny\n Your olds: 18 \n Your job: student \n Your hobbies: undefined.\n Asking the user any questions about their life. If you giving a question, you should answer them with a very short response and follow up the conversation.'
 }
 
 export const AIModels: IAIModel[] = [
@@ -42,33 +37,20 @@ export const AIModels: IAIModel[] = [
   },
 ]
 
+const greatings = [
+  "Hi there, how's your day going?",
+  'Hello! What brings you here today?',
+  "Hey, it's nice to meet you. What can I help you with?",
+  "Greetings! What's new in your world?",
+  'Hey, are you up to anything interesting right now?',
+  "Hello! I hope you're having a great day so far.",
+  "Hello there! What's on your mind today?",
+]
+
 export const initialConversation: IMessage[] = [
   {
     id: uniqueId(),
     role: 'assistant',
-    content: 'Hello! How are you today?',
+    content: greatings[Math.floor(Math.random() * greatings.length)],
   },
-  {
-    id: '8',
-    role: 'user',
-    content: 'hello',
-    status: 'success',
-  },
-  {
-    id: '11',
-    role: 'assistant',
-    content: 'Hi there! How are you doing today?',
-  },
-  {
-    id: '20',
-    role: 'user',
-    content: 'a',
-    status: 'success',
-  },
-  {
-    id: '25',
-    role: 'assistant',
-    content: "I see. Is there anything specific you'd like to talk about or any questions you have?",
-  },
-  
 ]

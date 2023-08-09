@@ -31,7 +31,7 @@ const settingDefault: IChatSetting = {
   type: 'text',
   inputType: 'text',
   style: 'formal',
-  isShowAnalyst: true,
+  isShowAnalyst: false,
 }
 
 export type IAnalystMessage = IMessage & { comment: string }
@@ -81,9 +81,6 @@ const AIChat = () => {
       userMessage,
     ].map((message) => ({ role: message.role as SendMessageBody['role'], content: message.content }))
 
-    // newMesages[messages.length - 1].status = 'sent'
-    // setMessages(newMesages)
-
     ChatService.sendMessage(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const messageResponse = res.data?.choices[0]?.message.content
@@ -106,7 +103,6 @@ const AIChat = () => {
 
   const handleAnalyst = useCallback(() => {
     const message = messages.at(-2)
-    console.log('message', message, analystedMessageIds)
     if (!message || isGettingComment || analystedMessageIds.includes(message.id)) return
 
     setIsGettingComment(true)
@@ -116,7 +112,7 @@ const AIChat = () => {
     const bodyMessage: SendMessageBody[] = [
       {
         role: 'user',
-        content: `Jenny: ${messages[messageIndex - 1].content}\n AndyStrongBome: ${message.content}`,
+        content: `- ${messages[messageIndex - 1].content}\n - ${message.content}`,
       },
     ]
 
@@ -191,10 +187,10 @@ const AIChat = () => {
   return (
     <ConfigProvider theme={darkTheme}>
       <div className="flex flex-grow h-screen antialiased shadow">
-        <div className="flex flex-row h-full w-full gap-4">
+        <div className="flex flex-row h-full w-full">
           <Conversations />
           <div className="flex flex-grow justify-center">
-            <div className="container grid grid-cols-12 gap-4 w-full">
+            <div className="grid grid-cols-12 w-full">
               <div
                 className={`col-start-1 col-end-13 ${
                   isShowAnalyst ? 'lg:col-end-8' : 'lg:col-end-13'
@@ -208,7 +204,7 @@ const AIChat = () => {
                   setSettings={setSettings}
                 />
 
-                <div className="grid h-full bg-gray-100 dark:bg-black">
+                <div className="grid h-full bg-gray-100 dark:bg-dark-main">
                   <Message
                     initing={initing}
                     messages={messages}

@@ -29,7 +29,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
 
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
 
-  useEffect(() => {
+  const requestAccessMicro = () => {
     getUserMedia({ audio: true }).then((stream: any) => {
       rec = new MediaRecorder(stream)
       rec.ondataavailable = (e: any) => {
@@ -42,9 +42,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
       }
       setInited(true)
     })
-
-    return () => rec?.stop()
-  }, [])
+  }
 
   useEffect(() => {
     if (!recognition || !inited) return
@@ -62,16 +60,24 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
 
     return () => {
       recognition.stop()
+      rec?.stop()
     }
   }, [inited])
 
   const handleRecord = () => {
+    if (!rec) {
+      requestAccessMicro()
+    }
     if (isRecording) {
       recognition.stop()
       rec.stop()
     } else {
       recognition.start()
-      rec.start()
+      if (rec) {
+        rec.start()
+      } else {
+        requestAccessMicro()
+      }
     }
     setIsRecording(!isRecording)
   }
@@ -130,14 +136,14 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
                 <div className="flex items-center gap-4 lg:gap-5">
                   <i
                     onClick={handleRecord}
-                    className={`fa-solid fa-microphone cursor-pointer ${isRecording ? 'text-purple-500' : ''}`}
+                    className={`fa-solid fa-microphone cursor-pointer text-xl ${isRecording ? 'text-purple-500' : ''}`}
                   ></i>
                   <AppButton
                     onClick={handleSendMessage}
                     className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white"
                     icon={
                       <svg
-                        className="ml-1 w-4 h-4 transform rotate-90"
+                        className="ml-1 w-4 min-h-4 transform rotate-90"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

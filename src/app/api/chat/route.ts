@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     .createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: body.messages,
-      temperature: 0,
+      temperature: 1.5,
       max_tokens: 50,
       top_p: 1,
       frequency_penalty: 0,

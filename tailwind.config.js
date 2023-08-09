@@ -11,8 +11,10 @@ module.exports = {
       colors: {
         primary: '#4096ff',
         muted: '#a1a1a1',
-        'dark-main': '#1b1b1d',
-        'dark-primary': '#6366f1'
+        'dark-main': 'var(--main-bg)',
+        'dark-active-main-bg': 'var(--main-active-bg)',
+        'dark-primary': 'var(--primary)',
+        'dark-line': 'var(--line-color)',
       },
       spacing: {
         inline: '0.5rem',

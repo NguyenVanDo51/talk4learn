@@ -90,34 +90,37 @@ export const AnalyistedMessage: FC<IProps> = ({
     }
   }, [isGettingComment, analystedMessages])
 
-  const renderContent = () =>
-    messagesPasred.length > 0 ? (
-      <div
-        id="analyst"
-        className="overflow-y-auto pb-[10rem]"
-        style={{
-          maxHeight: 'calc(100vh - 74px)',
-        }}
-      >
-        <Collapse
-          size="small"
-          items={messagesPasred}
-          className="h-fit no-top-border-collapse "
-          activeKey={activeKey}
-          onChange={(key) => {
-            setActiveKey(key as string[])
-          }}
-        ></Collapse>
+  const renderContent = () => (
+    <div
+      id="analyst"
+      className="overflow-y-auto pb-[10rem]"
+      style={{
+        maxHeight: 'calc(100vh - 74px)',
+      }}
+    >
+      <div className="p-2 lg:p-3">
+        {analystedMessages.length > 0 ? (
+          <Collapse
+            size="small"
+            items={messagesPasred}
+            className="h-fit no-top-border-collapse "
+            activeKey={activeKey}
+            onChange={(key) => {
+              setActiveKey(key as string[])
+            }}
+          ></Collapse>
+        ) : (
+          <div className='text-gray-500'>Empty</div>
+        )}
       </div>
-    ) : (
-      <span className="text-gray-500">Empty</span>
-    )
+    </div>
+  )
 
   if (isDesktop && isShowAnalyst) {
     return (
-      <div className="col-start-8 col-end-13">
-        <div className="grid w-full pr-4">
-          <div className="font-bold flex justify-center items-center h-[54px]">Comment</div>
+      <div className="col-start-8 col-end-13 border-l dark:border-dark-line">
+        <div className="grid w-full">
+          <div className="font-bold flex justify-center items-center h-[54px] dark:bg-dark-active-main-bg">Comment</div>
           {renderContent()}
         </div>
       </div>

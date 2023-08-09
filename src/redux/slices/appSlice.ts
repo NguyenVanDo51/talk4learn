@@ -7,7 +7,7 @@ export interface IAppSlice {
 
 const initialState: IAppSlice = {
   isOpenMenu: false,
-  textSpeaking: null
+  textSpeaking: null,
 }
 
 export const appSlice = createSlice({
@@ -17,10 +17,9 @@ export const appSlice = createSlice({
     setIsOpenMenu: (state, action: PayloadAction<IAppSlice['isOpenMenu']>) => {
       state.isOpenMenu = action.payload
     },
-    setTextSpeaking: (state, action: PayloadAction<IAppSlice['textSpeaking']>) => {
-      state.textSpeaking = action.payload
+    setTextSpeaking: (state, { payload }: PayloadAction<IAppSlice['textSpeaking']>) => {
+      state.textSpeaking = payload ? btoa(payload) : payload
     },
-    
   },
 })
 
