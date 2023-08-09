@@ -1,5 +1,13 @@
 const path = require('path')
 
+const ContentSecurityPolicy = `
+  default-src 'self';
+  script-src 'self';
+  child-src example.com;
+  style-src 'self' example.com;
+  font-src 'self';
+`
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -15,13 +23,18 @@ const nextConfig = {
         source: '/api/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          { key: 'Access-Control-Allow-Origin', value: '*' }, // replace this your actual origin
+          { key: 'Same-Origin-Policy', value: 'true' },
+          { key: 'Access-Control-Allow-Origin', value: 'https://rangachat.com/' }, // replace this your actual origin
           { key: 'Access-Control-Allow-Methods', value: 'GET,DELETE,PATCH,POST,PUT' },
           {
             key: 'Access-Control-Allow-Headers',
             value:
               'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
           },
+          {
+            key: 'Content-Security-Policy',
+            value: ContentSecurityPolicy.replace(/\s{2,}/g, ' ').trim()
+          }
         ],
       },
     ]

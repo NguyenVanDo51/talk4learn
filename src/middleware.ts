@@ -2,14 +2,12 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-  console.log(
-    'request',
-    request.headers.forEach((e) => console.log('e', e))
-  )
+export function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl
   // return new NextResponse('Invalid client', {
   //   status: 400,
   // })
+  console.log('pathname', pathname)
 }
 
 // See "Matching Paths" below to learn more
