@@ -23,9 +23,9 @@ const ConversationList = () => {
       </div>
       <div className="flex flex-col">
         <Divider className="m-0" />
-        <About />
-        <Divider className="m-0" />
         <Feedback />
+        <Divider className="m-0" />
+        <About />
         <Divider className="m-0" />
       </div>
     </div>

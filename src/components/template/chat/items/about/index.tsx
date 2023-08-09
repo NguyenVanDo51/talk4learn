@@ -1,6 +1,7 @@
 import { AppModal } from '@/components/level1/AppModal'
 import { AppNotifycation } from '@/components/level1/AppNotification'
 import { FeedbackService } from '@/service/feedback/index.service'
+import { APP_NAME } from '@/types/constants'
 import { useForm } from 'antd/es/form/Form'
 import { useState } from 'react'
 
@@ -21,14 +22,14 @@ export const About = () => {
         className="flex flex-row items-center hover:bg-gray-100 dark:hover:bg-dark-primary px-4 py-3"
         onClick={() => setOpen(true)}
       >
-        <i className="fa-regular fa-address-card text-2xl"></i>
-        <div className="ml-3 text-sm font-semibold">About this app</div>
+        <i className="fa-regular fa-circle-exclamation text-2xl"></i>
+        <div className="ml-3 text-sm font-semibold">About {APP_NAME}</div>
       </button>
 
       <AppModal
         open={open}
         onCancel={() => setOpen(false)}
-        title="About the app"
+        title={'About ' + APP_NAME}
         onOk={() => {
           form.validateFields().then(onFinish)
         }}
