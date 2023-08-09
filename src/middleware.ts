@@ -3,12 +3,13 @@ import type { NextRequest } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  console.log('request', request.headers.get('host'))
-  if (!request.url.startsWith('https://rangachat.com')) {
-    return new NextResponse('Ivalid Client' + request.json(), {
-      status: 400,
-    })
-  }
+  console.log(
+    'request',
+    request.headers.forEach((e) => console.log('e', e))
+  )
+  // return new NextResponse('Invalid client', {
+  //   status: 400,
+  // })
 }
 
 // See "Matching Paths" below to learn more
