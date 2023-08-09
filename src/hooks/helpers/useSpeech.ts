@@ -39,7 +39,7 @@ export const useSpeech = () => {
       return
     }
 
-    speak(atob(textSpeaking))
+    speak(textSpeaking)
   }, [textSpeaking, speak])
 
   return {}

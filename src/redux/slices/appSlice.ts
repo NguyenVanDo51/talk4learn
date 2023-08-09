@@ -18,7 +18,7 @@ export const appSlice = createSlice({
       state.isOpenMenu = action.payload
     },
     setTextSpeaking: (state, { payload }: PayloadAction<IAppSlice['textSpeaking']>) => {
-      state.textSpeaking = payload ? btoa(payload) : payload
+      state.textSpeaking = payload
     },
   },
 })
