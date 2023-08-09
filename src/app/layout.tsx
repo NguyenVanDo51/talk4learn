@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'RangaChat - Learn English through Conversations with AI',
   description:
-    'Enhance your English skills effortlessly with RangaChat, the innovative language learning app. Engage in natural conversations with our AI-powered chatbot, making language practice enjoyable and effective. Start chatting today to boost your English proficiency and fluency.',
+    'Master English effortlessly with RangaChat. Practice language skills by chatting with our AI, making learning enjoyable and effective. Start now for fluency!',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

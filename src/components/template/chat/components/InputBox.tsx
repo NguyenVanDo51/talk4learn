@@ -6,6 +6,7 @@ import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import { IChatSetting } from '..'
 import { Button, Tooltip } from 'antd'
 import { AppTooltip } from '@/components/level1/AppTooltip'
+import { AppNotifycation } from '@/components/level1/AppNotification'
 
 interface IProps {
   isWaiting: boolean
@@ -30,54 +31,40 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
 
   const requestAccessMicro = () => {
-    getUserMedia({ audio: true }).then((stream: any) => {
-      rec = new MediaRecorder(stream)
-      rec.ondataavailable = (e: any) => {
-        audioChunks = []
-        audioChunks.push(e.data)
-        if (rec.state == 'inactive') {
-          let blob = new Blob(audioChunks, { type: 'audio/mp3' })
-          setRecording(URL.createObjectURL(blob))
+    getUserMedia({ audio: true })
+      .then((stream: any) => {
+        rec = new MediaRecorder(stream)
+        rec.ondataavailable = (e: any) => {
+          audioChunks = []
+          audioChunks.push(e.data)
+          if (rec.state == 'inactive') {
+            let blob = new Blob(audioChunks, { type: 'audio/mp3' })
+            setRecording(URL.createObjectURL(blob))
+          }
         }
-      }
-      setInited(true)
-    })
+        setInited(true)
+      })
+      .catch(() => {
+        setInited(false)
+      })
   }
-
-  useEffect(() => {
-    if (!recognition || !inited) return
-
-    recognition.onresult = (event: { results: SpeechRecognitionResultList }) => {
-      if (rec) {
-        rec.stop()
-      }
-      const speechToText = event.results[0][0].transcript
-      setIsRecording(false)
-      if (speechToText) {
-        setMessage(speechToText)
-      }
-    }
-
-    return () => {
-      recognition.stop()
-      rec?.stop()
-    }
-  }, [inited])
 
   const handleRecord = () => {
     if (!rec) {
+      AppNotifycation.error({
+        message: 'Can not connect to the microphone. Please allow the application access to your microphone.',
+      })
       requestAccessMicro()
+      return
     }
+
     if (isRecording) {
       recognition.stop()
       rec.stop()
     } else {
+      setMessage('')
       recognition.start()
-      if (rec) {
-        rec.start()
-      } else {
-        requestAccessMicro()
-      }
+      rec.start()
     }
     setIsRecording(!isRecording)
   }
@@ -96,6 +83,37 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   const setType = (value: IChatSetting['inputType']) => {
     setSettings({ ...settings, inputType: value })
   }
+
+  useEffect(() => {
+    if (!recognition || !inited) return
+
+    recognition.onresult = (event: { results: SpeechRecognitionResultList }) => {
+      if (rec) {
+        rec.stop()
+      }
+      const speechToText = event.results[0][0].transcript
+      setIsRecording(false)
+      if (speechToText) {
+        setMessage(speechToText)
+      }
+      setTimeout(() => {
+        messageRef.current?.focus()
+      }, 300)
+    }
+
+    return () => {
+      recognition.stop()
+      rec?.stop()
+    }
+  }, [inited])
+
+  useEffect(() => {
+    if (message && recording && type === 'voice') {
+      sendMessage(message, recording)
+      setMessage('')
+      setRecording('')
+    }
+  }, [message, recording, sendMessage, type])
 
   const changeIcon = (
     <AppTooltip title="Change input type">
