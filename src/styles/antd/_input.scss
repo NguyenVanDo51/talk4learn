@@ -9,6 +9,9 @@ input.ant-input-lg,
   input::placeholder {
     color: rgb(107 114 128);
   }
+  textarea::placeholder {
+    color: rgb(107 114 128);
+  }
 
   .ant-input-affix-wrapper-focused, .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled) {
 

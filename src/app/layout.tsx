@@ -101,13 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className + ' dark'}>
         <ReduxProvider>
           <StyledComponentsRegistry>
-            {/* <MainHeader /> */}
-            <main
-              className="flex h-[100vh] overflow-hidden"
-              // style={{ minHeight: 'calc(100vh - 46px)' }}
-            >
-              {children}
-            </main>
+            <main className="flex h-[100vh] overflow-hidden">{children}</main>
           </StyledComponentsRegistry>
         </ReduxProvider>
       </body>

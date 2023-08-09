@@ -127,7 +127,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   return (
     <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 pl-4 lg:pl-6 lg:p-3">
       {type === 'voice' ? (
-        <div className="pr-4 flex gap-4 justify-center flex-grow items-center">
+        <div className="pr-5 flex gap-4 justify-center flex-grow items-center">
           {changeIcon}
           <Button
             onClick={handleRecord}
@@ -144,7 +144,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
           <div className="flex-grow">
             <AppInput
               ref={messageRef as any}
-              placeholder={isRecording ? 'Recording your voice ...' : 'Input here'}
+              placeholder={isRecording ? 'Recording your voice ...' : 'Send a message'}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="p-1 pl-4"

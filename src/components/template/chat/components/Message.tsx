@@ -24,7 +24,7 @@ export const Message: FC<IProps> = (props) => {
     setMessages(messages.slice(0, index))
   }
 
-  const inputHeight = settings.inputType === 'voice' ? 156 : 127
+  const inputHeight = settings.inputType === 'voice' ? 160 : 135
 
   return (
     <div
@@ -37,7 +37,9 @@ export const Message: FC<IProps> = (props) => {
       <div className="flex flex-col h-full">
         <div className="grid grid-cols-12 gap-y-2 pb-4">
           {initing ? (
+            <div className='w-fit p-3'>
             <Spin />
+            </div>
           ) : (
             messages.map((message, index) =>
               message.role === 'assistant' ? (
