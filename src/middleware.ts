@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   console.log('request', request.headers.get('host'))
   if (!request.url.startsWith('https://rangachat.com')) {
-    return new NextResponse('Ivalid Client' + request.headers.get('host'), {
+    return new NextResponse('Ivalid Client' + request.json(), {
       status: 400,
     })
   }
