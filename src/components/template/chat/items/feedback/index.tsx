@@ -3,8 +3,8 @@ import { AppNotifycation } from '@/components/level1/AppNotification'
 import { FeedbackService } from '@/service/feedback/index.service'
 import { Form } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import TextArea, { TextAreaRef } from 'antd/es/input/TextArea'
-import { MutableRefObject, useEffect, useRef, useState } from 'react'
+import TextArea from 'antd/es/input/TextArea'
+import { useEffect, useRef, useState } from 'react'
 
 export const Feedback = () => {
   const [open, setOpen] = useState<boolean>(false)
