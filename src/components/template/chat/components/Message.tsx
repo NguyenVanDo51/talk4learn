@@ -37,13 +37,18 @@ export const Message: FC<IProps> = (props) => {
       <div className="flex flex-col h-full">
         <div className="grid grid-cols-12 gap-y-2 pb-4">
           {initing ? (
-            <div className='w-fit p-3'>
-            <Spin />
+            <div className="w-fit p-3">
+              <Spin />
             </div>
           ) : (
             messages.map((message, index) =>
               message.role === 'assistant' ? (
-                <LeftMessage {...props} message={message} key={message.id || `msg_${index}`} />
+                <LeftMessage
+                  {...props}
+                  message={message}
+                  isLastItem={messages.at(-1)?.id === message.id}
+                  key={message.id || `msg_${index}`}
+                />
               ) : (
                 <RightMessage key={`msg_${index}`} {...props} message={message} reStart={() => reStart(index)} />
               )
@@ -63,15 +68,19 @@ export const Message: FC<IProps> = (props) => {
 
 interface LeftMessageProps extends IProps {
   message: IMessage
+  isLastItem: boolean
 }
 
-const LeftMessage = memo(function LeftMessage({ message, model, settings }: LeftMessageProps) {
+const LeftMessage = memo(function LeftMessage({ message, model, settings, isLastItem }: LeftMessageProps) {
   const { content } = message
   const contentArray = content.split(' ')
   const [text, setText] = useState(contentArray[0])
   const [type, setType] = useState(settings.type)
-
+  console.log('isLastItem', isLastItem)
   useEffect(() => {
+    if (!isLastItem) {
+      return
+    }
     let index = 2
     let interval = setInterval(() => {
       if (index > contentArray.length) clearInterval(interval)
@@ -97,7 +106,11 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings }: Left
           </Avatar>
 
           <div className="text-sm bg-white dark:bg-slate-700 py-1 px-4 shadow rounded-3xl max-w-full overflow-hidden">
-            {type === 'voice' ? <AudioPlayer text={content} /> : <div className="py-1">{text}</div>}
+            {type === 'voice' ? (
+              <AudioPlayer text={content} />
+            ) : (
+              <div className="py-1">{isLastItem ? text : content}</div>
+            )}
           </div>
 
           <div className="message-actions flex items-center gap-2">

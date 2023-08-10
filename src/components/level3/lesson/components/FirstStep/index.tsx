@@ -3,9 +3,9 @@ import { VocabularyList } from '../VocabularyList'
 import { Lesson } from '../../../VideoSelectionScreen'
 import { IVocabulary } from '@/types/vocabulary'
 import { Card, Col, Form, InputRef, Row } from 'antd'
-import { uniqueId } from 'lodash'
 import { FloatingLabel } from '@/components/level1/FloatingLabel'
 import { AppButton } from '@/components/level1/antd/AppButton'
+import { v4 } from 'uuid'
 
 interface IProps {
   lesson: Lesson
@@ -22,7 +22,7 @@ export const FirstStep: FC<IProps> = ({ lesson, vocabularies, setVocabularies })
     setVocabularies([
       ...vocabularies,
       {
-        id: uniqueId(),
+        id: v4(),
         ...values,
       },
     ])

@@ -7,7 +7,6 @@ import { Avatar, Divider, Drawer, Dropdown, Modal } from 'antd'
 import { Feedback } from '../items/feedback'
 import { About } from '../items/about'
 import { signOut, useSession } from 'next-auth/react'
-import { ModalConfirm } from '@/components/level1/antd/AppModal'
 
 const ConversationList = () => {
   const { data } = useSession()

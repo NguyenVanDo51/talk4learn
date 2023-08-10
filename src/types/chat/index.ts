@@ -1,4 +1,5 @@
 import { uniqueId } from 'lodash'
+import { v4 } from 'uuid'
 
 export interface IMessage {
   id?: string
@@ -49,7 +50,7 @@ const greatings = [
 
 export const initialConversation: IMessage[] = [
   {
-    id: uniqueId(),
+    id: v4(),
     role: 'assistant',
     content: greatings[Math.floor(Math.random() * greatings.length)],
   },

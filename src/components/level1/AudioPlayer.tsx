@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { IAppSlice, setTextSpeaking } from '@/redux/slices/appSlice'
 import { uniqueId } from 'lodash'
 import { useCallback, useEffect, useMemo } from 'react'
-
+import { v4 as uuidv4 } from 'uuid'
 interface IProps {
   text: string
 }
@@ -37,7 +37,7 @@ export const AudioPlayer = ({ text }: IProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const id = useMemo(() => uniqueId(), [])
+  const id = useMemo(() => uuidv4(), [])
   const waveLength = Math.floor(text?.length / 1.5) || 1
 
   return (

@@ -1,5 +1,4 @@
 'use client'
-import { getServerSession } from 'next-auth/next'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Conversations } from './components/Conversation'
 import { InputBox } from './components/InputBox'
@@ -9,7 +8,6 @@ import { SendMessageBody } from '@/service/chat/request'
 import { ChatService } from '@/service/chat/index.service'
 import { OpenAIMessgaeResponse } from '@/service/chat/response'
 import { AxiosResponse } from 'axios'
-import { uniqueId } from 'lodash'
 import { speak } from '@/helps/speech'
 import { AnalyistedMessage } from './components/AnalystedMessage'
 import { scrollToBottom } from '@/helpers/dom'
@@ -19,6 +17,7 @@ import { darkTheme } from '@/theme/themeConfig'
 import { Header } from './components/Header'
 import { useSpeech } from '@/hooks/helpers/useSpeech'
 import { useDimention } from '@/hooks/helpers/useDimention'
+import { v4 } from 'uuid'
 
 export interface IChatSetting {
   type: 'text' | 'voice'
@@ -37,7 +36,7 @@ const settingDefault: IChatSetting = {
 export type IAnalystMessage = IMessage & { comment: string }
 
 const AIChat = () => {
-  const [messages, setMessages] = useState<IMessage[]>(initialConversation)
+  const [messages, setMessages] = useState<IMessage[]>([])
   const [isWaiting, setIsWaiting] = useState(false)
   const [isGettingComment, setIsGettingComment] = useState(false)
   const [initing, setIniting] = useState(true)
@@ -59,7 +58,7 @@ const AIChat = () => {
     }, 100)
 
     const messageObject: IMessage = {
-      id: uniqueId(),
+      id: v4(),
       role: 'user',
       content: message,
       recorded,
@@ -87,7 +86,7 @@ const AIChat = () => {
         speak(messageResponse)
 
         newMesages[messages.length - 1].status = 'success'
-        newMesages.push({ id: uniqueId(), role: 'assistant', content: messageResponse })
+        newMesages.push({ id: v4(), role: 'assistant', content: messageResponse })
         setMessages(newMesages)
       })
       .catch(() => {
@@ -165,7 +164,9 @@ const AIChat = () => {
       getAnswer()
     }
 
-    localStorage.setItem(LocalStorageKey.CHAT_HISTORY, JSON.stringify(messages))
+    if (messages.length > 1) {
+      localStorage.setItem(LocalStorageKey.CHAT_HISTORY, JSON.stringify(messages))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
 
@@ -173,12 +174,13 @@ const AIChat = () => {
     scrollToBottom('#message-container')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newestMessage])
-
+  console.log('messages', messages)
   useEffect(() => {
     const value = localStorage.getItem(LocalStorageKey.CHAT_SETTING)
-    // const msg = localStorage.getItem(LocalStorageKey.CHAT_HISTORY)
+    const msg = localStorage.getItem(LocalStorageKey.CHAT_HISTORY)
+
     value && setSettings(JSON.parse(value))
-    // msg && setMessages(JSON.parse(msg))
+    setMessages(msg ? JSON.parse(msg) : initialConversation)
   }, [])
 
   useEffect(() => {
