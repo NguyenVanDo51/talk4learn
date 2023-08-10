@@ -6,6 +6,7 @@ import { Avatar, Spin } from 'antd'
 import { FC, memo, useEffect, useState } from 'react'
 import { IChatSetting } from '..'
 import { AudioPlayer } from '@/components/level1/AudioPlayer'
+import { useSession } from 'next-auth/react'
 
 interface IProps {
   isSending: boolean
@@ -25,6 +26,7 @@ export const Message: FC<IProps> = (props) => {
   }
 
   const inputHeight = settings.inputType === 'voice' ? 160 : 135
+  const { data } = useSession()
 
   return (
     <div
@@ -50,7 +52,13 @@ export const Message: FC<IProps> = (props) => {
                   key={message.id || `msg_${index}`}
                 />
               ) : (
-                <RightMessage key={`msg_${index}`} {...props} message={message} reStart={() => reStart(index)} />
+                <RightMessage
+                  key={`msg_${index}`}
+                  {...props}
+                  avatar={data?.user?.image}
+                  message={message}
+                  reStart={() => reStart(index)}
+                />
               )
             )
           )}
@@ -146,16 +154,14 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
 
 interface RightMessageProps extends IProps {
   message: IMessage
+  avatar: string | null | undefined
   reStart: () => void
 }
 
-const RightMessage = memo(function RightMessage({ message, reStart, reSend }: RightMessageProps) {
+const RightMessage = memo(function RightMessage({ message, avatar, reStart, reSend }: RightMessageProps) {
   return (
     <div className="col-start-2 col-end-13 p-1 rounded-lg  message-item" id={message.id}>
       <div className="flex items-center gap-3 justify-start  flex-row-reverse">
-        <Avatar size={'default'} className="min-w-[32px] bg-green-500">
-          U
-        </Avatar>
         <div className="relative text-sm bg-indigo-100 dark:bg-dark-primary py-2 px-4 shadow rounded-3xl">
           <div>{message.content}</div>
         </div>
