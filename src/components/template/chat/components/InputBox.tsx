@@ -1,12 +1,12 @@
 'use client'
-import { AppButton } from '@/components/level1/AppButton'
-import { AppInput } from '@/components/level1/AppInput'
+import { AppButton } from '@/components/level1/antd/AppButton'
+import { AppInput } from '@/components/level1/antd/AppInput'
 import { getUserMedia } from '@/helpers/mp3'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import { IChatSetting } from '..'
-import { Button, Tooltip } from 'antd'
-import { AppTooltip } from '@/components/level1/AppTooltip'
-import { AppNotifycation } from '@/components/level1/AppNotification'
+import { Button } from 'antd'
+import { AppTooltip } from '@/components/level1/antd/AppTooltip'
+import { AppNotifycation } from '@/components/level1/antd/AppNotification'
 
 interface IProps {
   isWaiting: boolean

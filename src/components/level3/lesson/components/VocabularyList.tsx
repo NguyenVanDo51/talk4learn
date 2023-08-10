@@ -1,4 +1,4 @@
-import { AppButton } from '@/components/level1/AppButton'
+import { AppButton } from '@/components/level1/antd/AppButton'
 import { speak } from '@/helps/speech'
 
 import { IVocabulary } from '@/types/vocabulary'

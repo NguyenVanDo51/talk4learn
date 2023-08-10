@@ -1,7 +1,7 @@
 import { Collapse, Drawer, Spin, message } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { IAnalystMessage } from '..'
-import { AppButton } from '@/components/level1/AppButton'
+import { AppButton } from '@/components/level1/antd/AppButton'
 import { useDimention } from '@/hooks/helpers/useDimention'
 import { IMessage } from '@/types/chat'
 import { scrollToBottom } from '@/helpers/dom'

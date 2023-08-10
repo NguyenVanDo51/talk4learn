@@ -5,7 +5,7 @@ import { IVocabulary } from '@/types/vocabulary'
 import { Card, Col, Form, InputRef, Row } from 'antd'
 import { uniqueId } from 'lodash'
 import { FloatingLabel } from '@/components/level1/FloatingLabel'
-import { AppButton } from '@/components/level1/AppButton'
+import { AppButton } from '@/components/level1/antd/AppButton'
 
 interface IProps {
   lesson: Lesson

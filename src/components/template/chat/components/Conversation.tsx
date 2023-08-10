@@ -3,13 +3,17 @@ import { useDimention } from '@/hooks/helpers/useDimention'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setIsOpenMenu } from '@/redux/slices/appSlice'
 import { AIModels } from '@/types/chat'
-import { Avatar, Divider, Drawer } from 'antd'
+import { Avatar, Divider, Drawer, Dropdown, Modal } from 'antd'
 import { Feedback } from '../items/feedback'
 import { About } from '../items/about'
+import { signOut, useSession } from 'next-auth/react'
+import { ModalConfirm } from '@/components/level1/antd/AppModal'
 
 const ConversationList = () => {
+  const { data } = useSession()
+
   return (
-    <div className="flex flex-col gap-3 overflow-y-auto pt-2 pb-4 justify-between h-full">
+    <div className="flex flex-col gap-3 overflow-y-auto pt-2 justify-between h-full">
       <div className="flex flex-col space-y-1">
         {AIModels.map((model) => (
           <button
@@ -23,10 +27,36 @@ const ConversationList = () => {
       </div>
       <div className="flex flex-col">
         <Divider className="m-0" />
-        <Feedback />
-        <Divider className="m-0" />
         <About />
-        <Divider className="m-0" />
+        <Feedback />
+        <Dropdown
+          className="p-0"
+          menu={{
+            items: [
+              {
+                key: '1',
+                label: (
+                  <button
+                    className="flex flex-row items-center hover:bg-gray-100 dark:bg-black dark:hover:bg-dark-primary w-full p-3"
+                    onClick={() => signOut()}
+                  >
+                    <i className="fa-regular fa-arrow-right-from-bracket text-2xl"></i>
+                    <div className="ml-3 text-sm font-semibold">Sign out</div>
+                  </button>
+                ),
+              },
+            ],
+          }}
+          trigger={['click']}
+        >
+          <button className="flex flex-row justify-between items-center hover:bg-gray-100 dark:hover:bg-dark-primary px-4 py-3">
+            <div className="flex items-center">
+              <Avatar src={data?.user?.image} />
+              <span className="ml-3 text-sm font-semibold">{data?.user?.name}</span>
+            </div>
+            <i className="fa-regular fa-ellipsis-stroke"></i>
+          </button>
+        </Dropdown>
       </div>
     </div>
   )

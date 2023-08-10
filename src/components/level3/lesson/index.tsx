@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { IVocabulary } from '@/types/vocabulary'
-import { AppButton } from '@/components/level1/AppButton'
+import { AppButton } from '@/components/level1/antd/AppButton'
 import { Lesson, lessons } from '@/components/level3/VideoSelectionScreen'
 import { Spin } from 'antd'
 import { FirstStep } from './components/FirstStep'

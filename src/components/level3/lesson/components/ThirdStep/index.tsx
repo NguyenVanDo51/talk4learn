@@ -1,11 +1,10 @@
 import { Lesson } from '@/components/level3/VideoSelectionScreen'
 import { UITheme } from '@/theme/themeConfig'
 import { Col, Input, Row } from 'antd'
-import { FC, MutableRefObject, Ref, RefObject, useEffect, useRef, useState } from 'react'
+import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import { VocabularyList } from '../VocabularyList'
 import { IVocabulary } from '@/types/vocabulary'
-import { AppCard } from '@/components/level1/AppCard'
-import ReactPlayer from 'react-player'
+import { AppCard } from '@/components/level1/antd/AppCard'
 import { AppVideo } from '@/components/level1/AppVideo'
 import { TextAreaRef } from 'antd/es/input/TextArea'
 

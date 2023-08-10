@@ -1,5 +1,5 @@
 import { IVocabulary } from '@/types/vocabulary'
-import { AppButton } from '@/components/level1/AppButton'
+import { AppButton } from '@/components/level1/antd/AppButton'
 import { FlashCard } from '@/components/level2/FlashCard'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { speak } from '@/helps/speech'

@@ -1,4 +1,4 @@
-import { AppButton, AppDeleteButton } from '@/components/level1/AppButton'
+import { AppButton, AppDeleteButton } from '@/components/level1/antd/AppButton'
 import { scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
 import { IAIModel, IMessage } from '@/types/chat'

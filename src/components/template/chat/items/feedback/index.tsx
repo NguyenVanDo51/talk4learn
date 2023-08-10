@@ -1,5 +1,5 @@
-import { AppModal } from '@/components/level1/AppModal'
-import { AppNotifycation } from '@/components/level1/AppNotification'
+import { AppModal } from '@/components/level1/antd/AppModal'
+import { AppNotifycation } from '@/components/level1/antd/AppNotification'
 import { FeedbackService } from '@/service/feedback/index.service'
 import { Form } from 'antd'
 import { useForm } from 'antd/es/form/Form'

@@ -6,12 +6,14 @@ import { Inter } from 'next/font/google'
 import { ReduxProvider } from '@/redux/provider'
 import StyledComponentsRegistry from '../../lib/AntdRegistry'
 import { Analytics } from '@vercel/analytics/react'
+import Provider from '@/components/layout/Provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const title = 'RangaChat - Learn English through Conversations with AI'
+const title = 'Ranga - English AI Chatbot'
 const description =
   'Master English effortlessly with RangaChat. Practice language skills by chatting with our AI, making learning enjoyable and effective. Start now for fluency!'
+
 export const metadata: Metadata = {
   title,
   description,
@@ -99,13 +101,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className + ' dark'}>
-        <ReduxProvider>
-          <StyledComponentsRegistry>
-            <main className="flex h-[100vh] overflow-hidden">{children}</main>
-          </StyledComponentsRegistry>
-        </ReduxProvider>
+        <Provider>
+          <ReduxProvider>
+            <StyledComponentsRegistry>
+              <main className="flex h-[100vh] overflow-hidden">{children}</main>
+            </StyledComponentsRegistry>
+          </ReduxProvider>
+        </Provider>
+        <Analytics />
       </body>
-      <Analytics />
     </html>
   )
 }

@@ -1,5 +1,5 @@
 'use client'
-
+import { getServerSession } from 'next-auth/next'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Conversations } from './components/Conversation'
 import { InputBox } from './components/InputBox'

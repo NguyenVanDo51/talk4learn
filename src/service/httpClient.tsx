@@ -1,4 +1,4 @@
-import { AppNotifycation } from '@/components/level1/AppNotification'
+import { AppNotifycation } from '@/components/level1/antd/AppNotification'
 import { notification } from 'antd'
 import axios, { AxiosError, AxiosInstance } from 'axios'
 
