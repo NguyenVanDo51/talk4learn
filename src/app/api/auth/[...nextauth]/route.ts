@@ -3,7 +3,10 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+let prisma = null
+if (!prisma) {
+  prisma = new PrismaClient()
+}
 
 const authOptions: AuthOptions = {
   providers: [
@@ -18,7 +21,7 @@ const authOptions: AuthOptions = {
     // You can define your own encode/decode functions for signing and encryption
     // async encode() {},
     // async decode() {},
-  }
+  },
   // pages: {
   //   signIn: '/auth/signin',
   //   signOut: '/auth/signout',
