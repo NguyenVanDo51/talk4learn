@@ -11,7 +11,7 @@ const ContentSecurityPolicy = `
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['via.placeholder.com'],
+    domains: ['via.placeholder.com', 'authjs.dev'],
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
