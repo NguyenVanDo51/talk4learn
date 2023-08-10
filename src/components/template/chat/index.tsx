@@ -164,6 +164,8 @@ const AIChat = () => {
     if (newestMessage?.status !== 'error') {
       getAnswer()
     }
+
+    localStorage.setItem(LocalStorageKey.CHAT_HISTORY, JSON.stringify(messages))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
 
@@ -174,9 +176,9 @@ const AIChat = () => {
 
   useEffect(() => {
     const value = localStorage.getItem(LocalStorageKey.CHAT_SETTING)
-    if (!value) return
-
-    setSettings(JSON.parse(value))
+    // const msg = localStorage.getItem(LocalStorageKey.CHAT_HISTORY)
+    value && setSettings(JSON.parse(value))
+    // msg && setMessages(JSON.parse(msg))
   }, [])
 
   useEffect(() => {
