@@ -1,5 +1,5 @@
 import { AppButton, AppDeleteButton } from '@/components/level1/antd/AppButton'
-import { scrollToBottom } from '@/helpers/dom'
+import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
 import { IAIModel, IMessage } from '@/types/chat'
 import { Avatar, Spin } from 'antd'
@@ -35,7 +35,7 @@ export const Message: FC<IProps> = (props) => {
       }}
     >
       <div className="flex flex-col h-full">
-        <div className="grid grid-cols-12 gap-y-2 pb-4">
+        <div className="grid grid-cols-12 gap-y-2 pb-10">
           {initing ? (
             <div className="w-fit p-3">
               <Spin />
@@ -76,7 +76,7 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
   const contentArray = content.split(' ')
   const [text, setText] = useState(contentArray[0])
   const [type, setType] = useState(settings.type)
-  console.log('isLastItem', isLastItem)
+
   useEffect(() => {
     if (!isLastItem) {
       return
@@ -87,11 +87,18 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
 
       setText(contentArray.slice(0, index).join(' '))
       index++
-      scrollToBottom('#message-container')
+      scrollToBottom(ScrollSelecter.Message)
     }, 150)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const onChangeType = () => {
+    setType(type === 'text' ? 'voice' : 'text')
+    if (isLastItem) {
+      scrollToBottom(ScrollSelecter.Message)
+    }
+  }
 
   useEffect(() => {
     setType(settings.type)
@@ -124,7 +131,7 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
             )}
 
             <AppButton
-              onClick={() => setType(type === 'text' ? 'voice' : 'text')}
+              onClick={onChangeType}
               type="link"
               size="small"
               danger={false}

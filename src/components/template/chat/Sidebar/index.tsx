@@ -4,11 +4,12 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setIsOpenMenu } from '@/redux/slices/appSlice'
 import { AIModels } from '@/types/chat'
 import { Avatar, Divider, Drawer, Dropdown, Modal } from 'antd'
-import { Feedback } from '../items/feedback'
-import { About } from '../items/about'
+import { Feedback } from './feedback'
+import { About } from './about'
 import { signOut, useSession } from 'next-auth/react'
+import { APP_NAME } from '@/types/constants'
 
-const ConversationList = () => {
+const ChatSidebar = () => {
   const { data } = useSession()
 
   return (
@@ -76,10 +77,10 @@ export const Conversations = () => {
           isOpenMenu ? 'flex' : 'hidden'
         } lg:flex flex-col w-60 flex-shrink-0 h-full z-50 shadow-md border-r dark:border-dark-line`}
       >
-        <div className="flex items-center justify-center min-h-[54px] dark:bg-dark-active-main-bg">
+        <div className="flex gap-2 pl-3 items-center min-h-[54px] dark:bg-dark-active-main-bg">
           <Logo />
         </div>
-        <ConversationList />
+        <ChatSidebar />
       </div>
     )
   }
@@ -98,7 +99,7 @@ export const Conversations = () => {
         </div>
       }
     >
-      <ConversationList />
+      <ChatSidebar />
     </Drawer>
   )
 }

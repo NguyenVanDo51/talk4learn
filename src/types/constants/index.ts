@@ -4,4 +4,4 @@ export const LocalStorageKey = {
 
 }
 
-export const APP_NAME = 'RangaChat'
+export const APP_NAME = 'Ranga'

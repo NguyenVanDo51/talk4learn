@@ -7,12 +7,12 @@ import { ReduxProvider } from '@/redux/provider'
 import StyledComponentsRegistry from '../../lib/AntdRegistry'
 import { Analytics } from '@vercel/analytics/react'
 import Provider from '@/components/layout/Provider'
+import { APP_NAME } from '@/types/constants'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const title = 'Ranga - English AI Chatbot'
-const description =
-  'Master English effortlessly with RangaChat. Practice language skills by chatting with our AI, making learning enjoyable and effective. Start now for fluency!'
+const title = `${APP_NAME} - English AI Chatbot`
+const description = `Master English effortlessly with ${APP_NAME}. Practice language skills by chatting with our AI, making learning enjoyable and effective. Start now for fluency!`
 
 export const metadata: Metadata = {
   title,
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     title,
     description,
     url: 'https://rangachat.com/',
-    siteName: 'RangaChat',
+    siteName: APP_NAME,
     locale: 'en_US',
     type: 'website',
   },
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     siteId: '1467726470533754880',
     creator: '@Andy',
     creatorId: '1467726470533754880',
-    images: ['https://rangachat.com/logo.svg'],
+    images: ['https://rangachat.com/logo512.png'],
   },
   robots: {
     index: false,
@@ -75,12 +75,12 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/logo.svg',
-    shortcut: '/logo.svg',
-    apple: '/logo.svg',
+    icon: '/logo125.png',
+    shortcut: '/logo125.png',
+    apple: '/logo125.png',
     other: {
-      rel: '/logo.svg',
-      url: '/logo.svg',
+      rel: '/logo125.png',
+      url: '/logo125.png',
     },
   },
   themeColor: 'black',
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className + ' dark'}>
+      <body className={'dark ' + inter.className + ' vsc-initialized'}>
         <Provider>
           <ReduxProvider>
             <StyledComponentsRegistry>
