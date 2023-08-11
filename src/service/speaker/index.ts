@@ -1,25 +1,24 @@
+import { setTextSpeaking } from '@/redux/slices/appSlice'
+import store from '@/redux/store'
+import { Voices } from '@/types/constants/voices'
+
 class Speaker {
-  audio: any
-
-  constructor() {
-    if (typeof SpeechSynthesisUtterance !== 'undefined' && !this.audio) this.audio = new SpeechSynthesisUtterance()
+  cancel = () => {
+    store.dispatch(setTextSpeaking(''))
+    responsiveVoice.cancel()
   }
 
-  speak = (phrase: string, isVocabulary: boolean = true) => {
-    this.audio.text = isVocabulary
-      ? phrase
-          .replace(/(\()(.*)(\))/, '')
-          .replace(/(\[)(.*)(\])/, '')
-          .replaceAll('  ', '')
-      : phrase
-    window.speechSynthesis.speak(this.audio)
-  }
-
-  startSpeak = (phrase: string, isVocabulary: boolean = true) => {
-    this.speak(phrase, isVocabulary)
-  }
-
-  stopSpeak = () => {
-    window.speechSynthesis.cancel()
+  speak = (text: string, voice = Voices.Default, options: ResponsiveVoiceOption = {}) => {
+    responsiveVoice.speak(text, voice, {
+      ...options,
+      onstart: () => {
+        store.dispatch(setTextSpeaking(text))
+      },
+      onend: () => {
+        store.dispatch(setTextSpeaking(''))
+      },
+    })
   }
 }
+
+export const SpeakerService = new Speaker()

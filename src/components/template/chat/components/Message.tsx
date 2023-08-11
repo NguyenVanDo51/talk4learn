@@ -1,12 +1,14 @@
 import { AppButton, AppDeleteButton } from '@/components/level1/antd/AppButton'
 import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
-import { IAIModel, IMessage } from '@/types/chat'
+import { IMessage } from '@/types/chat'
 import { Avatar, Spin } from 'antd'
 import { FC, memo, useEffect, useState } from 'react'
 import { IChatSetting } from '..'
 import { AudioPlayer } from '@/components/level1/AudioPlayer'
 import { useSession } from 'next-auth/react'
+import { IAIModel } from '@/types/chat/models'
+import { SpeakerService } from '@/service/speaker'
 
 interface IProps {
   isSending: boolean
@@ -27,6 +29,9 @@ export const Message: FC<IProps> = (props) => {
 
   const inputHeight = settings.inputType === 'voice' ? 160 : 135
   const { data } = useSession()
+  const readText = (text: string) => {
+    SpeakerService.speak(text)
+  }
 
   return (
     <div
@@ -47,6 +52,7 @@ export const Message: FC<IProps> = (props) => {
               message.role === 'assistant' ? (
                 <LeftMessage
                   {...props}
+                  readText={readText}
                   message={message}
                   isLastItem={messages.at(-1)?.id === message.id}
                   key={message.id || `msg_${index}`}
@@ -77,32 +83,33 @@ export const Message: FC<IProps> = (props) => {
 interface LeftMessageProps extends IProps {
   message: IMessage
   isLastItem: boolean
+  readText: (text: string) => void
 }
 
-const LeftMessage = memo(function LeftMessage({ message, model, settings, isLastItem }: LeftMessageProps) {
+const LeftMessage = memo(function LeftMessage({ message, model, settings, isLastItem, readText }: LeftMessageProps) {
   const { content } = message
   const contentArray = content.split(' ')
-  const [text, setText] = useState(contentArray[0])
+  // const [text, setText] = useState(contentArray[0])
   const [type, setType] = useState(settings.type)
 
-  useEffect(() => {
-    if (!isLastItem) {
-      return
-    }
-    let index = 2
-    let interval = setInterval(() => {
-      if (index > contentArray.length) clearInterval(interval)
+  // useEffect(() => {
+  //   if (!isLastItem) {
+  //     return
+  //   }
+  //   let index = 2
+  //   let interval = setInterval(() => {
+  //     if (index > contentArray.length) clearInterval(interval)
 
-      setText(contentArray.slice(0, index).join(' '))
-      index++
-      scrollToBottom(ScrollSelecter.Message)
-    }, 150)
+  //     setText(contentArray.slice(0, index).join(' '))
+  //     index++
+  //   }, 150)
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   const onChangeType = () => {
     setType(type === 'text' ? 'voice' : 'text')
+    SpeakerService.cancel()
     if (isLastItem) {
       scrollToBottom(ScrollSelecter.Message)
     }
@@ -124,7 +131,7 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
             {type === 'voice' ? (
               <AudioPlayer text={content} />
             ) : (
-              <div className="py-1">{isLastItem ? text : content}</div>
+              <div className="py-1">{content}</div>
             )}
           </div>
 

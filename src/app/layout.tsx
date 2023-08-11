@@ -8,6 +8,7 @@ import StyledComponentsRegistry from '../../lib/AntdRegistry'
 import { Analytics } from '@vercel/analytics/react'
 import Provider from '@/components/layout/Provider'
 import { APP_NAME } from '@/types/constants'
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -73,7 +74,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  
+
   icons: {
     icon: '/logo125.png',
     shortcut: '/logo125.png',
@@ -101,6 +102,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={'dark ' + inter.className + ' vsc-initialized'}>
+        {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
+        <Script
+          strategy="beforeInteractive"
+          src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
+        ></Script>
+        
         <Provider>
           <ReduxProvider>
             <StyledComponentsRegistry>
@@ -109,6 +116,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ReduxProvider>
         </Provider>
         <Analytics />
+        {/* <Script strategy='lazyOnload' src="https://code.responsivevoice.org/responsivevoice.js"></Script> */}
       </body>
     </html>
   )

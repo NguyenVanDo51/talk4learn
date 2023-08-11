@@ -2,11 +2,11 @@ import { Logo } from '@/components/level1/Logo'
 import { useDimention } from '@/hooks/helpers/useDimention'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setIsOpenMenu } from '@/redux/slices/appSlice'
-import { AIModels } from '@/types/chat'
 import { Avatar, Divider, Drawer, Dropdown } from 'antd'
 import { Feedback } from './feedback'
 import { About } from './about'
 import { signOut, useSession } from 'next-auth/react'
+import { AIModels } from '@/types/chat/models'
 
 const ChatSidebar = () => {
   const { data } = useSession()
@@ -19,7 +19,7 @@ const ChatSidebar = () => {
             key={model.id}
             className="flex flex-row items-center  hover:bg-gray-100 dark:bg-dark-primary px-4 py-3"
           >
-            <Avatar>{model.name.at(0)}</Avatar>
+            <Avatar src={model.avatar}>{model.name.at(0)}</Avatar>
             <div className="ml-3 text-sm font-semibold">{model.name}</div>
           </button>
         ))}

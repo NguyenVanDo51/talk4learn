@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Conversations } from './Sidebar'
 import { InputBox } from './components/InputBox'
 import { Message } from './components/Message'
-import { AIModels, IAIModel, IMessage, initialConversation } from '@/types/chat'
+import { IMessage, initialConversation } from '@/types/chat'
 import { SendMessageBody } from '@/service/chat/request'
 import { ChatService } from '@/service/chat/index.service'
 import { OpenAIMessgaeResponse } from '@/service/chat/response'
@@ -15,9 +15,10 @@ import { LocalStorageKey } from '@/types/constants'
 import { ConfigProvider } from 'antd'
 import { darkTheme } from '@/theme/themeConfig'
 import { Header } from './components/Header'
-import { useSpeech } from '@/hooks/helpers/useSpeech'
 import { useDimention } from '@/hooks/helpers/useDimention'
 import { v4 } from 'uuid'
+import { IAIModel, AIModels } from '@/types/chat/models'
+import { SpeakerService } from '@/service/speaker'
 
 export interface IChatSetting {
   type: 'text' | 'voice'
@@ -45,7 +46,6 @@ const AIChat = () => {
   const [analystedMessages, setAnalystMessages] = useState<IAnalystMessage[]>([])
   const { isShowAnalyst } = settings
   const { isDesktop } = useDimention()
-  useSpeech()
 
   const analystedMessageIds = useMemo(() => {
     return analystedMessages.filter((m) => !!m.comment).map((m) => m.id)
@@ -83,7 +83,7 @@ const AIChat = () => {
     ChatService.sendMessage(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const messageResponse = res.data?.choices[0]?.message.content
-        speak(messageResponse)
+        SpeakerService.speak(messageResponse)
 
         newMesages[messages.length - 1].status = 'success'
         newMesages.push({ id: v4(), role: 'assistant', content: messageResponse })
@@ -103,7 +103,6 @@ const AIChat = () => {
   // TODO: thêm clear all phân tích
   const handleAnalyst = useCallback(() => {
     const message = messages.at(-2)
-    console.log('me', message, analystedMessages, analystedMessageIds)
     if (!message || isGettingComment || analystedMessageIds.includes(message.id)) return
 
     setIsGettingComment(true)
@@ -129,8 +128,6 @@ const AIChat = () => {
     ChatService.checkGrammar(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const comment = res.data?.choices[0]?.message.content
-          .replaceAll(`AndyStrongBome's`, 'your')
-          .replaceAll('AndyStrongBome', 'You')
         newAnalystedMessages.at(-1)!.comment = comment
         newAnalystedMessages.at(-1)!.status = 'success'
         setAnalystMessages(newAnalystedMessages)
@@ -149,11 +146,7 @@ const AIChat = () => {
   const newestMessage = messages.at(-1)
 
   useEffect(() => {
-    if (
-      userNewestMessage &&
-      userNewestMessage?.role === 'user' &&
-      userNewestMessage.status === 'success'
-    ) {
+    if (userNewestMessage && userNewestMessage?.role === 'user' && userNewestMessage.status === 'success') {
       if (isDesktop) {
         if (isShowAnalyst) handleAnalyst()
       } else {
@@ -165,7 +158,7 @@ const AIChat = () => {
       getAnswer()
     }
 
-    if (messages.length > 1) {
+    if (messages.length > 0) {
       localStorage.setItem(LocalStorageKey.CHAT_HISTORY, JSON.stringify(messages))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

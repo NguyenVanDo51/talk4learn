@@ -1,7 +1,6 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { IAppSlice, setTextSpeaking } from '@/redux/slices/appSlice'
-import { uniqueId } from 'lodash'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useAppSelector } from '@/hooks/redux'
+import { SpeakerService } from '@/service/speaker'
+import { useEffect, useMemo } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 interface IProps {
   text: string
@@ -12,28 +11,22 @@ export interface IAudioPlayerRef {
 }
 
 export const AudioPlayer = ({ text }: IProps) => {
-  const dispatch = useAppDispatch()
   const textSpeaking = useAppSelector((state) => state.app.textSpeaking)
-
   const isPlaying = useMemo(() => text === textSpeaking, [textSpeaking, text])
-
-  const setGlobalPlayingState = useCallback(
-    (value: IAppSlice['textSpeaking']) => {
-      dispatch(setTextSpeaking(value))
-    },
-    [dispatch]
-  )
+  console.log('textSpeaking', textSpeaking)
 
   const onClick = () => {
     if (isPlaying) {
-      setGlobalPlayingState(null)
+      SpeakerService.cancel()
     } else {
-      setGlobalPlayingState(text)
+      SpeakerService.speak(text)
     }
   }
 
   useEffect(() => {
-    setGlobalPlayingState(text)
+    // SpeakerService.speak(text)
+
+    return () => SpeakerService.cancel()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
