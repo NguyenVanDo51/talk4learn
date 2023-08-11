@@ -41,8 +41,6 @@ export const metadata: Metadata = {
     canonical: '/',
     languages: {
       'en-US': '/en-US',
-      'en-UK': '/en-GB',
-      'vi-VN': '/vi-VN',
     },
   },
   metadataBase: new URL('https://rangachat.com/'),
