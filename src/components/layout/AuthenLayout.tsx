@@ -18,7 +18,7 @@ export const AuthenLayout = ({ children }: any) => {
         title={
           <div>
             <Logo />
-            <p className="text-md lg:text-lg mt-2">
+            <p className="text-md lg:text-lg mt-4">
               Practice English, improve grammar, and enhance your skills with Ranga, the AI-powered chatbot.
             </p>
           </div>
