@@ -3,11 +3,10 @@ import { useDimention } from '@/hooks/helpers/useDimention'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setIsOpenMenu } from '@/redux/slices/appSlice'
 import { AIModels } from '@/types/chat'
-import { Avatar, Divider, Drawer, Dropdown, Modal } from 'antd'
+import { Avatar, Divider, Drawer, Dropdown } from 'antd'
 import { Feedback } from './feedback'
 import { About } from './about'
 import { signOut, useSession } from 'next-auth/react'
-import { APP_NAME } from '@/types/constants'
 
 const ChatSidebar = () => {
   const { data } = useSession()
