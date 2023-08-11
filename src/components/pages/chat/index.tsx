@@ -15,3 +15,9 @@ export default function AIChatPage() {
     </AuthenLayout>
   )
 }
+
+export async function getServerSideProps({ res }: any) {
+  return {
+    props: {},
+  }
+}

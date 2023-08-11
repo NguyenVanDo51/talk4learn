@@ -41,7 +41,8 @@ export const metadata: Metadata = {
     canonical: '/',
     languages: {
       'en-US': '/en-US',
-      'en-UK': '/en-UK',
+      'en-UK': '/en-GB',
+      'vi-VN': '/vi-VN',
     },
   },
   metadataBase: new URL('https://rangachat.com/'),
@@ -62,18 +63,19 @@ export const metadata: Metadata = {
     images: ['https://rangachat.com/logo.svg'],
   },
   robots: {
-    index: false,
+    index: true,
     follow: true,
     nocache: true,
     googleBot: {
       index: true,
-      follow: false,
+      follow: true,
       noimageindex: true,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
   },
+  
   icons: {
     icon: '/logo.svg',
     shortcut: '/logo.svg',
