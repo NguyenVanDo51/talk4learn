@@ -1,6 +1,7 @@
 import { useSession, signIn } from 'next-auth/react'
 import { LoadingScreen } from '../level1/Loading'
 import { AppModal } from '../level1/antd/AppModal'
+import { Logo } from '../level1/Logo'
 
 export const AuthenLayout = ({ children }: any) => {
   const { status } = useSession()
@@ -14,9 +15,17 @@ export const AuthenLayout = ({ children }: any) => {
       <AppModal
         open={status === 'unauthenticated'}
         footer={null}
-        title={<h2 className="text-lg">Welcome back, please login to continue</h2>}
+        title={
+          <div>
+            <Logo />
+            <p className="text-md lg:text-lg mt-4">
+              Practice English, improve grammar, and enhance your skills with Ranga, the AI-powered chatbot.
+            </p>
+          </div>
+        }
         closable={false}
       >
+        <h2 className="text-md lg:text-lg mb-3 lg:mb-5">Welcome back, please login to continue: </h2>
         <div className="w-full flex items-center justify-center">
           <button
             onClick={() => signIn('google')}

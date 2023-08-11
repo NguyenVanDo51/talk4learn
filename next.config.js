@@ -16,6 +16,14 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
+  redirects: async () => [
+    {
+      source: '/:path*',
+      has: [{ type: 'host', value: 'www.rangachat.com' }],
+      destination: 'https://rangachat.com/:path*',
+      permanent: true
+    }
+  ],
   async headers() {
     return [
       {

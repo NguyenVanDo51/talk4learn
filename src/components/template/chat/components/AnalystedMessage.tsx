@@ -120,7 +120,7 @@ export const AnalyistedMessage: FC<IProps> = ({
     return (
       <div className="col-start-8 col-end-13 border-l dark:border-dark-line">
         <div className="grid w-full">
-          <div className="font-bold flex justify-center items-center h-[54px] dark:bg-dark-active-main-bg">Comment</div>
+          <div className="font-bold flex justify-center items-center h-[54px] dark:bg-dark-active-main-bg">Grammar check</div>
           {renderContent()}
         </div>
       </div>

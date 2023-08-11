@@ -11,8 +11,8 @@ import { APP_NAME } from '@/types/constants'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const title = `${APP_NAME} - English AI Chatbot`
-const description = `Master English effortlessly with ${APP_NAME}. Practice language skills by chatting with our AI, making learning enjoyable and effective. Start now for fluency!`
+const title = `${APP_NAME} - English Learning with AI Chatbot`
+const description = `Practice English, improve grammar, and enhance your skills with Ranga, the AI-powered chatbot.`
 
 export const metadata: Metadata = {
   title,
@@ -41,7 +41,6 @@ export const metadata: Metadata = {
     canonical: '/',
     languages: {
       'en-US': '/en-US',
-      'en-UK': '/en-UK',
     },
   },
   metadataBase: new URL('https://rangachat.com/'),
@@ -62,18 +61,19 @@ export const metadata: Metadata = {
     images: ['https://rangachat.com/logo512.png'],
   },
   robots: {
-    index: false,
+    index: true,
     follow: true,
     nocache: true,
     googleBot: {
       index: true,
-      follow: false,
+      follow: true,
       noimageindex: true,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
   },
+  
   icons: {
     icon: '/logo125.png',
     shortcut: '/logo125.png',
