@@ -1,11 +1,12 @@
 import { AppButton, AppDeleteButton } from '@/components/level1/antd/AppButton'
-import { scrollToBottom } from '@/helpers/dom'
+import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 import { speak } from '@/helps/speech'
 import { IAIModel, IMessage } from '@/types/chat'
 import { Avatar, Spin } from 'antd'
 import { FC, memo, useEffect, useState } from 'react'
 import { IChatSetting } from '..'
 import { AudioPlayer } from '@/components/level1/AudioPlayer'
+import { useSession } from 'next-auth/react'
 
 interface IProps {
   isSending: boolean
@@ -25,6 +26,7 @@ export const Message: FC<IProps> = (props) => {
   }
 
   const inputHeight = settings.inputType === 'voice' ? 160 : 135
+  const { data } = useSession()
 
   return (
     <div
@@ -35,7 +37,7 @@ export const Message: FC<IProps> = (props) => {
       }}
     >
       <div className="flex flex-col h-full">
-        <div className="grid grid-cols-12 gap-y-2 pb-4">
+        <div className="grid grid-cols-12 gap-y-2 pb-10">
           {initing ? (
             <div className="w-fit p-3">
               <Spin />
@@ -50,7 +52,13 @@ export const Message: FC<IProps> = (props) => {
                   key={message.id || `msg_${index}`}
                 />
               ) : (
-                <RightMessage key={`msg_${index}`} {...props} message={message} reStart={() => reStart(index)} />
+                <RightMessage
+                  key={`msg_${index}`}
+                  {...props}
+                  avatar={data?.user?.image}
+                  message={message}
+                  reStart={() => reStart(index)}
+                />
               )
             )
           )}
@@ -76,7 +84,7 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
   const contentArray = content.split(' ')
   const [text, setText] = useState(contentArray[0])
   const [type, setType] = useState(settings.type)
-  console.log('isLastItem', isLastItem)
+
   useEffect(() => {
     if (!isLastItem) {
       return
@@ -87,11 +95,18 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
 
       setText(contentArray.slice(0, index).join(' '))
       index++
-      scrollToBottom('#message-container')
+      scrollToBottom(ScrollSelecter.Message)
     }, 150)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const onChangeType = () => {
+    setType(type === 'text' ? 'voice' : 'text')
+    if (isLastItem) {
+      scrollToBottom(ScrollSelecter.Message)
+    }
+  }
 
   useEffect(() => {
     setType(settings.type)
@@ -124,7 +139,7 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
             )}
 
             <AppButton
-              onClick={() => setType(type === 'text' ? 'voice' : 'text')}
+              onClick={onChangeType}
               type="link"
               size="small"
               danger={false}
@@ -139,16 +154,14 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
 
 interface RightMessageProps extends IProps {
   message: IMessage
+  avatar: string | null | undefined
   reStart: () => void
 }
 
-const RightMessage = memo(function RightMessage({ message, reStart, reSend }: RightMessageProps) {
+const RightMessage = memo(function RightMessage({ message, avatar, reStart, reSend }: RightMessageProps) {
   return (
     <div className="col-start-2 col-end-13 p-1 rounded-lg  message-item" id={message.id}>
       <div className="flex items-center gap-3 justify-start  flex-row-reverse">
-        <Avatar size={'default'} className="min-w-[32px] bg-green-500">
-          U
-        </Avatar>
         <div className="relative text-sm bg-indigo-100 dark:bg-dark-primary py-2 px-4 shadow rounded-3xl">
           <div>{message.content}</div>
         </div>

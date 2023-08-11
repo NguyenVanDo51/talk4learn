@@ -26,35 +26,32 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   const [message, setMessage] = useState('')
   const [isRecording, setIsRecording] = useState(false)
   const [recording, setRecording] = useState<string>()
-  const [inited, setInited] = useState(false)
+  const [granted, setGranted] = useState(false)
 
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
 
   const requestAccessMicro = () => {
-    getUserMedia({ audio: true })
-      .then((stream: any) => {
-        rec = new MediaRecorder(stream)
-        rec.ondataavailable = (e: any) => {
-          audioChunks = []
-          audioChunks.push(e.data)
-          if (rec.state == 'inactive') {
-            let blob = new Blob(audioChunks, { type: 'audio/mp3' })
-            setRecording(URL.createObjectURL(blob))
-          }
+    return getUserMedia({ audio: true }).then((stream: any) => {
+      console.log('request')
+      rec = new MediaRecorder(stream)
+      rec.ondataavailable = (e: any) => {
+        audioChunks = []
+        audioChunks.push(e.data)
+        if (rec.state == 'inactive') {
+          let blob = new Blob(audioChunks, { type: 'audio/mp3' })
+          setRecording(URL.createObjectURL(blob))
         }
-        setInited(true)
-      })
-      .catch(() => {
-        setInited(false)
-      })
+      }
+      setGranted(true)
+      return rec
+    })
   }
 
   const handleRecord = () => {
     if (!rec) {
-      AppNotifycation.error({
-        message: 'Can not connect to the microphone. Please allow the application access to your microphone.',
+      requestAccessMicro().then(() => {
+        handleRecord()
       })
-      requestAccessMicro()
       return
     }
 
@@ -85,12 +82,10 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   }
 
   useEffect(() => {
-    if (!recognition || !inited) return
+    if (!recognition) return
 
     recognition.onresult = (event: { results: SpeechRecognitionResultList }) => {
-      if (rec) {
-        rec.stop()
-      }
+      rec?.stop()
       const speechToText = event.results[0][0].transcript
       setIsRecording(false)
       if (speechToText) {
@@ -105,7 +100,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
       recognition.stop()
       rec?.stop()
     }
-  }, [inited])
+  }, [granted])
 
   useEffect(() => {
     if (message && recording && type === 'voice') {

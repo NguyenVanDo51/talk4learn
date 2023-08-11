@@ -8,7 +8,6 @@ export function middleware(req: NextRequest) {
   // return new NextResponse('Invalid client', {
   //   status: 400,
   // })
-  console.log('pathname', pathname)
 }
 
 // See "Matching Paths" below to learn more

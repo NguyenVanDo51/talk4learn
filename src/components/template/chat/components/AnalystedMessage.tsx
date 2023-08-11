@@ -4,7 +4,7 @@ import { IAnalystMessage } from '..'
 import { AppButton } from '@/components/level1/antd/AppButton'
 import { useDimention } from '@/hooks/helpers/useDimention'
 import { IMessage } from '@/types/chat'
-import { scrollToBottom } from '@/helpers/dom'
+import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 
 interface IProps {
   isGettingComment: boolean
@@ -31,7 +31,7 @@ export const AnalyistedMessage: FC<IProps> = ({
   }
 
   const messagesPasred = analystedMessages.map((m, index) => ({
-    key: m.id,
+    key: `${index}_${m.id}`,
     label: (
       <div className="flex justify-between gap-2">
         <span>{m.content}</span>
@@ -82,7 +82,7 @@ export const AnalyistedMessage: FC<IProps> = ({
   }))
 
   useEffect(() => {
-    scrollToBottom('#analyst')
+    scrollToBottom(ScrollSelecter.AnalystMessage)
     if (isGettingComment) return
     const newestMessage = analystedMessages.at(-1)
     if (newestMessage?.comment) {

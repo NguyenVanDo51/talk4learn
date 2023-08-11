@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Conversations } from './components/Conversation'
+import { Conversations } from './Sidebar'
 import { InputBox } from './components/InputBox'
 import { Message } from './components/Message'
 import { AIModels, IAIModel, IMessage, initialConversation } from '@/types/chat'
@@ -10,7 +10,7 @@ import { OpenAIMessgaeResponse } from '@/service/chat/response'
 import { AxiosResponse } from 'axios'
 import { speak } from '@/helps/speech'
 import { AnalyistedMessage } from './components/AnalystedMessage'
-import { scrollToBottom } from '@/helpers/dom'
+import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 import { LocalStorageKey } from '@/types/constants'
 import { ConfigProvider } from 'antd'
 import { darkTheme } from '@/theme/themeConfig'
@@ -48,13 +48,13 @@ const AIChat = () => {
   useSpeech()
 
   const analystedMessageIds = useMemo(() => {
-    return analystedMessages.filter((m) => !m.content).map((m) => m.id)
+    return analystedMessages.filter((m) => !!m.comment).map((m) => m.id)
   }, [analystedMessages])
 
   const sendMessage = (message: string, recorded?: string) => {
     if (!message || isWaiting) return
     setTimeout(() => {
-      scrollToBottom('#message-container')
+      scrollToBottom(ScrollSelecter.Message)
     }, 100)
 
     const messageObject: IMessage = {
@@ -100,8 +100,10 @@ const AIChat = () => {
     setSettings({ ...settings, isShowAnalyst: value })
   }
 
+  // TODO: thêm clear all phân tích
   const handleAnalyst = useCallback(() => {
     const message = messages.at(-2)
+    console.log('me', message, analystedMessages, analystedMessageIds)
     if (!message || isGettingComment || analystedMessageIds.includes(message.id)) return
 
     setIsGettingComment(true)
@@ -149,7 +151,6 @@ const AIChat = () => {
   useEffect(() => {
     if (
       userNewestMessage &&
-      // isShowAnalyst &&
       userNewestMessage?.role === 'user' &&
       userNewestMessage.status === 'success'
     ) {
@@ -171,10 +172,10 @@ const AIChat = () => {
   }, [messages])
 
   useEffect(() => {
-    scrollToBottom('#message-container')
+    scrollToBottom(ScrollSelecter.Message)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newestMessage])
-  console.log('messages', messages)
+
   useEffect(() => {
     const value = localStorage.getItem(LocalStorageKey.CHAT_SETTING)
     const msg = localStorage.getItem(LocalStorageKey.CHAT_HISTORY)

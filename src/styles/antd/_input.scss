@@ -5,6 +5,10 @@ input.ant-input-lg,
   padding-right: 16px;
 }
 
+.ant-input-affix-wrapper .ant-input-suffix {
+  margin-inline-start: 12px;
+}
+
 .dark {
   input::placeholder {
     color: rgb(107 114 128);

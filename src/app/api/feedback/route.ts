@@ -26,7 +26,6 @@ export async function POST() {
     const res = await db.collection('cities').doc('LA').set({ data: 'a' })
     return NextResponse.json(res)
   } catch (e) {
-    console.log('e', e)
     return NextResponse.json(e)
   }
 }

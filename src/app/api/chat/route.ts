@@ -1,6 +1,5 @@
 import { VIP_KEY } from '@/types/constants/openapikey'
 import { NextRequest, NextResponse } from 'next/server'
-import { getToken } from 'next-auth/jwt'
 import { withAuth } from '@/helpers/server-side'
 
 const { Configuration, OpenAIApi } = require('openai')
