@@ -7,11 +7,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Cypress run
+      - name: Build project
         uses: cypress-io/github-action@v5
         with:
-          runTest: false
           build: npm run build
+          runTest: false
 
       - name: Save build folder
         uses: actions/upload-artifact@v3
@@ -45,7 +45,7 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
           DATABASE_URL: postgres://default:uVkMg0qU6dmn@ep-royal-flower-94308348.us-east-1.postgres.vercel-storage.com:5432/verceldb
           GOOGLE_ID: 883604626685-ms65hqna3c0h4c6nh6nfap3ik2f9idsn.apps.googleusercontent.com"
           GOOGLE_SECRET: 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"
