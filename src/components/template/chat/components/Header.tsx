@@ -1,11 +1,11 @@
 import { AppButton } from '@/components/level1/antd/AppButton'
 import { FC, MutableRefObject, useRef } from 'react'
 import { ISettingRef, SettingModal } from './SettingModal'
-import { IAIModel } from '@/types/chat'
 import { IChatSetting } from '..'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setIsOpenMenu } from '@/redux/slices/appSlice'
 import { Avatar } from 'antd'
+import { IAIModel } from '@/types/chat/models'
 
 interface IProps {
   model: IAIModel
