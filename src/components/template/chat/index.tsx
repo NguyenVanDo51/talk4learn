@@ -51,7 +51,7 @@ const AIChat = () => {
   }, [analystedMessages])
 
   const sendMessage = (message: string, recorded?: string) => {
-    if (!message || isWaiting) return
+    if (!message.trim() || isWaiting) return
     setTimeout(() => {
       scrollToBottom(ScrollSelecter.Message)
     }, 100)
@@ -59,7 +59,7 @@ const AIChat = () => {
     const messageObject: IMessage = {
       id: v4(),
       role: 'user',
-      content: message,
+      content: message.trim(),
       recorded,
     }
     const newMesages: IMessage[] = [...messages, messageObject]
@@ -77,7 +77,10 @@ const AIChat = () => {
       { role: 'system', content: model.getDescription() },
       ...messages,
       userMessage,
-    ].map((message) => ({ role: message.role as SendMessageBody['role'], content: message.content }))
+    ].map((message) => ({
+      role: message.role as SendMessageBody['role'],
+      content: message.content.at(-1) !== '.' ? `${message.content}.` : message.content,
+    }))
 
     ChatService.sendMessage(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
@@ -137,7 +140,7 @@ const AIChat = () => {
       })
       .finally(() => setIsGettingComment(false))
   }, [analystedMessageIds, analystedMessages, isGettingComment, messages])
-
+  
   const reSend = () => {
     getAnswer()
   }

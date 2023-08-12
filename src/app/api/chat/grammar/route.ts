@@ -22,10 +22,14 @@ export async function POST(request: NextRequest) {
             role: 'system',
             content: `Review grammar errors in the message and assess whether the response is appropriate for the question, providing a concise explanation. If there are grammar errors, offer a corrected sentence.`,
           },
-          ...body.messages.map((m: SendMessageBody) => ({
+          ...body.messages.map(({ content, ...m }: SendMessageBody) => ({
             ...m,
-            content: `${m.content} \n Analyze whether my answer is reasonable?`,
-          })),
+            content: `${
+              /[a-z]/.test(content.trim().at(-1) as string)
+                ? content + "."
+                : content
+            } \n Analyze whether my answer is reasonable?`,
+          }))
         ],
         temperature: 0,
         max_tokens: 100,
