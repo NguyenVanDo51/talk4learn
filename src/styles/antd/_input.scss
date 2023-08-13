@@ -16,6 +16,9 @@ input.ant-input-lg,
   textarea::placeholder {
     color: rgb(107 114 128);
   }
+  .ant-select-single.ant-select-lg.ant-select-open .ant-select-selection-item {
+    color: rgb(107 114 128);
+  }
 
   .ant-input-affix-wrapper-focused, .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled) {
 

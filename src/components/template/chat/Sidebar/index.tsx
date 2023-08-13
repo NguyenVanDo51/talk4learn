@@ -7,6 +7,7 @@ import { Feedback } from './feedback'
 import { About } from './about'
 import { signOut, useSession } from 'next-auth/react'
 import { AIModels } from '@/types/chat/models'
+import { Settings } from './settings'
 
 const ChatSidebar = () => {
   const { data } = useSession()
@@ -26,6 +27,7 @@ const ChatSidebar = () => {
       </div>
       <div className="flex flex-col">
         <Divider className="m-0" />
+        <Settings />
         <About />
         <Feedback />
         <Dropdown

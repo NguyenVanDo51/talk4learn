@@ -1,11 +1,24 @@
+import { useEffect, useState } from 'react'
 import { useSession, signIn } from 'next-auth/react'
 import { LoadingScreen } from '../level1/Loading'
 import { AppModal } from '../level1/antd/AppModal'
 import { Logo } from '../level1/Logo'
+import { UserService } from '@/service/user/index.service'
 
 export const AuthenLayout = ({ children }: any) => {
-  const { status } = useSession()
-  if (status === 'loading') {
+  const { data, status } = useSession()
+  const [isLoading, setIsLoading] = useState(false)
+
+  // const getSettings = async () => {
+  //   await UserService.getSettings(data?.user?.email, () => setIsLoading(false))
+  // }
+
+  // useEffect(() => {
+  //   getSettings()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [data?.user?.email])
+
+  if (status === 'loading' || isLoading) {
     return <LoadingScreen />
   }
 

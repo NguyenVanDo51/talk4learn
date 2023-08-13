@@ -141,7 +141,7 @@ export const AnalyistedMessage: FC<IProps> = ({
 
   const title = (
     <div className="font-bold lg:px-3 flex justify-between items-center h-[54px] lg:dark:bg-dark-active-main-bg">
-      <span>Comments</span> {renderDeteteAll()}
+      <span>Grammar check</span> {renderDeteteAll()}
     </div>
   );
 

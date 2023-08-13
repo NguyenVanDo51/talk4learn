@@ -1,5 +1,6 @@
 import { withAuth } from '@/helpers/server-side'
 import { SendMessageBody } from '@/service/chat/request'
+import { SettingLangEnum, SettingLangMapping } from '@/service/user/request'
 import { VIP_KEY } from '@/types/constants/openapikey'
 import { NextRequest, NextResponse } from 'next/server'
 const { Configuration, OpenAIApi } = require('openai')
@@ -13,18 +14,20 @@ const openai = new OpenAIApi(configuration)
 export async function POST(request: NextRequest) {
   return withAuth(request, async () => {
     const body = await request.json()
+    const query = new URLSearchParams(request.url)
+    const lang: SettingLangEnum = (query.get('lang') as SettingLangEnum) || SettingLangEnum.EN
+
     const messages = [
       {
         role: 'system',
-        content:
-          'Bạn nhận một câu tiếng anh. Nhiệm vụ của bạn là giải thích ngắn gọn lỗi ngữ pháp của nó (nếu có). Phản hồi bằng tiếng việt.',
+        content: `Bạn nhận một câu tiếng anh. Nhiệm vụ của bạn là giải thích ngắn gọn lỗi ngữ pháp của nó (nếu có). Phản hồi bằng ${SettingLangMapping[lang]}.`,
       },
       ...body.messages.map(({ content, ...m }: SendMessageBody) => ({
         ...m,
         content: /[a-z]/.test(content.trim().at(-1) as string) ? content + '.' : content,
       })),
     ]
-    console.log('messages', messages)
+
     return openai
       .createChatCompletion({
         model: 'gpt-3.5-turbo',
