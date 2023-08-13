@@ -7,7 +7,7 @@ import { FC, memo, useEffect, useState } from 'react'
 import { IChatSetting } from '..'
 import { AudioPlayer } from '@/components/level1/AudioPlayer'
 import { useSession } from 'next-auth/react'
-import { IAIModel } from '@/types/chat/models'
+import { AIModels, IAIModel } from '@/types/chat/models'
 import { SpeakerService } from '@/service/speaker'
 
 interface IProps {
@@ -123,16 +123,10 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
     <>
       <div className="col-start-1 col-end-12 p-1 rounded-lg message-item" id={message.id}>
         <div className="flex gap-2 lg:gap-3 flex-row items-center">
-          <Avatar size={'default'} className="min-w-[32px] bg-indigo-400 dark:bg-slate-800">
-            {model.name.at(0)}
-          </Avatar>
+          <Avatar src={AIModels[0].avatar} size={'default'} className="min-w-[32px]"></Avatar>
 
-          <div className="text-sm bg-white dark:bg-slate-700 py-1 px-4 shadow rounded-3xl max-w-full overflow-hidden">
-            {type === 'voice' ? (
-              <AudioPlayer text={content} />
-            ) : (
-              <div className="py-1">{content}</div>
-            )}
+          <div className="text-sm bg-white dark:bg-slate-700 py-1 px-4 shadow rounded-3xl max-w-full overflow-hidden whitespace-break-spaces">
+            {type === 'voice' ? <AudioPlayer text={content} /> : <div className="py-1">{content}</div>}
           </div>
 
           <div className="message-actions flex items-center gap-2">
@@ -190,6 +184,7 @@ const RightMessage = memo(function RightMessage({ message, avatar, reStart, reSe
             {message.recorded && (
               <AppButton
                 onClick={() => {
+                  SpeakerService.cancel()
                   new Audio(message.recorded).play()
                 }}
                 size="small"

@@ -102,7 +102,6 @@ const AIChat = () => {
     setSettings({ ...settings, isShowAnalyst: value })
   }
 
-  // TODO: thêm clear all phân tích
   const handleAnalyst = useCallback(() => {
     const message = messages.at(-2)
     if (!message || isGettingComment || analystedMessageIds.includes(message.id)) return
@@ -114,7 +113,7 @@ const AIChat = () => {
     const bodyMessage: SendMessageBody[] = [
       {
         role: 'user',
-        content: `- ${messages[messageIndex - 1].content}\n - ${message.content}`,
+        content: message.content,
       },
     ]
 
