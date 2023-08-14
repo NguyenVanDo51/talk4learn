@@ -12,7 +12,7 @@ import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const title = `${APP_NAME} - English Learning with AI Chatbot`
+const title = `${APP_NAME} - Practice English with AI Chatbot`
 const description = `Practice English, improve grammar, and enhance your skills with Ranga, the AI-powered chatbot.`
 
 export const metadata: Metadata = {
