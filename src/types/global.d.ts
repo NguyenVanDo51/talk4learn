@@ -14,6 +14,7 @@ interface ResponsiveVoiceOption {
   getVoices?: () => unknown
   isPlaying?: () => boolean
 }
+
 interface ResponsiveVoice {
   version: '1.8.3'
   responsivevoices: [

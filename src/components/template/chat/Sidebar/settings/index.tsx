@@ -1,38 +1,24 @@
 import { AppModal } from '@/components/level1/antd/AppModal'
-import { AppNotifycation } from '@/components/level1/antd/AppNotification'
 import { AppSelect } from '@/components/level1/antd/AppSelect'
 import { useAppSelector } from '@/hooks/redux'
-import { FeedbackService } from '@/service/feedback/index.service'
 import { UserService } from '@/service/user/index.service'
 import { SettingLangEnum, SettingLangMapping } from '@/service/user/request'
-import { Form } from 'antd'
-import { useForm } from 'antd/es/form/Form'
-import { useSession } from 'next-auth/react'
+import { VoiceOptions } from '@/types/constants/voices'
+import { Button, Form, Spin } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 
-export const Settings = () => {
+export const Settings = function Setting() {
   const [open, setOpen] = useState<boolean>(false)
-  const [form] = useForm()
   const ref: any = useRef()
-  const { data } = useSession()
   const settings = useAppSelector((state) => state.setting)
+  const [loading, setLoading] = useState(false)
 
-  const onChangeSettings = (value: SettingLangEnum) => {
-    if (!data?.user?.email) return
-
-    UserService.changeSettings(data?.user?.email, {
+  const onChangeSettings = (value: SettingLangEnum, field: 'lang' | 'voice') => {
+    setLoading(true)
+    UserService.changeSettings({
       ...settings,
-      lang: value,
-    })
-  }
-
-  const onFinish = (values: any) => {
-    if (values.feedback) {
-      FeedbackService.send({ content: values.feedback })
-    }
-    AppNotifycation.success({ message: 'Thank you for your feedback.' })
-    form.resetFields()
-    setOpen(false)
+      [field]: value,
+    }).finally(() => setLoading(false))
   }
 
   useEffect(() => {
@@ -54,31 +40,47 @@ export const Settings = () => {
       <AppModal
         open={open}
         onCancel={() => setOpen(false)}
-        title="Submid feedback"
-        onOk={() => {
-          form.validateFields().then(onFinish)
-        }}
+        title="Settings"
+        footer={[
+          <Button key={'close'} onClick={() => setOpen(false)}>
+            Close
+          </Button>,
+        ]}
       >
-        <Form form={form}>
-          <Form.Item name="feedback" label="Grammar checking language">
-            <AppSelect
-              options={[
-                {
-                  label: SettingLangMapping[SettingLangEnum.EN],
-                  value: SettingLangEnum.EN,
-                },
-                {
-                  label: SettingLangMapping[SettingLangEnum.VI],
-                  value: SettingLangEnum.VI,
-                },
-              ]}
-              onChange={onChangeSettings}
-              defaultValue={SettingLangEnum.EN}
-              className="dark:bg-dark-main dark:text-white"
-              placeholder="Grammar checking language"
-            />
-          </Form.Item>
-        </Form>
+        <Spin spinning={loading}>
+          <Form labelCol={{ flex: '120px' }}>
+            <Form.Item label="Language">
+              <AppSelect
+                options={[
+                  {
+                    label: SettingLangMapping[SettingLangEnum.EN],
+                    value: SettingLangEnum.EN,
+                  },
+                  {
+                    label: SettingLangMapping[SettingLangEnum.VI],
+                    value: SettingLangEnum.VI,
+                  },
+                ]}
+                value={settings.lang}
+                onChange={(value) => onChangeSettings(value, 'lang')}
+                defaultValue={SettingLangEnum.EN}
+                className="dark:bg-dark-main dark:text-white"
+                placeholder="Language"
+              />
+            </Form.Item>
+
+            <Form.Item label="Voice">
+              <AppSelect
+                options={VoiceOptions}
+                value={settings.voice}
+                onChange={(value) => onChangeSettings(value, 'voice')}
+                defaultValue={SettingLangEnum.EN}
+                className="dark:bg-dark-main dark:text-white"
+                placeholder="Select Voice"
+              />
+            </Form.Item>
+          </Form>
+        </Spin>
       </AppModal>
     </>
   )

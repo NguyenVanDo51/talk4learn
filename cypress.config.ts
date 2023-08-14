@@ -12,8 +12,6 @@ export default defineConfig({
       config.env.username = process.env.USER_NAME
       config.env.BASE_URL = process.env.BASE_URL ?? "http://localhost:3000"
 
-      console.log('extended config.env with process.env.{FOO, BAR, USER_NAME}', process.env.BASE_URL )
-
       return config
     },
   },

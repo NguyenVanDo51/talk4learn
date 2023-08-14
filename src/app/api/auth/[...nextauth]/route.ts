@@ -8,7 +8,7 @@ if (!prisma) {
   prisma = new PrismaClient()
 }
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -16,16 +16,23 @@ const authOptions: AuthOptions = {
     }),
   ],
   adapter: PrismaAdapter(prisma),
-  jwt: {
-    maxAge: 60 * 60 * 24 * 30,
-    // You can define your own encode/decode functions for signing and encryption
-    // async encode() {},
-    // async decode() {},
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.uid
+      }
+      return session
+    },
+    jwt: async ({ user, token }) => {
+      if (user) {
+        token.uid = user.id
+      }
+      return token
+    },
   },
-  // pages: {
-  //   signIn: '/auth/signin',
-  //   signOut: '/auth/signout',
-  // },
+  session: {
+    strategy: 'jwt',
+  },
 }
 
 const handler = NextAuth(authOptions)

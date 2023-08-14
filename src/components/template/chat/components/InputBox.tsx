@@ -32,7 +32,6 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
 
   const requestAccessMicro = () => {
     return getUserMedia({ audio: true }).then((stream: any) => {
-      console.log('request')
       rec = new MediaRecorder(stream)
       rec.ondataavailable = (e: any) => {
         audioChunks = []

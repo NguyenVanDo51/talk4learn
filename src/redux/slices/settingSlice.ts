@@ -1,13 +1,17 @@
-import { IPayloadSetting, SettingLangEnum } from '@/service/user/request'
+import { SettingLangEnum } from '@/service/user/request'
+import { VoiceDefault, Voices } from '@/types/constants/voices'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-export interface ISetting extends IPayloadSetting {
+export interface ISetting {
   theme: 'dark' | 'light'
+  lang: SettingLangEnum
+  voice: string
 }
 
 const initialState: ISetting = {
   theme: 'dark',
   lang: SettingLangEnum.EN,
+  voice: VoiceDefault
 }
 
 export const settingSlice = createSlice({
@@ -18,7 +22,9 @@ export const settingSlice = createSlice({
       state.theme = action.payload
     },
     setSettings: (state, action: PayloadAction<ISetting>) => {
-      state = action.payload
+      state.theme = action.payload.theme
+      state.lang = action.payload.lang
+      state.voice = action.payload.voice
     },
   },
 })

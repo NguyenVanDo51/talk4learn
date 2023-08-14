@@ -13,7 +13,6 @@ export interface IAudioPlayerRef {
 export const AudioPlayer = ({ text }: IProps) => {
   const textSpeaking = useAppSelector((state) => state.app.textSpeaking)
   const isPlaying = useMemo(() => text === textSpeaking, [textSpeaking, text])
-  console.log('textSpeaking', textSpeaking)
 
   const onClick = () => {
     if (isPlaying) {

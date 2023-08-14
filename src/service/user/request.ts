@@ -8,6 +8,3 @@ export const SettingLangMapping: {[key in SettingLangEnum]: string} = {
   [SettingLangEnum.VI]: "Tiếng Việt"
 }
 
-export interface IPayloadSetting {
-  lang: SettingLangEnum
-}

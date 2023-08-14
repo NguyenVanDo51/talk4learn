@@ -85,7 +85,6 @@ export const AnalyistedMessage: FC<IProps> = ({
     scrollToBottom(ScrollSelecter.AnalystMessage);
     if (isGettingComment) return;
     const newestMessage = analystedMessages.at(-1);
-    console.log('newestMessage', newestMessage)
     if (newestMessage?.comment) {
       setActiveKey([newestMessage.id] as any);
     }

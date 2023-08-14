@@ -1,6 +1,6 @@
 import { SendMessageBody } from './request'
 import { httpClient } from '../httpClient'
-import store, { RootState } from '@/redux/store'
+import store from '@/redux/store'
 
 export class ChatService {
   static sendMessage = (messages: SendMessageBody[]) => {
@@ -13,7 +13,7 @@ export class ChatService {
 
   static checkGrammar = (messages: SendMessageBody[]) => {
     const settings = store.getState().setting
-    console.log(settings)
+    console.log('settings', settings)
     const bodyMessages = [...messages]
     if (bodyMessages.length > 12) {
       bodyMessages.splice(1, bodyMessages.length - 10)

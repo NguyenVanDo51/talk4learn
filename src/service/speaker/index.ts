@@ -1,6 +1,6 @@
 import { setTextSpeaking } from '@/redux/slices/appSlice'
 import store from '@/redux/store'
-import { Voices } from '@/types/constants/voices'
+import { VoiceDefault, Voices } from '@/types/constants/voices'
 
 class Speaker {
   cancel = () => {
@@ -8,8 +8,10 @@ class Speaker {
     responsiveVoice.cancel()
   }
 
-  speak = (text: string, voice = Voices.Default, options: ResponsiveVoiceOption = {}) => {
-    responsiveVoice.speak(text, voice, {
+  speak = (text: string, voice = VoiceDefault, options: ResponsiveVoiceOption = {}) => {
+    const voicename = store.getState().setting.voice
+    console.log('voicename', voicename, Voices[voicename])
+    responsiveVoice.speak(text, Voices[voicename] || VoiceDefault, {
       ...options,
       onstart: () => {
         store.dispatch(setTextSpeaking(text))

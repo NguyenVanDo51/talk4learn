@@ -1,9 +1,8 @@
-import { firestore } from '../firestore'
+import { httpClient } from '../httpClient'
 import { IPayloadSendFeedback } from './request'
-import { addDoc, collection } from 'firebase/firestore'
 
 export class FeedbackService {
   static send = (payload: IPayloadSendFeedback) => {
-    addDoc(collection(firestore, 'feedbacks'), payload)
+    return httpClient.post('/api/feedback', payload)
   }
 }

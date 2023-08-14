@@ -1,29 +1,12 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app'
-import { NextResponse } from 'next/server'
-import { getFirestore } from 'firebase/firestore'
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { firestore } from '@/service/firestore'
+import { addDoc, collection } from 'firebase/firestore'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: 'AIzaSyBKk1sRmYvgQM8MT2hMUAzbE62Wz6qb6JY',
-  authDomain: 'ranga-f82c6.firebaseapp.com',
-  projectId: 'ranga-f82c6',
-  storageBucket: 'ranga-f82c6.appspot.com',
-  messagingSenderId: '883604626685',
-  appId: '1:883604626685:web:bc4ab3c23820490ed8f294',
-  measurementId: 'G-069RCXW2E9',
-}
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig)
-
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const payload = request.json()
   try {
-    const db: any = getFirestore(app)
-    const res = await db.collection('cities').doc('LA').set({ data: 'a' })
-    return NextResponse.json(res)
+    const res = await addDoc(collection(firestore, 'feedbacks'), payload)
+    return new NextResponse(res.id)
   } catch (e) {
     return NextResponse.json(e)
   }

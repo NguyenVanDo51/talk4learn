@@ -1,30 +1,21 @@
-import { firestore } from '../firestore'
-import { doc, updateDoc, getDoc } from 'firebase/firestore'
-import { IPayloadSetting } from './request'
 import store from '@/redux/store'
-import { ISetting, defaultSettings, setSettings } from '@/redux/slices/settingSlice'
+import { ISetting, setSettings } from '@/redux/slices/settingSlice'
+import { httpClient } from '../httpClient'
 
 export class UserService {
-  static changeSettings = (userId: string, payload: IPayloadSetting) => {
-    const settingRef = doc(firestore, 'settings', userId)
-
-    updateDoc(settingRef, {
-      ...payload,
+  static changeSettings = async (payload: ISetting) => {
+    return httpClient.post('/api/user/settings', payload).then((res) => {
+      store.dispatch(setSettings(payload))
+      return res
     })
   }
 
-  static getSettings = async (userId: string | null | undefined, onDone = () => {}) => {
-    if (!userId) return
-
-    const settingRef = doc(firestore, 'settings', userId)
-    const settingSnap = await getDoc(settingRef)
-
-    if (settingSnap.exists()) {
-      store.dispatch(setSettings(settingSnap.data() as ISetting))
-    } else {
-      // docSnap.data() will be undefined in this case
-      UserService.changeSettings(userId, defaultSettings)
-    }
-    onDone()
+  static getSettings = async () => {
+    return httpClient.get('/api/user/settings').then((res) => {
+      if (res.data) {
+        store.dispatch(setSettings(res.data))
+      }
+      return res
+    })
   }
 }
