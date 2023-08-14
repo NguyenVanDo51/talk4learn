@@ -4,20 +4,15 @@ import { Logo } from '@/components/level1/Logo'
 import { APP_NAME } from '@/types/constants'
 import { getServerSession } from 'next-auth/next'
 import Image from 'next/image'
+import { redirect } from 'next/navigation'
 
-export async function getServerSideProps(context: any) {
-  // const session = await getServerSession(context.req, context.res, authOptions)
+const Introduction = async () => {
   const session = await getServerSession(authOptions)
-  console.log('session', session)
-  return {
-    props: {
-      session,
-    },
+  
+  if (session) {
+    redirect('/app')
   }
-}
 
-const Introduction = (props: any) => {
-  console.log('props', props)
   return (
     <>
       <header className="px-5 lg:px-[10vw] py-4 bg-black shadow-2xl mx-auto flex items-center justify-between">
