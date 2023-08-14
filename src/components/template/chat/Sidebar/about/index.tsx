@@ -1,20 +1,10 @@
 import { AppModal } from '@/components/level1/antd/AppModal'
-import { AppNotifycation } from '@/components/level1/antd/AppNotification'
-import { FeedbackService } from '@/service/feedback/index.service'
 import { APP_NAME } from '@/types/constants'
-import { useForm } from 'antd/es/form/Form'
+import { Button } from 'antd'
 import { useState } from 'react'
 
 export const About = () => {
   const [open, setOpen] = useState<boolean>(false)
-  const [form] = useForm()
-
-  const onFinish = (values: any) => {
-    if (values.feedback) {
-      FeedbackService.send({ content: values.feedback })
-    }
-    AppNotifycation.success({ message: 'Thank you for your feedback.' })
-  }
 
   return (
     <>
@@ -30,9 +20,11 @@ export const About = () => {
         open={open}
         onCancel={() => setOpen(false)}
         title={'About ' + APP_NAME}
-        onOk={() => {
-          form.validateFields().then(onFinish)
-        }}
+        footer={[
+          <Button key={'close'} onClick={() => setOpen(false)}>
+            Close
+          </Button>,
+        ]}
       >
         <span className="text-yellow-300"> Hello guys!</span>
         <br /> My name is Andy. I have experienced difficulties in learning English, especially without a practice
