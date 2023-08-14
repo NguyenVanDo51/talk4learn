@@ -16,16 +16,22 @@ export async function POST(req: NextRequest) {
   })
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   return withAuth(async (session) => {
     try {
       const data = await getDoc(doc(firestore, 'settings', session?.user?.email))
       if (data.exists()) {
         return NextResponse.json(data.data())
       }
-      await setDoc(doc(firestore, 'settings', session?.user?.email), defaultSettings)
-      return defaultSettings
+      try {
+        console.log('addDoc')
+        await setDoc(doc(firestore, 'settings', session?.user?.email), defaultSettings)
+      } catch (e) {
+        console.log('e1', e)
+      }
+      return NextResponse.json(defaultSettings)
     } catch (e) {
+      console.log('e', e)
       return NextResponse.json(e)
     }
   })

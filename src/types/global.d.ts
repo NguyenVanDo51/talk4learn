@@ -17,6 +17,7 @@ interface ResponsiveVoiceOption {
 
 interface ResponsiveVoice {
   version: '1.8.3'
+  setDefaultVoice: (voice: string) =>void
   responsivevoices: [
     {
       name: 'UK English Female'
