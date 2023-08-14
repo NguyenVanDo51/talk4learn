@@ -29,6 +29,9 @@ export const authOptions: AuthOptions = {
       }
       return token
     },
+    async redirect({ url, baseUrl }) {
+      return baseUrl + '/app'
+    },
   },
   session: {
     strategy: 'jwt',

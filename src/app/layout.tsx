@@ -111,7 +111,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Provider>
           <ReduxProvider>
             <StyledComponentsRegistry>
-              <main className="flex h-[100vh] overflow-hidden">{children}</main>
+              <main>{children}</main>
             </StyledComponentsRegistry>
           </ReduxProvider>
         </Provider>
