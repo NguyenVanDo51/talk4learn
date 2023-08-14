@@ -1,5 +1,5 @@
 import { SettingLangEnum } from '@/service/user/request'
-import { VoiceDefault, Voices } from '@/types/constants/voices'
+import { VoiceDefault } from '@/types/constants/voices'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 export interface ISetting {

@@ -27,8 +27,8 @@ export interface IChatSetting {
 }
 
 const settingDefault: IChatSetting = {
-  type: 'text',
-  inputType: 'text',
+  type: 'voice',
+  inputType: 'voice',
   style: 'formal',
   isShowAnalyst: false,
 }

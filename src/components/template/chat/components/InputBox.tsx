@@ -1,5 +1,5 @@
 'use client'
-import { AppButton } from '@/components/level1/antd/AppButton'
+import { AppButton, DebouncedButton } from '@/components/level1/antd/AppButton'
 import { AppInput } from '@/components/level1/antd/AppInput'
 import { getUserMedia } from '@/helpers/mp3'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
@@ -31,6 +31,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
 
   const requestAccessMicro = () => {
+    setGranted(false)
     return getUserMedia({ audio: true }).then((stream: any) => {
       rec = new MediaRecorder(stream)
       rec.ondataavailable = (e: any) => {
@@ -39,6 +40,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
         if (rec.state == 'inactive') {
           let blob = new Blob(audioChunks, { type: 'audio/mp3' })
           setRecording(URL.createObjectURL(blob))
+          recognition.stop()
         }
       }
       setGranted(true)
@@ -53,17 +55,23 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
       })
       return
     }
-
     if (isRecording) {
       recognition.stop()
       rec.stop()
     } else {
       setMessage('')
-      recognition.start()
-      rec.start()
+      try {
+        recognition.start()
+        rec.start()
+      } catch {
+        recognition.stop()
+        rec.stop()
+      }
     }
     setIsRecording(!isRecording)
   }
+
+  console.log('recognition', isRecording)
 
   const handleSendMessage = () => {
     if (isWaiting) return
@@ -123,14 +131,14 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
       {type === 'voice' ? (
         <div className="pr-5 flex gap-4 justify-center flex-grow items-center">
           {changeIcon}
-          <Button
+          <DebouncedButton
             onClick={handleRecord}
             className={`w-20 h-20 rounded-full flex items-center justify-center  ${
               isRecording ? 'bg-primary text-white shadow-lg' : 'bg-white dark:bg-black'
             }`}
           >
             <i className={`fa-solid fa-microphone text-3xl cursor-pointer ${isRecording ? 'text-white' : ''}`}></i>
-          </Button>
+          </DebouncedButton>
         </div>
       ) : (
         <>
