@@ -27,6 +27,12 @@ export const Settings = function Setting() {
     }, 200)
   }, [open])
 
+  const onClose = () => {
+    if (loading) return
+    
+    setOpen(false)
+  }
+
   return (
     <>
       <button
@@ -39,10 +45,10 @@ export const Settings = function Setting() {
 
       <AppModal
         open={open}
-        onCancel={() => setOpen(false)}
+        onCancel={onClose}
         title="Settings"
         footer={[
-          <Button key={'close'} onClick={() => setOpen(false)}>
+          <Button key={'close'} onClick={onClose} disabled={loading}>
             Close
           </Button>,
         ]}

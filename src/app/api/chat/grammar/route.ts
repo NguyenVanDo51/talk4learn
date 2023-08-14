@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const messages = [
       {
         role: 'system',
-        content: `Bạn nhận một câu tiếng anh. Nhiệm vụ của bạn là giải thích ngắn gọn lỗi ngữ pháp của nó (nếu có). Phản hồi bằng ${SettingLangMapping[lang]}. Nếu không có lỗi ngữ pháp thì trả lời là "NoError". `,
+        content: `Bạn nhận một câu tiếng anh. Nhiệm vụ của bạn là giải thích ngắn gọn lỗi ngữ pháp của nó (nếu có). Phản hồi bằng ${SettingLangMapping[lang]}. Nếu không có lỗi ngữ pháp thì trả lời là "Perfect". `,
       },
       ...body.messages.map(({ content, ...m }: SendMessageBody) => ({
         ...m,
