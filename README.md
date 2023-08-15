@@ -26,3 +26,4 @@ npx prisma migrate dev
 - Thêm tính năng phân tích lỗi ngữ pháp
 - Chấm điểm writting
 - bắt đầu lại cuộc trò chuyện với 1 chủ đề mới
+- xây dựng các tình huống
