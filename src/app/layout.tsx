@@ -56,7 +56,13 @@ export const metadata: Metadata = {
     siteName: APP_NAME,
     locale: 'en_US',
     type: 'website',
-    images: ['/mac-perview.png']
+    images: [
+      {
+        url: '/mac-perview.png',
+        width: 800,
+        height: 600,
+      },
+    ],
   },
   twitter: {
     title,
@@ -64,7 +70,13 @@ export const metadata: Metadata = {
     siteId: '1467726470533754880',
     creator: '@Andy',
     creatorId: '1467726470533754880',
-    images: ['/mac-perview.png'],
+    images: [
+      {
+        url: '/mac-perview.png',
+        width: 800,
+        height: 600,
+      },
+    ],
   },
   robots: {
     index: true,
@@ -94,6 +106,7 @@ export const metadata: Metadata = {
     initialScale: 1,
     maximumScale: 1,
   },
+  manifest: '/site.webmanifest',
   verification: {
     google: 'google',
     yandex: 'yandex',
