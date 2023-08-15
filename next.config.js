@@ -1,12 +1,6 @@
 const path = require('path')
-
-const ContentSecurityPolicy = `
-  default-src 'self';
-  script-src 'self';
-  child-src example.com;
-  style-src 'self' example.com;
-  font-src 'self';
-`
+const withPWA = require('next-pwa')
+const withPlugins = require('next-compose-plugins')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -26,4 +20,14 @@ const nextConfig = {
   ],
 }
 
-module.exports = nextConfig
+module.exports = withPlugins(
+  [
+    withPWA({
+      dest: 'public',
+      register: true,
+      skipWaiting: true,
+      disable: process.env.NODE_ENV === 'development',
+    }),
+  ],
+  nextConfig
+)
