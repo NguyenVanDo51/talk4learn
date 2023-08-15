@@ -18,10 +18,14 @@ const description = `Practice English, improve grammar, and enhance your skills 
 export const metadata: Metadata = {
   title,
   description,
-  generator: 'Andy510@gmail.com',
-  applicationName: 'Andy510@gmail.com',
+  generator: 'andy510@gmail.com',
+  applicationName: 'andy510@gmail.com',
   referrer: 'origin-when-cross-origin',
   keywords: [
+    'ranga',
+    'ranga ai',
+    'ranga chatbot',
+    'learn english',
     'english chating',
     'practice english with ai',
     'ai chat',
@@ -52,6 +56,7 @@ export const metadata: Metadata = {
     siteName: APP_NAME,
     locale: 'en_US',
     type: 'website',
+    images: ['/mac-perview.png']
   },
   twitter: {
     title,
@@ -59,7 +64,7 @@ export const metadata: Metadata = {
     siteId: '1467726470533754880',
     creator: '@Andy',
     creatorId: '1467726470533754880',
-    images: ['https://rangachat.com/logo512.png'],
+    images: ['/mac-perview.png'],
   },
   robots: {
     index: true,
@@ -74,7 +79,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-
   icons: {
     icon: '/logo125.png',
     shortcut: '/logo125.png',
