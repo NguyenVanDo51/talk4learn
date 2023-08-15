@@ -113,6 +113,9 @@ export const metadata: Metadata = {
     yahoo: 'yahoo',
   },
   category: 'education',
+  other: {
+    'shortcut icon': '/images/favicon.ico'
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
