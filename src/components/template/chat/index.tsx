@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Conversations } from './Sidebar'
+import { Conversations } from '../sidebar'
 import { InputBox } from './components/InputBox'
 import { Message } from './components/Message'
 import { IMessage, initialConversation } from '@/types/chat'
@@ -139,7 +139,7 @@ const AIChat = () => {
       })
       .finally(() => setIsGettingComment(false))
   }, [analystedMessageIds, analystedMessages, isGettingComment, messages])
-  
+
   const reSend = () => {
     getAnswer()
   }
@@ -184,62 +184,50 @@ const AIChat = () => {
   }, [settings])
 
   return (
-    <ConfigProvider theme={darkTheme}>
-      <div className="flex flex-grow h-screen antialiased shadow">
-        <div className="flex flex-row h-full w-full">
-          <Conversations />
-          <div className="flex flex-grow justify-center">
-            <div className="grid grid-cols-12 w-full">
-              <div
-                className={`col-start-1 col-end-13 ${
-                  isShowAnalyst ? 'lg:col-end-8' : 'lg:col-end-13'
-                } flex flex-grow flex-col`}
-              >
-                <Header
-                  model={model}
-                  settings={settings}
-                  isShowAnalyst={isShowAnalyst}
-                  setIsShowComment={setIsShowComment}
-                  setSettings={setSettings}
-                />
+    <div className="flex flex-grow justify-center">
+      <div className="grid grid-cols-12 w-full">
+        <div
+          className={`col-start-1 col-end-13 ${
+            isShowAnalyst ? 'lg:col-end-8' : 'lg:col-end-13'
+          } flex flex-grow flex-col`}
+        >
+          <Header
+            model={model}
+            settings={settings}
+            isShowAnalyst={isShowAnalyst}
+            setIsShowComment={setIsShowComment}
+            setSettings={setSettings}
+          />
 
-                <div className="grid h-full bg-gray-100 dark:bg-dark-main">
-                  <Message
-                    initing={initing}
-                    messages={messages}
-                    isSending={isWaiting}
-                    isGettingComment={isGettingComment}
-                    model={model}
-                    settings={settings}
-                    setMessages={setMessages}
-                    reSend={reSend}
-                  />
-                  {!initing && (
-                    <InputBox
-                      sendMessage={sendMessage}
-                      setSettings={setSettings}
-                      isWaiting={isWaiting}
-                      settings={settings}
-                    />
-                  )}
-                </div>
-              </div>
-
-              {!initing && (
-                <AnalyistedMessage
-                  isShowAnalyst={isShowAnalyst}
-                  isGettingComment={isGettingComment}
-                  analystedMessages={analystedMessages}
-                  setAnalystMessages={setAnalystMessages}
-                  setIsShowComment={setIsShowComment}
-                  handleAnalyst={handleAnalyst}
-                />
-              )}
-            </div>
+          <div className="grid h-full bg-gray-100 dark:bg-dark-main">
+            <Message
+              initing={initing}
+              messages={messages}
+              isSending={isWaiting}
+              isGettingComment={isGettingComment}
+              model={model}
+              settings={settings}
+              setMessages={setMessages}
+              reSend={reSend}
+            />
+            {!initing && (
+              <InputBox sendMessage={sendMessage} setSettings={setSettings} isWaiting={isWaiting} settings={settings} />
+            )}
           </div>
         </div>
+
+        {!initing && (
+          <AnalyistedMessage
+            isShowAnalyst={isShowAnalyst}
+            isGettingComment={isGettingComment}
+            analystedMessages={analystedMessages}
+            setAnalystMessages={setAnalystMessages}
+            setIsShowComment={setIsShowComment}
+            handleAnalyst={handleAnalyst}
+          />
+        )}
       </div>
-    </ConfigProvider>
+    </div>
   )
 }
 

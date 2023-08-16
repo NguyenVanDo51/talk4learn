@@ -1,9 +1,12 @@
-"use client"
+'use client'
 import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { LoadingScreen } from '../level1/Loading'
 import { UserService } from '@/service/user/index.service'
 import { useRouter } from 'next/navigation'
+import { darkTheme } from '@/theme/themeConfig'
+import { ConfigProvider } from 'antd'
+import { Conversations } from '../template/sidebar'
 
 export const AuthenLayout = ({ children }: any) => {
   const { data, status } = useSession()
@@ -27,5 +30,14 @@ export const AuthenLayout = ({ children }: any) => {
     return <LoadingScreen />
   }
 
-  return <div>{children}</div>
+  return (
+    <ConfigProvider theme={darkTheme}>
+      <div className="flex flex-grow h-screen">
+        <div className="flex flex-row h-full w-full">
+          <Conversations />
+          <div className="flex-grow">{children}</div>
+        </div>
+      </div>
+    </ConfigProvider>
+  )
 }

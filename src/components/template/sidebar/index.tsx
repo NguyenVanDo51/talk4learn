@@ -3,28 +3,40 @@ import { useDimention } from '@/hooks/helpers/useDimention'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setIsOpenMenu } from '@/redux/slices/appSlice'
 import { Avatar, Divider, Drawer, Dropdown } from 'antd'
-import { Feedback } from './feedback'
-import { About } from './about'
+import { Feedback } from './components/feedback'
+import { About } from './components/about'
 import { signOut, useSession } from 'next-auth/react'
 import { AIModels } from '@/types/chat/models'
-import { Settings } from './settings'
+import { Settings } from './components/settings'
+import { MenuItem } from './components/MenuItem'
+import { useRouter } from 'next/navigation'
 
 const ChatSidebar = () => {
   const { data } = useSession()
-
+  const router = useRouter()
   return (
     <div className="flex flex-col gap-3 overflow-y-auto pt-2 justify-between h-full">
       <div className="flex flex-col space-y-1">
         {AIModels.map((model) => (
-          <button
+          <MenuItem
             key={model.id}
-            className="flex flex-row items-center  hover:bg-gray-100 dark:bg-dark-primary px-4 py-3"
+            active
+            icon={
+              <Avatar src={model.avatar} size={28}>
+                {model.name.at(0)}
+              </Avatar>
+            }
+            onClick={() => router.push('/app')}
           >
-            <Avatar src={model.avatar}>{model.name.at(0)}</Avatar>
-            <div className="ml-3 text-sm font-semibold">{model.name}</div>
-          </button>
+            {model.name}
+          </MenuItem>
         ))}
+
+        <MenuItem iconClass="fa-regular fa-messages" onClick={() => router.push('/app/lessons')}>
+          Conversations
+        </MenuItem>
       </div>
+
       <div className="flex flex-col">
         <Divider className="m-0" />
         <Settings />

@@ -101,7 +101,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={'dark ' + inter.className + ' vsc-initialized'}>
+      <body className={'dark ' + inter.className}>
         {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
         <Script
           strategy="beforeInteractive"

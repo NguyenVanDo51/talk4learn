@@ -6,6 +6,7 @@ import { SettingLangEnum, SettingLangMapping } from '@/service/user/request'
 import { VoiceOptions } from '@/types/constants/voices'
 import { Button, Form, Spin } from 'antd'
 import { useEffect, useRef, useState } from 'react'
+import { MenuItem } from '../MenuItem'
 
 export const Settings = function Setting() {
   const [open, setOpen] = useState<boolean>(false)
@@ -29,19 +30,15 @@ export const Settings = function Setting() {
 
   const onClose = () => {
     if (loading) return
-    
+
     setOpen(false)
   }
 
   return (
     <>
-      <button
-        className="flex flex-row items-center hover:bg-gray-100 dark:hover:bg-dark-primary px-4 py-3"
-        onClick={() => setOpen(true)}
-      >
-        <i className="fa-regular fa-gear text-2xl"></i>
-        <div className="ml-3 text-sm font-semibold">Settings</div>
-      </button>
+      <MenuItem onClick={() => setOpen(true)} iconClass="fa-regular fa-gear">
+        Settings
+      </MenuItem>
 
       <AppModal
         open={open}
