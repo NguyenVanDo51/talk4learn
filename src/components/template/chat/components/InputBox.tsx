@@ -7,6 +7,9 @@ import { IChatSetting } from '..'
 import { Button } from 'antd'
 import { AppTooltip } from '@/components/level1/antd/AppTooltip'
 import { AppNotifycation } from '@/components/level1/antd/AppNotification'
+import { ISetting, setInputType } from '@/redux/slices/settingSlice'
+import { useAppSelector } from '@/hooks/redux'
+import { useDispatch } from 'react-redux'
 
 interface IProps {
   isWaiting: boolean
@@ -27,7 +30,14 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   const [isRecording, setIsRecording] = useState(false)
   const [recording, setRecording] = useState<string>()
   const [granted, setGranted] = useState(false)
+  const chatMode = useAppSelector((state) => state.setting.chatMode)
+  const inputType = useAppSelector((t) => t.setting.inputType)
 
+  const dispatch = useDispatch()
+
+  const changeInputType = (type: ISetting['inputType']) => {
+    dispatch(setInputType(type))
+  }
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
 
   const requestAccessMicro = () => {
@@ -71,8 +81,6 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
     setIsRecording(!isRecording)
   }
 
-  console.log('recognition', isRecording)
-
   const handleSendMessage = () => {
     if (isWaiting) return
 
@@ -83,10 +91,12 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
     setRecording('')
   }
 
-  const type = settings.inputType
-  const setType = (value: IChatSetting['inputType']) => {
-    setSettings({ ...settings, inputType: value })
-  }
+  const type = inputType
+
+  useEffect(() => {
+    changeInputType(chatMode)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatMode])
 
   useEffect(() => {
     if (!recognition) return
@@ -120,8 +130,10 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   const changeIcon = (
     <AppTooltip title="Change input type">
       <i
-        className="fa-solid fa-arrows-rotate cursor-pointer"
-        onClick={() => setType(type === 'text' ? 'voice' : 'text')}
+        className={
+          type === 'text' ? 'fa-solid fa-arrows-rotate cursor-pointer' : 'fa-regular fa-keyboard cursor-pointer'
+        }
+        onClick={() => changeInputType(type === 'text' ? 'voice' : 'text')}
       ></i>
     </AppTooltip>
   )

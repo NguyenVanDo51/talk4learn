@@ -9,20 +9,21 @@ import { signOut, useSession } from 'next-auth/react'
 import { AIModels } from '@/types/chat/models'
 import { Settings } from './components/settings'
 import { MenuItem } from './components/MenuItem'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 const ChatSidebar = () => {
   const { data } = useSession()
   const router = useRouter()
+  const pathname = usePathname()
   return (
-    <div className="flex flex-col gap-3 overflow-y-auto pt-2 justify-between h-full">
+    <div className="flex flex-col gap-3 overflow-y-auto justify-between h-full">
       <div className="flex flex-col space-y-1">
         {AIModels.map((model) => (
           <MenuItem
             key={model.id}
-            active
+            active={pathname === '/app'}
             icon={
-              <Avatar src={model.avatar} size={28}>
+              <Avatar src={model.avatar} size={24}>
                 {model.name.at(0)}
               </Avatar>
             }
@@ -31,51 +32,18 @@ const ChatSidebar = () => {
             {model.name}
           </MenuItem>
         ))}
-
-        <MenuItem iconClass="fa-regular fa-messages" onClick={() => router.push('/app/lessons')}>
-          Conversations
-        </MenuItem>
       </div>
 
       <div className="flex flex-col">
-        <Divider className="m-0" />
         <Settings />
         <About />
         <Feedback />
-        <Dropdown
-          className="p-0"
-          menu={{
-            items: [
-              {
-                key: '1',
-                label: (
-                  <button
-                    className="flex flex-row items-center hover:bg-gray-100 dark:bg-black dark:hover:bg-dark-primary w-full p-3"
-                    onClick={() => signOut()}
-                  >
-                    <i className="fa-regular fa-arrow-right-from-bracket text-2xl"></i>
-                    <div className="ml-3 text-sm font-semibold">Sign out</div>
-                  </button>
-                ),
-              },
-            ],
-          }}
-          trigger={['click']}
-        >
-          <button className="flex flex-row justify-between items-center hover:bg-gray-100 dark:hover:bg-dark-primary px-4 py-3">
-            <div className="flex items-center">
-              <Avatar src={data?.user?.image} />
-              <span className="ml-3 text-sm font-semibold">{data?.user?.name}</span>
-            </div>
-            <i className="fa-regular fa-ellipsis-stroke"></i>
-          </button>
-        </Dropdown>
       </div>
     </div>
   )
 }
 
-export const Conversations = () => {
+export const Sidebar = () => {
   const isOpenMenu = useAppSelector((state) => state.app.isOpenMenu)
   const dispatch = useAppDispatch()
   const { isDesktop } = useDimention()
@@ -85,14 +53,7 @@ export const Conversations = () => {
 
   if (isDesktop) {
     return (
-      <div
-        className={`${
-          isOpenMenu ? 'flex' : 'hidden'
-        } lg:flex flex-col w-60 flex-shrink-0 h-full z-50 shadow-md border-r dark:border-dark-line`}
-      >
-        <div className="flex gap-2 pl-3 items-center min-h-[54px] dark:bg-dark-active-main-bg">
-          <Logo />
-        </div>
+      <div className={`${isOpenMenu ? 'flex' : 'hidden'} lg:flex flex-col w-60 flex-shrink-0 h-full z-50`}>
         <ChatSidebar />
       </div>
     )

@@ -11,9 +11,9 @@ interface IProps {
 export const MenuItem: FC<IProps> = ({ children, icon, active, iconClass, onClick }) => {
   return (
     <button
-      className={`flex flex-row items-center h-[56px] ${
-        active ? 'dark:bg-dark-primary' : ''
-      } dark:hover:bg-dark-primary px-4 py-3`}
+      className={`flex rounded-full flex-row items-center py-2 ${
+        active ? 'dark:bg-[#3b3e45]' : ''
+      } dark:hover:bg-[#3b3e45] px-4`}
       onClick={onClick}
     >
       {iconClass ? <i className={`${iconClass} text-xl`}></i> : icon}

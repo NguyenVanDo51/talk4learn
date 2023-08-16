@@ -14,7 +14,7 @@ export const Settings = function Setting() {
   const settings = useAppSelector((state) => state.setting)
   const [loading, setLoading] = useState(false)
 
-  const onChangeSettings = (value: SettingLangEnum, field: 'lang' | 'voice') => {
+  const onChangeSettings = (value: SettingLangEnum, field: 'lang' | 'voice' | 'chatMode') => {
     setLoading(true)
     UserService.changeSettings({
       ...settings,
@@ -52,6 +52,19 @@ export const Settings = function Setting() {
       >
         <Spin spinning={loading}>
           <Form labelCol={{ flex: '120px' }}>
+            <Form.Item label="Voice">
+              <AppSelect
+                options={[
+                  { label: 'Voice', value: 'voice' },
+                  { label: 'Text', value: 'text' },
+                ]}
+                value={settings.chatMode}
+                onChange={(value) => onChangeSettings(value, 'chatMode')}
+                defaultValue={SettingLangEnum.EN}
+                className="dark:bg-dark-main dark:text-white"
+                placeholder="Select Voice"
+              />
+            </Form.Item>
             <Form.Item label="Language">
               <AppSelect
                 options={[

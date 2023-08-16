@@ -4,30 +4,32 @@ import { speak } from '@/helps/speech'
 import { IMessage } from '@/types/chat'
 import { Avatar, Spin } from 'antd'
 import { FC, memo, useEffect, useState } from 'react'
-import { IChatSetting } from '..'
 import { AudioPlayer } from '@/components/level1/AudioPlayer'
 import { useSession } from 'next-auth/react'
 import { AIModels, IAIModel } from '@/types/chat/models'
 import { SpeakerService } from '@/service/speaker'
+import { useAppSelector } from '@/hooks/redux'
+import { ISetting } from '@/redux/slices/settingSlice'
 
 interface IProps {
   isSending: boolean
   messages: IMessage[]
   isGettingComment: boolean
   model: IAIModel
-  settings: IChatSetting
   initing: boolean
   setMessages: (messages: IMessage[]) => void
   reSend: () => void
 }
 
 export const Message: FC<IProps> = (props) => {
-  const { messages, initing, isSending, setMessages, settings } = props
+  const { messages, initing, isSending, setMessages } = props
   const reStart = (index: number) => {
     setMessages(messages.slice(0, index))
   }
 
-  const inputHeight = settings.inputType === 'voice' ? 160 : 135
+  const inputType = useAppSelector((t) => t.setting.inputType)
+
+  const inputHeight = inputType === 'text' ? 100 : 135
   const { data } = useSession()
   const readText = (text: string) => {
     SpeakerService.speak(text)
@@ -38,10 +40,10 @@ export const Message: FC<IProps> = (props) => {
       className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden p-2 lg:p-3"
       id="message-container"
       style={{
-        height: `calc(100vh - ${inputHeight}px)`,
+        height: `calc(100vh - ${inputHeight + 52 + 16}px)`,
       }}
     >
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">
           {initing ? (
             <div className="w-fit p-3">
@@ -52,10 +54,11 @@ export const Message: FC<IProps> = (props) => {
               message.role === 'assistant' ? (
                 <LeftMessage
                   {...props}
+                  inputType={inputType}
                   readText={readText}
                   message={message}
                   isLastItem={messages.at(-1)?.id === message.id}
-                  key={message.id || `msg_${index}`}
+                  key={message.id ?? `msg_${index}`}
                 />
               ) : (
                 <RightMessage
@@ -83,29 +86,13 @@ export const Message: FC<IProps> = (props) => {
 interface LeftMessageProps extends IProps {
   message: IMessage
   isLastItem: boolean
+  inputType: ISetting['inputType']
   readText: (text: string) => void
 }
 
-const LeftMessage = memo(function LeftMessage({ message, model, settings, isLastItem, readText }: LeftMessageProps) {
+const LeftMessage = memo(function LeftMessage({ message, inputType, isLastItem, readText }: LeftMessageProps) {
   const { content } = message
-  const contentArray = content.split(' ')
-  // const [text, setText] = useState(contentArray[0])
-  const [type, setType] = useState(settings.type)
-
-  // useEffect(() => {
-  //   if (!isLastItem) {
-  //     return
-  //   }
-  //   let index = 2
-  //   let interval = setInterval(() => {
-  //     if (index > contentArray.length) clearInterval(interval)
-
-  //     setText(contentArray.slice(0, index).join(' '))
-  //     index++
-  //   }, 150)
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  const [type, setType] = useState(inputType)
 
   const onChangeType = () => {
     setType(type === 'text' ? 'voice' : 'text')
@@ -116,8 +103,8 @@ const LeftMessage = memo(function LeftMessage({ message, model, settings, isLast
   }
 
   useEffect(() => {
-    setType(settings.type)
-  }, [settings.type])
+    setType(inputType)
+  }, [inputType])
 
   return (
     <>

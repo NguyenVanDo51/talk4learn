@@ -1,6 +1,5 @@
 'use client'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Conversations } from '../sidebar'
 import { InputBox } from './components/InputBox'
 import { Message } from './components/Message'
 import { IMessage, initialConversation } from '@/types/chat'
@@ -11,8 +10,6 @@ import { AxiosResponse } from 'axios'
 import { AnalyistedMessage } from './components/AnalystedMessage'
 import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 import { LocalStorageKey } from '@/types/constants'
-import { ConfigProvider } from 'antd'
-import { darkTheme } from '@/theme/themeConfig'
 import { Header } from './components/Header'
 import { useDimention } from '@/hooks/helpers/useDimention'
 import { v4 } from 'uuid'
@@ -20,15 +17,11 @@ import { IAIModel, AIModels } from '@/types/chat/models'
 import { SpeakerService } from '@/service/speaker'
 
 export interface IChatSetting {
-  type: 'text' | 'voice'
-  inputType: 'text' | 'voice'
   style: 'formal' | 'informal'
   isShowAnalyst: boolean
 }
 
 const settingDefault: IChatSetting = {
-  type: 'voice',
-  inputType: 'voice',
   style: 'formal',
   isShowAnalyst: false,
 }
@@ -185,28 +178,17 @@ const AIChat = () => {
 
   return (
     <div className="flex flex-grow justify-center">
-      <div className="grid grid-cols-12 w-full">
+      <div className="grid grid-cols-12 w-full gap-6">
         <div
-          className={`col-start-1 col-end-13 ${
-            isShowAnalyst ? 'lg:col-end-8' : 'lg:col-end-13'
-          } flex flex-grow flex-col`}
+          className={`col-start-1 col-end-13 flex flex-grow flex-col`}
         >
-          <Header
-            model={model}
-            settings={settings}
-            isShowAnalyst={isShowAnalyst}
-            setIsShowComment={setIsShowComment}
-            setSettings={setSettings}
-          />
-
-          <div className="grid h-full bg-gray-100 dark:bg-dark-main">
+          <div className="grid bg-gray-100 dark:bg-dark-active-main-bg rounded-3xl">
             <Message
               initing={initing}
               messages={messages}
               isSending={isWaiting}
               isGettingComment={isGettingComment}
               model={model}
-              settings={settings}
               setMessages={setMessages}
               reSend={reSend}
             />
