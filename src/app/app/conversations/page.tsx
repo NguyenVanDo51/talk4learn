@@ -1,6 +1,5 @@
-import LessonPage from '@/components/pages/lesson'
+import Conversations from '@/components/pages/conversations'
 
 export default function Page() {
-
-  return <LessonPage />
+  return <Conversations />
 }

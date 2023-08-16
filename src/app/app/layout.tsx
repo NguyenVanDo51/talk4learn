@@ -4,8 +4,8 @@ import Loading from '../loading'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<Loading />}>
+    // <Suspense fallback={<Loading />}>
       <AuthenLayout>{children}</AuthenLayout>
-    </Suspense>
+    // </Suspense>
   )
 }

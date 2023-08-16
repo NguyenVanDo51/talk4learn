@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation'
 import { About } from '../sidebar/components/about'
 import { Feedback } from '../sidebar/components/feedback'
 import { SettingModal } from '../sidebar/components/settings'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useDimention } from '@/hooks/helpers/useDimention'
 import { MenuItem } from '../sidebar/components/MenuItem'
 
@@ -45,6 +45,11 @@ export const MainHeader = () => {
     },
   ]
 
+  useEffect(() => {
+    dispatch(setIsOpenMenu(false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
+
   const renderBarButon = () => (
     <AppButton
       className="lg:hidden h-fit py-0"
@@ -71,14 +76,21 @@ export const MainHeader = () => {
 
         <div className="items-center gap-4 main-menu hidden lg:flex">
           {items.map((item) => (
-            <Link
+            <a
               key={item.key}
               href={item.key}
               className={pathname === item.key ? activeClass : ''}
-              onClick={item?.onClick}
+              onClick={
+                item.onClick
+                  ? (e) => {
+                      e.preventDefault()
+                      item?.onClick?.()
+                    }
+                  : undefined
+              }
             >
               {item.icon} {item.title}
-            </Link>
+            </a>
           ))}
         </div>
 
@@ -127,19 +139,24 @@ export const MainHeader = () => {
       >
         <div className="flex flex-col items-center justify-start">
           {items.map((item) => (
-            <Link
+            <a
               key={item.key}
               href={item.key}
               className={`w-full p-3 py-4 inline-block ${
                 pathname === item.key ? 'font-medium bg-primary text-white' : ''
               }`}
-              onClick={() => {
-                item?.onClick?.()
-                toggleMenu()
-              }}
+              onClick={
+                item.onClick
+                  ? (e) => {
+                      e.preventDefault()
+                      item.onClick()
+                      toggleMenu()
+                    }
+                  : undefined
+              }
             >
               {item.icon} {item.title}
-            </Link>
+            </a>
           ))}
         </div>
       </Drawer>

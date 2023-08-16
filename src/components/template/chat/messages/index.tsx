@@ -16,6 +16,7 @@ import { AppModal } from '@/components/level1/antd/AppModal'
 import { AppSpin } from '@/components/level1/antd/AppSpin'
 import { ChatService } from '@/service/chat/index.service'
 import { SendMessageBody } from '@/service/chat/request'
+import Link from 'next/dist/client/link'
 
 export interface MessageProps {
   isSending: boolean
@@ -80,6 +81,7 @@ export const Message: FC<MessageProps> = (props) => {
         height: `calc(100vh - ${inputHeight}px)`,
       }}
     >
+      <Link href={'/app/conversations'}>Conversations</Link>
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">
           {initing ? (
