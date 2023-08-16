@@ -10,6 +10,7 @@ import { AppNotifycation } from '@/components/level1/antd/AppNotification'
 import { ISetting, setInputType } from '@/redux/slices/settingSlice'
 import { useAppSelector } from '@/hooks/redux'
 import { useDispatch } from 'react-redux'
+import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 
 interface IProps {
   isWaiting: boolean
@@ -91,7 +92,9 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
     setRecording('')
   }
 
-  const type = inputType
+  useEffect(() => {
+    scrollToBottom(ScrollSelecter.Message)
+  }, [inputType])
 
   useEffect(() => {
     changeInputType(chatMode)
@@ -120,33 +123,33 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
   }, [granted])
 
   useEffect(() => {
-    if (message && recording && type === 'voice') {
+    if (message && recording && inputType === 'voice') {
       sendMessage(message, recording)
       setMessage('')
       setRecording('')
     }
-  }, [message, recording, sendMessage, type])
+  }, [message, recording, sendMessage, inputType])
 
   const changeIcon = (
     <AppTooltip title="Change input type">
       <i
         className={
-          type === 'text' ? 'fa-solid fa-arrows-rotate cursor-pointer' : 'fa-regular fa-keyboard cursor-pointer'
+          inputType === 'text' ? 'fa-solid fa-arrows-rotate cursor-pointer' : 'fa-regular fa-keyboard cursor-pointer'
         }
-        onClick={() => changeInputType(type === 'text' ? 'voice' : 'text')}
+        onClick={() => changeInputType(inputType === 'text' ? 'voice' : 'text')}
       ></i>
     </AppTooltip>
   )
 
   return (
     <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 pl-4 lg:pl-6 lg:p-3">
-      {type === 'voice' ? (
-        <div className="pr-5 flex gap-4 justify-center flex-grow items-center">
+      {inputType === 'voice' ? (
+        <div className="pr-5 flex gap-6 justify-center flex-grow items-center">
           {changeIcon}
           <DebouncedButton
             onClick={handleRecord}
             className={`w-20 h-20 rounded-full flex items-center justify-center  ${
-              isRecording ? 'bg-primary text-white shadow-lg' : 'bg-white dark:bg-black'
+              isRecording ? 'bg-primary text-white shadow-lg' : 'dark:bg-black'
             }`}
           >
             <i className={`fa-solid fa-microphone text-3xl cursor-pointer ${isRecording ? 'text-white' : ''}`}></i>
@@ -172,7 +175,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMes
                   ></i>
                   <AppButton
                     onClick={handleSendMessage}
-                    className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white"
+                    className="flex items-center justify-center bg-primary hover:bg-indigo-600 text-white"
                     icon={
                       <svg
                         className="ml-1 w-4 min-h-4 transform rotate-90"

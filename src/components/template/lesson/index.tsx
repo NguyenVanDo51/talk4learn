@@ -4,10 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 const Lesson = () => {
   const {data} = useQuery({ queryFn: LessonService.get })
 
-  console.log('data', data)
-
-  
-  return <div>Lesson</div>
+  return <div>Comming soon</div>
 }
 
 export default Lesson

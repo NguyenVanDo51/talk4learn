@@ -9,11 +9,14 @@ class Speaker {
   }
 
   speak = (text: string, voice = VoiceDefault, options: ResponsiveVoiceOption = {}) => {
-    const voicename = store.getState().setting.voice
+    const setting = store.getState().setting
+    const voicename = setting.voice
+    const { speed } = setting
     responsiveVoice.setDefaultVoice(Voices[voicename] || VoiceDefault)
-
+    console.log('speed', speed)
     responsiveVoice.speak(text, Voices[voicename] || VoiceDefault, {
       ...options,
+      rate: speed,
       onstart: () => {
         store.dispatch(setTextSpeaking(text))
       },

@@ -33,3 +33,11 @@ input.ant-input-lg,
     outline: solid 1px var(--primary);
   }
 }
+
+.ant-slider .ant-slider-track {
+  background-color: var(--primary);
+}
+
+.ant-slider .ant-slider-handle::after {
+  background-color: var(--primary);
+}

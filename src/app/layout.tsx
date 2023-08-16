@@ -9,6 +9,7 @@ import { Analytics } from '@vercel/analytics/react'
 import Provider from '@/components/layout/Provider'
 import { APP_NAME } from '@/types/constants'
 import Script from 'next/script'
+import { Suspense } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -101,17 +102,19 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={'dark ' + inter.className}>
+      <body className={inter.className}>
         {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
         <Script
           strategy="beforeInteractive"
           src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
         ></Script>
-        
+
         <Provider>
           <ReduxProvider>
             <StyledComponentsRegistry>
-              <main>{children}</main>
+              <Suspense fallback="Loading...">
+                <main>{children}</main>
+              </Suspense>
             </StyledComponentsRegistry>
           </ReduxProvider>
         </Provider>

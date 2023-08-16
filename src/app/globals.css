@@ -7,10 +7,11 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --main-text: #1a1a1a;
-  --primary: #4096ff;
+  --primary: #fb9a60;
   --main-bg: #fffd;
   --main-active-bg: #fff;
   --icon-color: #1e3050;
+  --line-color: #aba8a8;
 }
 
 .dark {

@@ -1,7 +1,7 @@
 'use client'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { InputBox } from './components/InputBox'
-import { Message } from './components/Message'
+import { Message } from './messages'
 import { IMessage, initialConversation } from '@/types/chat'
 import { SendMessageBody } from '@/service/chat/request'
 import { ChatService } from '@/service/chat/index.service'
@@ -10,7 +10,6 @@ import { AxiosResponse } from 'axios'
 import { AnalyistedMessage } from './components/AnalystedMessage'
 import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 import { LocalStorageKey } from '@/types/constants'
-import { Header } from './components/Header'
 import { useDimention } from '@/hooks/helpers/useDimention'
 import { v4 } from 'uuid'
 import { IAIModel, AIModels } from '@/types/chat/models'
@@ -177,12 +176,13 @@ const AIChat = () => {
   }, [settings])
 
   return (
-    <div className="flex flex-grow justify-center">
+    <div className="flex flex-grow justify-center h-full">
       <div className="grid grid-cols-12 w-full gap-6">
-        <div
-          className={`col-start-1 col-end-13 flex flex-grow flex-col`}
-        >
-          <div className="grid bg-gray-100 dark:bg-dark-active-main-bg rounded-3xl">
+        <div className={`col-start-1 col-end-13 flex flex-grow flex-col`}>
+          <div
+            className="grid bg-gray-100 dark:bg-dark-active-main-bg rounded-3xl"
+            style={{ height: 'calc(100% - 12px)' }}
+          >
             <Message
               initing={initing}
               messages={messages}
@@ -197,17 +197,6 @@ const AIChat = () => {
             )}
           </div>
         </div>
-
-        {!initing && (
-          <AnalyistedMessage
-            isShowAnalyst={isShowAnalyst}
-            isGettingComment={isGettingComment}
-            analystedMessages={analystedMessages}
-            setAnalystMessages={setAnalystMessages}
-            setIsShowComment={setIsShowComment}
-            handleAnalyst={handleAnalyst}
-          />
-        )}
       </div>
     </div>
   )
