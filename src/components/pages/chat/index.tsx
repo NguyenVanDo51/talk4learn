@@ -13,18 +13,14 @@ const AIChat = dynamic(() => import('@/components/template/chat') as any, {
 })
 
 export default function AIChatPage() {
-  return (
-    <AuthenLayout>
-      <AIChat />
-    </AuthenLayout>
-  )
+  return <AIChat />
 }
 
 export async function getServerSideProps({ res }: any) {
   return {
     props: {
       title: title,
-      description: description
+      description: description,
     },
   }
 }

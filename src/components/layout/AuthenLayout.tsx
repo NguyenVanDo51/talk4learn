@@ -1,16 +1,13 @@
+"use client"
 import { useEffect } from 'react'
-import { useSession, signIn } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { LoadingScreen } from '../level1/Loading'
-import { AppModal } from '../level1/antd/AppModal'
-import { Logo } from '../level1/Logo'
 import { UserService } from '@/service/user/index.service'
 import { useRouter } from 'next/navigation'
-import { Spin } from 'antd'
 
 export const AuthenLayout = ({ children }: any) => {
   const { data, status } = useSession()
   const route = useRouter()
-
   const getSettings = async () => {
     await UserService.getSettings()
   }
@@ -30,5 +27,5 @@ export const AuthenLayout = ({ children }: any) => {
     return <LoadingScreen />
   }
 
-  return <>{children}</>
+  return <div>{children}</div>
 }
