@@ -5,6 +5,7 @@ import { Form } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import TextArea from 'antd/es/input/TextArea'
 import { useEffect, useRef, useState } from 'react'
+import { MenuItem } from '../MenuItem'
 
 export const Feedback = () => {
   const [open, setOpen] = useState<boolean>(false)
@@ -28,13 +29,10 @@ export const Feedback = () => {
 
   return (
     <>
-      <button
-        className="flex flex-row items-center hover:bg-gray-100 dark:hover:bg-dark-primary px-4 py-3"
-        onClick={() => setOpen(true)}
-      >
-        <i className="fa-regular fa-message-exclamation text-2xl"></i>
-        <div className="ml-3 text-sm font-semibold">Submid feedback</div>
-      </button>
+      <MenuItem onClick={() => setOpen(true)} iconClass='fa-regular fa-message-exclamation'>
+        Submid feedback
+      </MenuItem>
+      
       <AppModal
         open={open}
         onCancel={() => setOpen(false)}

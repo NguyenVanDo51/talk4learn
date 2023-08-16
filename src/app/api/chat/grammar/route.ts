@@ -1,20 +1,13 @@
 import { withAuth } from '@/helpers/server-side'
+import { createChatCompletion, openai } from '@/helpers/server-side/openai'
 import { SendMessageBody } from '@/service/chat/request'
 import { SettingLangEnum, SettingLangMapping } from '@/service/user/request'
-import { VIP_KEY } from '@/types/constants/openapikey'
 import { NextRequest, NextResponse } from 'next/server'
-const { Configuration, OpenAIApi } = require('openai')
-
-const configuration = new Configuration({
-  apiKey: VIP_KEY[0],
-})
-
-const openai = new OpenAIApi(configuration)
 
 export async function POST(request: NextRequest) {
   return withAuth(async () => {
     const body = await request.json()
-    const lang: SettingLangEnum = request.nextUrl.searchParams.get('lang') as SettingLangEnum || SettingLangEnum.EN
+    const lang: SettingLangEnum = (request.nextUrl.searchParams.get('lang') as SettingLangEnum) || SettingLangEnum.EN
 
     const messages = [
       {
@@ -23,21 +16,11 @@ export async function POST(request: NextRequest) {
       },
       ...body.messages.map(({ content, ...m }: SendMessageBody) => ({
         ...m,
-        content: /[a-z]/.test(content.trim().at(-1) as string) ? content + '.' : content,
+        content: `"${/[a-z]/.test(content.trim().at(-1) as string) ? content + '.' : content}"`,
       })),
     ]
-    console.log('messages',request.nextUrl.searchParams.get('lang'), messages)
 
-    return openai
-      .createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages,
-        temperature: 0,
-        max_tokens: body.max_tokens || 500,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-      })
+    return createChatCompletion(messages, body.max_tokens || 500)
       .then((res: any) => {
         return NextResponse.json(res.data)
       })

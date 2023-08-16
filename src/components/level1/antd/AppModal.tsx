@@ -26,3 +26,12 @@ export class ModalConfirm {
     })
   }
 }
+
+export class ModalInfo {
+  static info({ ...args }: ModalFuncProps) {
+    Modal.info({
+      centered: true,
+      ...args,
+    })
+  }
+}

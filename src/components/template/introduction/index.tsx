@@ -4,24 +4,25 @@ import { Logo } from '@/components/level1/Logo'
 import { APP_NAME } from '@/types/constants'
 import { getServerSession } from 'next-auth/next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 const Introduction = async () => {
   const session = await getServerSession(authOptions)
-  
+
   if (session) {
     redirect('/app')
   }
 
   return (
     <>
-      <header className="px-5 lg:px-[10vw] py-4 bg-black shadow-2xl mx-auto flex items-center justify-between">
+      <header className="px-5 lg:px-[10vw] py-4 mx-auto flex items-center justify-between">
         <Logo />
         <LoginButton>Login</LoginButton>
       </header>
       <div className="container flex flex-col mx-auto gap-10 px-10">
         <div className="flex flex-col justify-center gap-4 text-center mt-16">
-          <h1 className="text-lg lg:text-4xl font-bold text-white">Chat and Speak Practice English with {APP_NAME} </h1>
+          <h1 className="text-lg md:text-4xl font-bold ">Chat and Speak Practice English with {APP_NAME} </h1>
           <div className="lg:px-20">
             <p className="lg:text-lg">
               {APP_NAME} is a free online English learning platform that helps you improve your listening and speaking
@@ -52,9 +53,9 @@ const Introduction = async () => {
           ></Image>
         </div>
       </div>
-      <footer className="px-5 lg:px-[10vw] py-6 bg-black grid gap-4 mt-16" style={{ gridTemplateColumns: 'auto auto' }}>
+      <footer className="px-5 lg:px-[10vw] py-6  grid gap-4 mt-16" style={{ gridTemplateColumns: 'auto auto' }}>
         <div className="flex flex-col gap-2">
-          <div className="text-xl text-white">
+          <div className="text-xl ">
             <Logo /> - Practice English with AI Chatbot
           </div>
 
@@ -65,9 +66,9 @@ const Introduction = async () => {
           </a>
         </div>
         <div className="flex flex-col gap-2">
-          <div className="text-xl text-white">Policy</div>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
+          <div className="text-xl ">Policy</div>
+          <Link href="/policy">Privacy Policy</Link>
+          <Link href="/policy">Terms of Use</Link>
         </div>
       </footer>
     </>

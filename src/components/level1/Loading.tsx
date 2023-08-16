@@ -1,10 +1,10 @@
-import { Spin } from 'antd'
 import { Logo } from './Logo'
+import { AppSpin } from './antd/AppSpin';
 
-export const LoadingScreen = () => {
+export const LoadingScreen = ({ fullScreen, noLogo = false }: { fullScreen?: boolean; noLogo?: boolean }) => {
   return (
-    <div className="flex gap-3 items-center justify-center w-[100vw] h-[100vh]">
-      <Logo /> <Spin />
+    <div className={`flex gap-3 items-center justify-center ${fullScreen ? 'w-[100vw] h-[100vh]' : 'w-full h-full'} `}>
+      {!noLogo && <Logo />} <AppSpin />
     </div>
   )
 }
