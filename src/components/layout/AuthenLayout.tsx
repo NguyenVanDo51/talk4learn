@@ -40,8 +40,7 @@ export const AuthenLayout = ({ children }: any) => {
           className="flex flex-row w-full mt-[52px] overflow-hidden gap-5 px-2 lg:px-5"
           style={{ height: 'calc(100vh - 52px)' }}
         >
-          {/* <Sidebar /> */}
-          <div className="flex-grow">{children}</div>
+          <div className="flex-grow overflow-y-auto">{children}</div>
         </div>
       </div>
     </ConfigProvider>

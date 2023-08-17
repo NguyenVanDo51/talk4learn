@@ -1,15 +1,11 @@
-import { AppButton, AppDeleteButton } from '@/components/level1/antd/AppButton'
-import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
-import { speak } from '@/helps/speech'
+import { AppButton } from '@/components/level1/antd/AppButton'
 import { IMessage } from '@/types/chat'
-import { Avatar, Divider, Spin, message } from 'antd'
-import { FC, memo, useEffect, useState } from 'react'
-import { AudioPlayer } from '@/components/level1/AudioPlayer'
+import { Divider, Spin } from 'antd'
+import { FC, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { AIModels, IAIModel } from '@/types/chat/models'
+import { IAIModel } from '@/types/chat/models'
 import { SpeakerService } from '@/service/speaker'
 import { useAppSelector } from '@/hooks/redux'
-import { ISetting } from '@/redux/slices/settingSlice'
 import { LeftMessage } from './LeftMessage'
 import { RightMessage } from './RightMessage'
 import { AppModal } from '@/components/level1/antd/AppModal'
@@ -42,7 +38,6 @@ export const Message: FC<MessageProps> = (props) => {
   const inputType = useAppSelector((t) => t.setting.inputType)
 
   const inputHeight = inputType === 'text' ? 139 : 169
-  console.log('inputHeight', inputType, inputHeight)
   const { data } = useSession()
   const readText = (text: string) => {
     SpeakerService.speak(text)
@@ -81,7 +76,6 @@ export const Message: FC<MessageProps> = (props) => {
         height: `calc(100vh - ${inputHeight}px)`,
       }}
     >
-      <Link href={'/app/conversations'}>Conversations</Link>
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">
           {initing ? (
