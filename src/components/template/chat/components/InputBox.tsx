@@ -3,7 +3,6 @@ import { AppButton, DebouncedButton } from '@/components/level1/antd/AppButton'
 import { AppInput } from '@/components/level1/antd/AppInput'
 import { getUserMedia } from '@/helpers/mp3'
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
-import { IChatSetting } from '..'
 import { Button } from 'antd'
 import { AppTooltip } from '@/components/level1/antd/AppTooltip'
 import { AppNotifycation } from '@/components/level1/antd/AppNotification'
@@ -14,8 +13,6 @@ import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 
 interface IProps {
   isWaiting: boolean
-  settings: IChatSetting
-  setSettings: (settings: IChatSetting) => void
   sendMessage: (message: string, voiceRecoreded?: string) => void
 }
 
@@ -26,7 +23,7 @@ if (typeof window !== 'undefined') {
   recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
 }
 
-export const InputBox: FC<IProps> = ({ isWaiting, settings, setSettings, sendMessage }) => {
+export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   const [message, setMessage] = useState('')
   const [isRecording, setIsRecording] = useState(false)
   const [recording, setRecording] = useState<string>()

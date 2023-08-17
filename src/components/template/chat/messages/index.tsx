@@ -17,15 +17,12 @@ import Link from 'next/dist/client/link'
 export interface MessageProps {
   isSending: boolean
   messages: IMessage[]
-  isGettingComment: boolean
-  model: IAIModel
-  initing: boolean
   setMessages: (messages: IMessage[]) => void
   reSend: () => void
 }
 
 export const Message: FC<MessageProps> = (props) => {
-  const { messages, initing, isSending, setMessages } = props
+  const { messages, isSending, setMessages } = props
 
   const [checkResult, setCheckResult] = useState<string>()
   const [loading, setLoading] = useState(false)
@@ -78,31 +75,25 @@ export const Message: FC<MessageProps> = (props) => {
     >
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">
-          {initing ? (
-            <div className="w-fit p-3">
-              <Spin />
-            </div>
-          ) : (
-            messages.map((message, index) =>
-              message.role === 'assistant' ? (
-                <LeftMessage
-                  {...props}
-                  inputType={inputType}
-                  readText={readText}
-                  message={message}
-                  isLastItem={messages.at(-1)?.id === message.id}
-                  key={message.id ?? `msg_${index}`}
-                />
-              ) : (
-                <RightMessage
-                  key={`msg_${index}`}
-                  {...props}
-                  avatar={data?.user?.image}
-                  message={message}
-                  reStart={() => reStart(index)}
-                  setMessageToCheck={(msg) => setMessageToCheck(msg)}
-                />
-              )
+          {messages.map((message, index) =>
+            message.role === 'assistant' ? (
+              <LeftMessage
+                {...props}
+                inputType={inputType}
+                readText={readText}
+                message={message}
+                isLastItem={messages.at(-1)?.id === message.id}
+                key={message.id ?? `msg_${index}`}
+              />
+            ) : (
+              <RightMessage
+                key={`msg_${index}`}
+                {...props}
+                avatar={data?.user?.image}
+                message={message}
+                reStart={() => reStart(index)}
+                setMessageToCheck={(msg) => setMessageToCheck(msg)}
+              />
             )
           )}
 
