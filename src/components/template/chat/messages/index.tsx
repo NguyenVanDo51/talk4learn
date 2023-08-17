@@ -17,12 +17,13 @@ import Link from 'next/dist/client/link'
 export interface MessageProps {
   isSending: boolean
   messages: IMessage[]
+  infomation?: string
   setMessages: (messages: IMessage[]) => void
   reSend: () => void
 }
 
 export const Message: FC<MessageProps> = (props) => {
-  const { messages, isSending, setMessages } = props
+  const { messages, infomation, isSending, setMessages } = props
 
   const [checkResult, setCheckResult] = useState<string>()
   const [loading, setLoading] = useState(false)
@@ -75,6 +76,7 @@ export const Message: FC<MessageProps> = (props) => {
     >
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">
+          {infomation && <div className="col-start-1 col-end-13 text-muted text-center my-2">{infomation}</div>}
           {messages.map((message, index) =>
             message.role === 'assistant' ? (
               <LeftMessage

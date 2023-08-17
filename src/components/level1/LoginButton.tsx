@@ -1,8 +1,7 @@
 'use client'
 
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { AppButton } from './antd/AppButton'
-import { useRouter } from 'next/navigation'
 
 export const LoginButton = ({ children = 'Try it now' }: any) => {
   return (

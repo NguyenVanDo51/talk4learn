@@ -1,8 +1,7 @@
 export interface ILesson {
   id: string
   name: string // tên của tình huống
-  modelContext: string // câu prompt để system ra lệnh cho assistant 
-  modelTask: string // nhiệm vụ của assistant trong tình huống
+  modelContext: string // câu prompt để system ra lệnh cho assistant theo cấu trúc: you are ..., the user wants ...
   userContext: { //  hoàn cảnh cụ thể của user trong tình huống, cần nêu ra việc user cần làm
     en: string
     vi: string

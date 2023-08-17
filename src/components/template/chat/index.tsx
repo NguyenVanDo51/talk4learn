@@ -18,9 +18,10 @@ interface IProps {
   initialSystemMessage?: string
   storageKey?: string
   initialMessages?: IMessage[]
+  infomation?: string
 }
 
-const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages }) => {
+const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages, infomation }) => {
   const [messages, setMessages] = useState<IMessage[]>(initialMessages ?? [])
   const [isWaiting, setIsWaiting] = useState(false)
   const [systemMessage] = useState<string>(initialSystemMessage ?? AIModels[0].getDescription())
@@ -73,7 +74,10 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages 
 
   const getFirstMessage = () => {
     setIsWaiting(true)
-    ChatService.sendMessage([{ role: 'system', content: systemMessage }])
+    ChatService.sendMessage([
+      { role: 'system', content: systemMessage },
+      { role: 'user', content: 'hello' },
+    ])
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const messageResponse = res.data?.choices[0]?.message.content
         const message: IMessage = {
@@ -97,10 +101,6 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages 
     if (newestMessage?.status !== 'error') {
       getAnswer()
     }
-
-    if (storageKey && messages.length > 0) {
-      localStorage.setItem(storageKey, JSON.stringify(messages))
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
 
@@ -115,6 +115,12 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialMessages])
+
+  useEffect(() =>{
+    if (storageKey && messages.length > 1) {
+      localStorage.setItem(storageKey, JSON.stringify(messages))
+    }
+  }, [messages, storageKey])
 
   useEffect(() => {
     if (!storageKey) return
@@ -131,7 +137,7 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages 
         className="w-full bg-gray-100 dark:bg-dark-active-main-bg rounded-3xl"
         style={{ height: 'calc(100% - 12px)' }}
       >
-        <Message messages={messages} isSending={isWaiting} setMessages={setMessages} reSend={reSend} />
+        <Message infomation={infomation} messages={messages} isSending={isWaiting} setMessages={setMessages} reSend={reSend} />
         <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
       </div>
     </div>
