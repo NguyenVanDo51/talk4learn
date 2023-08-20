@@ -4,7 +4,7 @@ export const lessons: ILesson[] = [
   {
     id: 'lesson_001',
     name: 'Ordering Food',
-    modelContext: 'You are a waiter in a pizza restaurant. The user wants to order.',
+    modelContext: 'You are a waiter in a restaurant. The user wants to order.',
     userContext: {
       en: 'You are a customer in a restaurant, trying to order a meal.',
       vi: 'Bạn là một khách hàng trong nhà hàng, đang cố gắng đặt món ăn.',
@@ -24,7 +24,7 @@ export const lessons: ILesson[] = [
   {
     id: 'lesson_003',
     name: 'Asking for Directions',
-    modelContext: 'You are a local resident. The user wants to ask for directions.',
+    modelContext: 'You are a local resident standing on the street, and there is a foreigner approaching you, trying to strike up a conversation and asking for directions to the library.',
     userContext: {
       en: 'You are a tourist lost in a new city, seeking help with directions.',
       vi: 'Bạn là một du khách lạc đường trong một thành phố mới, đang tìm kiếm sự giúp đỡ về định hướng.',

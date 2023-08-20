@@ -11,11 +11,8 @@ export interface IMessage {
 
 const greatings = [
   "Hi there, how's your day going?",
-  'Hello! What brings you here today?',
-  "Hey, it's nice to meet you. What can I help you with?",
   "Greetings! What's new in your world?",
   'Hey, are you up to anything interesting right now?',
-  "Hello! I hope you're having a great day so far.",
   "Hello there! What's on your mind today?",
 ]
 

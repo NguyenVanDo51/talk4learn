@@ -76,7 +76,7 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     setIsWaiting(true)
     ChatService.sendMessage([
       { role: 'system', content: systemMessage },
-      { role: 'user', content: 'hello' },
+      { role: 'user', content: 'excuse me' },
     ])
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const messageResponse = res.data?.choices[0]?.message.content

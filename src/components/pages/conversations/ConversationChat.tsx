@@ -11,7 +11,6 @@ const ConversationChat = dynamic(() => import('@/components/template/chat'), {
 })
 
 export default function ConversationChatPage(props: any) {
-  console.log('props', props)
   const lang = useAppSelector((t) => t.setting.lang)
   const lesson = lessons.find((l) => l.id === props.params.id)
   if (!lesson) {
@@ -24,10 +23,13 @@ export default function ConversationChatPage(props: any) {
 const generatePrompt = (lesson: ILesson): string => {
   const { modelContext } = lesson
 
-  const prompt = `role-playing game:
+  const prompt = `your task is practice english with the user through a role-playing game.
 Situation: ${modelContext}.
 The Rules:
 - Provide concise answers.
-- After the user achieves their desired outcome and no longer requires assistance, respond with only word:'done_message'.`
+- Maximum 50 words in 1 response.
+- In case the user responds with unrelated questions or statements, let them know.
+- Ask them practical questions when encountering real-life situations.
+- When the situation concludes, send a message with the content 'done_message'.`
   return prompt
 }
