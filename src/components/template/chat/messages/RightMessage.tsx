@@ -27,9 +27,9 @@ export const RightMessage = memo(function RightMessage({
       <div className="flex items-center gap-3 justify-start  flex-row-reverse">
         <div className="relative text-sm bg-indigo-100 dark:bg-dark-primary p-3 px-4 shadow rounded-3xl">
           <div>{message.content}</div>
-          <div className="flex justify-end mt-2">
-            <AppButton size="small" className="rounded-full" onClick={() => setMessageToCheck(message)}>
-              Check grammar
+          <div className="flex justify-end">
+            <AppButton size="small" type="link" className="rounded-full text-xs" onClick={() => setMessageToCheck(message)}>
+              Check
             </AppButton>
           </div>
         </div>

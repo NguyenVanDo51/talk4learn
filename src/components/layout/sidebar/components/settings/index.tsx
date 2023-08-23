@@ -55,7 +55,7 @@ export const SettingModal = (props: IProps) => {
     >
       <Spin spinning={loading}>
         <Form labelCol={{ flex: '120px' }}>
-          <Form.Item label="Voice">
+          <Form.Item label="Chatting Mode">
             <AppSelect
               options={[
                 { label: 'Voice', value: 'voice' },
@@ -65,7 +65,6 @@ export const SettingModal = (props: IProps) => {
               onChange={(value) => onChangeSettings(value, 'chatMode')}
               defaultValue={SettingLangEnum.EN}
               className="dark:bg-dark-main dark:text-white"
-              placeholder="Select Voice"
             />
           </Form.Item>
 
