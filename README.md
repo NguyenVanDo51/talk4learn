@@ -21,6 +21,7 @@ npx prisma migrate dev
 ```
 
 ## Todo
+- dịch anh -> việt, việt -> anh
 - Thêm demo ở trang chủ thay vì ảnh gif
 - Thêm chụp ảnh màn hình khi feedback
 - Chọn giọng nói
