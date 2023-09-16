@@ -131,11 +131,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <Provider>
           <ReduxProvider>
-            <StyledComponentsRegistry>
+            {/* <StyledComponentsRegistry> */}
               <Suspense fallback="Loading...">
                 <main>{children}</main>
               </Suspense>
-            </StyledComponentsRegistry>
+            {/* </StyledComponentsRegistry> */}
           </ReduxProvider>
         </Provider>
         <Analytics />

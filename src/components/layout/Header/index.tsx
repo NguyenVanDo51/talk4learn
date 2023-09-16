@@ -76,7 +76,7 @@ export const MainHeader = () => {
 
         <div className="items-center gap-4 main-menu hidden lg:flex">
           {items.map((item) => (
-            <a
+            <Link
               key={item.key}
               href={item.key}
               className={pathname === item.key ? activeClass : ''}
@@ -90,7 +90,7 @@ export const MainHeader = () => {
               }
             >
               {item.icon} {item.title}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -139,7 +139,7 @@ export const MainHeader = () => {
       >
         <div className="flex flex-col items-center justify-start">
           {items.map((item) => (
-            <a
+            <Link
               key={item.key}
               href={item.key}
               className={`w-full p-3 py-4 inline-block ${
@@ -156,7 +156,7 @@ export const MainHeader = () => {
               }
             >
               {item.icon} {item.title}
-            </a>
+            </Link>
           ))}
         </div>
       </Drawer>

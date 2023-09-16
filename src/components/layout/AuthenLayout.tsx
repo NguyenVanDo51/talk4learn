@@ -5,7 +5,7 @@ import { LoadingScreen } from '../level1/Loading'
 import { UserService } from '@/service/user/index.service'
 import { useRouter } from 'next/navigation'
 import { darkTheme, defaultTheme } from '@/theme/themeConfig'
-import { ConfigProvider } from 'antd'
+// import { ConfigProvider } from 'antd'
 import { MainHeader } from './Header'
 
 export const AuthenLayout = ({ children }: any) => {
@@ -32,7 +32,7 @@ export const AuthenLayout = ({ children }: any) => {
   }
 
   return (
-    <ConfigProvider theme={defaultTheme}>
+    // <ConfigProvider theme={defaultTheme}>
       <div className="flex flex-col flex-grow h-screen">
         <MainHeader />
 
@@ -43,6 +43,6 @@ export const AuthenLayout = ({ children }: any) => {
           <div className="flex-grow overflow-y-auto">{children}</div>
         </div>
       </div>
-    </ConfigProvider>
+    // </ConfigProvider>
   )
 }
