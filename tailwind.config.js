@@ -9,12 +9,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'var(--primary)',
-        muted: '#a1a1a1',
-        'dark-main': 'var(--main-bg)',
-        'dark-active-main-bg': 'var(--main-active-bg)',
-        'dark-primary': 'var(--primary)',
-        'dark-line': 'var(--line-color)',
+        primary: 'rgb(132, 216, 255)',
+        'bg-primary': 'rgb(221, 244, 255)',
+        active: 'rgb(28, 176, 246)',
       },
       spacing: {
         inline: '0.5rem',

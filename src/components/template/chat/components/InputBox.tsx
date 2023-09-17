@@ -10,6 +10,7 @@ import { ISetting, setInputType } from '@/redux/slices/settingSlice'
 import { useAppSelector } from '@/hooks/redux'
 import { useDispatch } from 'react-redux'
 import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
+import Image from 'next/image'
 
 interface IProps {
   isWaiting: boolean
@@ -139,7 +140,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   )
 
   return (
-    <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 pl-4 lg:pl-6 lg:p-3">
+    <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 pl-6 lg:pl-6 lg:p-3">
       {inputType === 'voice' ? (
         <div className="pr-5 flex gap-6 justify-center flex-grow items-center">
           {changeIcon}
@@ -149,7 +150,11 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
               isRecording ? 'bg-primary text-white shadow-lg' : 'dark:bg-black'
             }`}
           >
-            <i className={`fa-solid fa-microphone text-3xl cursor-pointer ${isRecording ? 'text-white' : ''}`}></i>
+            <i
+              className={`fa-solid fa-microphone text-3xl cursor-pointer ${
+                isRecording ? 'text-white' : ''
+              }`}
+            ></i>
           </DebouncedButton>
         </div>
       ) : (
@@ -168,26 +173,20 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
                 <div className="flex items-center gap-4 lg:gap-5">
                   <i
                     onClick={handleRecord}
-                    className={`fa-solid fa-microphone cursor-pointer text-xl ${isRecording ? 'text-purple-500' : ''}`}
+                    className={`fa-solid fa-microphone cursor-pointer text-xl ${
+                      isRecording ? 'text-purple-500' : ''
+                    }`}
                   ></i>
                   <AppButton
                     onClick={handleSendMessage}
                     className="flex items-center justify-center bg-primary hover:bg-indigo-600 text-white"
                     icon={
-                      <svg
-                        className="ml-1 w-4 min-h-4 transform rotate-90"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                        ></path>
-                      </svg>
+                      <Image
+                        width={48}
+                        height={48}
+                        src="https://img.icons8.com/pulsar-color/48/filled-sent.png"
+                        alt="filled-sent"
+                      />
                     }
                   />
                 </div>

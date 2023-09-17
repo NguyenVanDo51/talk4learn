@@ -35,7 +35,7 @@ export const Message: FC<MessageProps> = (props) => {
 
   const inputType = useAppSelector((t) => t.setting.inputType)
 
-  const inputHeight = inputType === 'text' ? 139 : 169
+  const inputHeight = inputType === 'text' ? 100 : 135
   const { data } = useSession()
   const readText = (text: string) => {
     SpeakerService.speak(text)

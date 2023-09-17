@@ -49,12 +49,14 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     if (userMessage.status === 'success') return
 
     setIsWaiting(true)
-    const bodyMessage: SendMessageBody[] = [{ role: 'system', content: systemMessage }, ...messages, userMessage].map(
-      (message) => ({
-        role: message.role as SendMessageBody['role'],
-        content: message.content.at(-1) !== '.' ? `${message.content}.` : message.content,
-      })
-    )
+    const bodyMessage: SendMessageBody[] = [
+      { role: 'system', content: systemMessage },
+      ...messages,
+      userMessage,
+    ].map((message) => ({
+      role: message.role as SendMessageBody['role'],
+      content: message.content.at(-1) !== '.' ? `${message.content}.` : message.content,
+    }))
 
     ChatService.sendMessage(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
@@ -116,7 +118,7 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialMessages])
 
-  useEffect(() =>{
+  useEffect(() => {
     if (storageKey && messages.length > 1) {
       localStorage.setItem(storageKey, JSON.stringify(messages))
     }
@@ -133,11 +135,14 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
 
   return (
     <div className="flex flex-grow justify-center h-full">
-      <div
-        className="w-full bg-gray-100 dark:bg-dark-active-main-bg rounded-3xl"
-        style={{ height: 'calc(100% - 12px)' }}
-      >
-        <Message infomation={infomation} messages={messages} isSending={isWaiting} setMessages={setMessages} reSend={reSend} />
+      <div className="w-full bg-gray-100 dark:bg-dark-active-main-bg rounded-3xl">
+        <Message
+          infomation={infomation}
+          messages={messages}
+          isSending={isWaiting}
+          setMessages={setMessages}
+          reSend={reSend}
+        />
         <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
       </div>
     </div>

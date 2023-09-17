@@ -1,48 +1,60 @@
-'use client'
-import { Suspense, useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { LoadingScreen } from '../level1/Loading'
-import { UserService } from '@/service/user/index.service'
-import { useRouter } from 'next/navigation'
-import { darkTheme, defaultTheme } from '@/theme/themeConfig'
-// import { ConfigProvider } from 'antd'
-import { MainHeader } from './Header'
+import { redirect } from 'next/navigation'
+import { Logo } from '../level1/Logo'
+import Link from 'next/link'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { Sidebar } from './sidebar'
+import 'antd/lib/'
 
-export const AuthenLayout = ({ children }: any) => {
-  const { data, status } = useSession()
+export const AuthenLayout = async ({ children }: any) => {
+  const session = await getServerSession(authOptions)
 
-  const route = useRouter()
-  const getSettings = async () => {
-    await UserService.getSettings()
-  }
-
-  useEffect(() => {
-    if (!data?.user?.email) return
-    getSettings()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.user?.email])
-
-  if (status === 'loading') {
-    return <LoadingScreen fullScreen />
-  }
-
-  if (status === 'unauthenticated') {
-    route.push('/')
-    return <LoadingScreen fullScreen />
+  if (!session?.user) {
+    return redirect('/')
   }
 
   return (
-    // <ConfigProvider theme={defaultTheme}>
-      <div className="flex flex-col flex-grow h-screen">
-        <MainHeader />
-
-        <div
-          className="flex flex-row w-full mt-[52px] overflow-hidden gap-5 px-2 lg:px-5"
-          style={{ height: 'calc(100vh - 52px)' }}
+    <>
+      <button
+        data-drawer-target="logo-sidebar"
+        data-drawer-toggle="logo-sidebar"
+        aria-controls="logo-sidebar"
+        type="button"
+        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      >
+        <span className="sr-only">Open sidebar</span>
+        <svg
+          className="w-6 h-6"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <div className="flex-grow overflow-y-auto">{children}</div>
+          <path
+            clipRule="evenodd"
+            fillRule="evenodd"
+            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+          ></path>
+        </svg>
+      </button>
+
+      <aside
+        id="logo-sidebar"
+        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        aria-label="Sidebar"
+      >
+        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+          <Link href="/app" className="flex items-center pl-2.5 mb-5">
+            <Logo />
+          </Link>
+
+          <ul className="space-y-2 font-medium">
+            <Sidebar />
+          </ul>
         </div>
-      </div>
-    // </ConfigProvider>
+      </aside>
+
+      <div className="p-4 sm:ml-64 h-full">{children}</div>
+    </>
   )
 }

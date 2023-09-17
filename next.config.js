@@ -5,7 +5,7 @@ const withPlugins = require('next-compose-plugins')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['via.placeholder.com', 'authjs.dev'],
+    domains: ['via.placeholder.com', 'authjs.dev', 'img.icons8.com', 'lh3.googleusercontent.com'],
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],

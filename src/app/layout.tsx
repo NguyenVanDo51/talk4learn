@@ -4,9 +4,8 @@ import '../../public/fontawesome/css/all.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ReduxProvider } from '@/redux/provider'
-import StyledComponentsRegistry from '../../lib/AntdRegistry'
 import { Analytics } from '@vercel/analytics/react'
-import Provider from '@/components/layout/Provider'
+import ClientProvider from '@/components/layout/Provider'
 import { APP_NAME } from '@/types/constants'
 import Script from 'next/script'
 import { Suspense } from 'react'
@@ -115,8 +114,8 @@ export const metadata: Metadata = {
   },
   category: 'education',
   other: {
-    'shortcut icon': '/images/favicon.ico'
-  }
+    'shortcut icon': '/images/favicon.ico',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -129,17 +128,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
         ></Script>
 
-        <Provider>
+        <ClientProvider>
           <ReduxProvider>
-            {/* <StyledComponentsRegistry> */}
-              <Suspense fallback="Loading...">
-                <main>{children}</main>
-              </Suspense>
-            {/* </StyledComponentsRegistry> */}
+            <Suspense fallback="Loading...">
+              <main>{children}</main>
+            </Suspense>
           </ReduxProvider>
-        </Provider>
+        </ClientProvider>
         <Analytics />
-        {/* <Script strategy='lazyOnload' src="https://code.responsivevoice.org/responsivevoice.js"></Script> */}
       </body>
     </html>
   )

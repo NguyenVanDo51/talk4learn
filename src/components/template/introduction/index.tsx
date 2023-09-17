@@ -60,10 +60,10 @@ const Introduction = async () => {
           </div>
 
           <p>A great way to improve your English skills in a fun and interactive way.</p>
-          <a href="mailto:andy510@gmail.com" target="_blank">
+          <Link href="mailto:andy510@gmail.com" target="_blank">
             <i className="fa-regular fa-envelope mr-2"></i>
             Contact
-          </a>
+          </Link>
         </div>
         <div className="flex flex-col gap-2">
           <div className="text-xl ">Policy</div>
