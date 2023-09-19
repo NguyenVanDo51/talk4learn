@@ -177,6 +177,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
                       isRecording ? 'text-purple-500' : ''
                     }`}
                   ></i>
+                  
                   <AppButton
                     onClick={handleSendMessage}
                     className="flex items-center justify-center bg-primary hover:bg-indigo-600 text-white"

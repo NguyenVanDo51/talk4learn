@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'rgb(132, 216, 255)',
+        primary: 'var(--primary)',
         'bg-primary': 'rgb(221, 244, 255)',
         active: 'rgb(28, 176, 246)',
       },

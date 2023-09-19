@@ -29,6 +29,8 @@ npx prisma migrate dev
 - Chấm điểm writting
 - bắt đầu lại cuộc trò chuyện với 1 chủ đề mới
 - xây dựng các tình huống
+- 1 menu cho phân tích lỗi ngữ pháp và sửa lỗi
+- phân tích ngữ pháp câu khi chuyển đổi câu tiếng việt sang tiếng anh
 
 ## advice
 Ứng dụng **EngSpeakPractice** sẽ tập trung vào việc nâng cao kỹ năng giao tiếp tiếng Anh của người học. Dưới đây là một số tính năng chính mà ứng dụng này có thể bao gồm:
