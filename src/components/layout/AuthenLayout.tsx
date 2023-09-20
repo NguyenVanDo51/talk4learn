@@ -40,21 +40,21 @@ export const AuthenLayout = async ({ children }: any) => {
 
       <aside
         id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 border-r"
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-          <Link href="/app" className="flex items-center pl-2.5 mb-5">
+          <Link href="/app" className="flex items-center pl-5 pt-4 mb-5">
             <Logo />
           </Link>
 
-          <ul className="space-y-2 font-medium">
+          <ul className="space-y-2 font-medium mt-10">
             <Sidebar />
           </ul>
         </div>
       </aside>
 
-      <div className="p-4 sm:ml-64 h-full">{children}</div>
+      <div className="p-4 sm:ml-64 bg-white h-fit min-h-full">{children}</div>
     </>
   )
 }

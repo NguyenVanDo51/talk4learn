@@ -1,10 +1,11 @@
+import { AppButton } from '@/components/level1/antd/AppButton'
 import { AppModal } from '@/components/level1/antd/AppModal'
 import { AppSelect } from '@/components/level1/antd/AppSelect'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setSpeed } from '@/redux/slices/settingSlice'
 import { UserService } from '@/service/user/index.service'
 import { SettingLangEnum, SettingLangMapping } from '@/service/user/request'
-import { VoiceOptions } from '@/types/constants/voices'
+import { VoiceDefault, VoiceOptions } from '@/types/constants/voices'
 import { Button, Form, ModalProps, Slider, Spin } from 'antd'
 import { debounce } from 'lodash'
 import { useState } from 'react'
@@ -46,20 +47,20 @@ export const SettingModal = (props: IProps) => {
   return (
     <AppModal
       {...props}
-      title="Settings"
+      title="Tùy chọn"
       footer={[
-        <Button key={'close'} onClick={onClose} disabled={loading}>
-          Close
-        </Button>,
+        <AppButton key={'close'} onClick={onClose} disabled={loading}>
+          Đóng
+        </AppButton>,
       ]}
     >
       <Spin spinning={loading}>
         <Form labelCol={{ flex: '120px' }}>
-          <Form.Item label="Chatting Mode">
+          <Form.Item label="Chế độ nhập">
             <AppSelect
               options={[
-                { label: 'Voice', value: 'voice' },
-                { label: 'Text', value: 'text' },
+                { label: 'Ghi âm', value: 'voice' },
+                { label: 'Văn bản', value: 'text' },
               ]}
               value={settings.chatMode}
               onChange={(value) => onChangeSettings(value, 'chatMode')}
@@ -68,11 +69,11 @@ export const SettingModal = (props: IProps) => {
             />
           </Form.Item>
 
-          <Form.Item label="Speed">
+          <Form.Item label="Tốc độ nói">
             <Slider defaultValue={1} min={0.5} max={1.5} value={speed} step={0.1} onChange={onChangeSpeed} />
           </Form.Item>
 
-          <Form.Item label="Language">
+          <Form.Item label="Ngôn ngữ">
             <AppSelect
               options={[
                 {
@@ -92,14 +93,13 @@ export const SettingModal = (props: IProps) => {
             />
           </Form.Item>
 
-          <Form.Item label="Voice">
+          <Form.Item label="Giọng nói">
             <AppSelect
               options={VoiceOptions}
               value={settings.voice}
               onChange={(value) => onChangeSettings(value, 'voice')}
-              defaultValue={SettingLangEnum.EN}
+              defaultValue={VoiceDefault}
               className="dark:bg-dark-main dark:text-white"
-              placeholder="Select Voice"
             />
           </Form.Item>
         </Form>

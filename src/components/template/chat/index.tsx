@@ -11,6 +11,13 @@ import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 import { v4 } from 'uuid'
 import { AIModels } from '@/types/chat/models'
 import { SpeakerService } from '@/service/speaker'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { Header } from './components/Header'
+import { ModalInfo, ModalSuccess } from '@/components/level1/antd/AppModal'
+import { CupIcon } from './icons/cup'
+import { App, Modal } from 'antd'
+import { AppButton } from '@/components/level1/antd/AppButton'
 
 export type IAnalystMessage = IMessage & { comment: string }
 
@@ -25,7 +32,7 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
   const [messages, setMessages] = useState<IMessage[]>(initialMessages ?? [])
   const [isWaiting, setIsWaiting] = useState(false)
   const [systemMessage] = useState<string>(initialSystemMessage ?? AIModels[0].getDescription())
-
+  const router = useRouter()
   const sendMessage = (message: string, recorded?: string) => {
     if (!message.trim() || isWaiting) return
     setTimeout(() => {
@@ -41,6 +48,33 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     const newMesages: IMessage[] = [...messages, messageObject]
     setMessages(newMesages)
   }
+
+  const handleDoneMessage = useCallback(() => {
+    ModalSuccess.show({
+      title: '',
+      icon: null,
+      content: (
+        <div className="flex flex-col items-center justify-center gap-4">
+          <CupIcon size={128} isColor />
+          <span className="font-medium text-xl">Chúc mừng, bạn đã hoàn thành bài học!</span>
+        </div>
+      ),
+      footer: (
+        <div className="mt-5 flex gap-3 justify-end">
+          <AppButton
+            type="text"
+            onClick={() => {
+              router.back()
+              Modal.destroyAll()
+            }}
+          >
+            Hoàn thành
+          </AppButton>
+          <AppButton onClick={() => Modal.destroyAll()}>Tiếp tục</AppButton>
+        </div>
+      ),
+    })
+  }, [router])
 
   const getAnswer = useCallback(() => {
     const newMesages: IMessage[] = [...messages]
@@ -61,6 +95,11 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     ChatService.sendMessage(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const messageResponse = res.data?.choices[0]?.message.content
+        if (messageResponse === 'Done_message') {
+          handleDoneMessage()
+          return
+        }
+
         SpeakerService.speak(messageResponse)
 
         newMesages[messages.length - 1].status = 'success'
@@ -72,7 +111,7 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
         setMessages(newMesages)
       })
       .finally(() => setIsWaiting(false))
-  }, [messages, systemMessage])
+  }, [handleDoneMessage, messages, systemMessage])
 
   const getFirstMessage = () => {
     setIsWaiting(true)
@@ -134,8 +173,9 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
   }, [initialMessages, storageKey])
 
   return (
-    <div className="flex flex-grow justify-center h-full">
-      <div className="w-full bg-gray-100 dark:bg-dark-active-main-bg rounded-3xl">
+    <div className="flex flex-grow gap-4 justify-center h-full bg-[#ebedf8] overflow-hidden">
+      <div className="w-full md:w-[567px] bg-white shadow-md">
+        <Header />
         <Message
           infomation={infomation}
           messages={messages}
@@ -144,6 +184,41 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
           reSend={reSend}
         />
         <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
+      </div>
+
+      <div className="pt-4 flex flex-col gap-4">
+        <div className="p-4 rounded-md bg-white w-[300px] h-fit shadow-md">
+          <div className="flex items-center gap-2">
+            <Image
+              width="28"
+              height="28"
+              src="https://img.icons8.com/fluency/28/microsoft-tips.png"
+              alt="microsoft-tips"
+            />
+            <span className="font-bold">Gợi ý</span>
+          </div>
+          <div className="p-4 rounded-md border mt-3 bg-[#edeff829]">
+            Hi Sarah, thank you for reaching out. I would like to know more about the benefits and
+            requirements of your credit cards before applying. Can you provide me with that
+            information?
+          </div>
+        </div>
+        <div className="p-4 rounded-md bg-white w-[300px] h-fit shadow-md">
+          <div className="flex items-center gap-2">
+            <Image
+              width="28"
+              height="28"
+              src="https://img.icons8.com/fluency/28/google-translate-new-logo.png"
+              alt="google-translate-new-logo"
+            />
+            <span className="font-bold">Dịch</span>
+          </div>
+          <div className="p-4 rounded-md border mt-3 bg-[#edeff829]">
+            Hi Sarah, thank you for reaching out. I would like to know more about the benefits and
+            requirements of your credit cards before applying. Can you provide me with that
+            information?
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -13,7 +13,7 @@ export interface ISetting {
 
 const initialState: ISetting = {
   theme: 'dark',
-  lang: SettingLangEnum.EN,
+  lang: SettingLangEnum.VI,
   voice: VoiceDefault,
   chatMode: 'voice',
   inputType: 'voice',

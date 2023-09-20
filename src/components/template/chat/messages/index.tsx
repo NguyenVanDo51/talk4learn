@@ -12,7 +12,6 @@ import { AppModal } from '@/components/level1/antd/AppModal'
 import { AppSpin } from '@/components/level1/antd/AppSpin'
 import { ChatService } from '@/service/chat/index.service'
 import { SendMessageBody } from '@/service/chat/request'
-import Link from 'next/dist/client/link'
 
 export interface MessageProps {
   isSending: boolean
@@ -35,7 +34,7 @@ export const Message: FC<MessageProps> = (props) => {
 
   const inputType = useAppSelector((t) => t.setting.inputType)
 
-  const inputHeight = inputType === 'text' ? 100 : 135
+  const inputHeight = inputType === 'text' ? 90 : 110
   const { data } = useSession()
   const readText = (text: string) => {
     SpeakerService.speak(text)
@@ -60,7 +59,9 @@ export const Message: FC<MessageProps> = (props) => {
       .then((res) => {
         const result = res.data?.choices[0]?.message.content
         setCheckResult(result)
-        setMessages([...messages].map((m) => (m.id === messageToCheck.id ? { ...m, comment: result } : m)))
+        setMessages(
+          [...messages].map((m) => (m.id === messageToCheck.id ? { ...m, comment: result } : m))
+        )
       })
       .finally(() => setLoading(false))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,12 +72,19 @@ export const Message: FC<MessageProps> = (props) => {
       className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden p-2 lg:p-3"
       id="message-container"
       style={{
-        height: `calc(100vh - ${inputHeight}px)`,
+        height: `calc(100vh - ${inputHeight + 64}px)`,
       }}
     >
+      {infomation && (
+        <div
+          className="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+          role="alert"
+        >
+          {infomation}
+        </div>
+      )}
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">
-          {infomation && <div className="col-start-1 col-end-13 text-muted text-center my-2">{infomation}</div>}
           {messages.map((message, index) =>
             message.role === 'assistant' ? (
               <LeftMessage

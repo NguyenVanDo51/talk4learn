@@ -39,7 +39,7 @@ export const LeftMessage = memo(function LeftMessage({ message, inputType, isLas
         <div className="flex gap-2 lg:gap-3 flex-row items-center">
           <Avatar src={AIModels[0].avatar} size={'default'} className="min-w-[32px]"></Avatar>
 
-          <div className="text-sm bg-white dark:bg-slate-700 py-1 px-4 shadow rounded-3xl max-w-full overflow-hidden whitespace-break-spaces">
+          <div className="bg-white dark:bg-slate-700 py-1 px-4 shadow rounded-3xl max-w-full overflow-hidden whitespace-break-spaces">
             {type === 'voice' ? <AudioPlayer text={content} /> : <div className="py-1">{content}</div>}
           </div>
 

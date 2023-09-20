@@ -1,17 +1,26 @@
 import { lessons } from '@/api/lesson'
 import { LessonCard } from './components/LessonCard'
 import { useAppSelector } from '@/hooks/redux'
+import { categories } from '@/api/categories'
+import { Divider } from 'antd'
 
 const Conversations = () => {
-  const lang = useAppSelector(t => t.setting.lang)
+  const lang = useAppSelector((t) => t.setting.lang)
+  console.log('categories', categories)
   return (
-    <div className="container mx-auto flex flex-col items-center py-5">
-      <h1 className="text-2xl font-bold mb-6">Select a Lesson</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:grid-cols-4">
-        {lessons.map((lesson) => (
-          <LessonCard key={lesson.id} lesson={lesson} lang={lang} />
-        ))}
-      </div>
+    <div className="flex flex-col items-center justify-center py-5">
+      {categories.map((category) => (
+        <div key={category.id} className='mt-3'>
+          <Divider>
+            <span className="text-[#9a9a9a] text-xl font-normal">{category.name}</span>
+          </Divider>
+          <div className="flex flex-wrap gap-6">
+            {category.lessons?.map((lesson) => {
+              return <LessonCard key={lesson?.id} lesson={lesson} lang={lang} />
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

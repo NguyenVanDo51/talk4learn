@@ -10,6 +10,7 @@ export const lessons: ILesson[] = [
       vi: 'Bạn là một khách hàng trong nhà hàng, đang cố gắng đặt món ăn.',
     },
     level: 'A2',
+    image: 'https://img.icons8.com/color/96/restaurant-.png'
   },
   {
     id: 'lesson_002',
@@ -20,6 +21,7 @@ export const lessons: ILesson[] = [
       vi: 'Bạn là một du khách đang tìm cách đặt phòng khách sạn cho chuyến đi sắp tới.',
     },
     level: 'B1',
+    image: 'https://img.icons8.com/color/96/restaurant-.png'
   },
   {
     id: 'lesson_003',
@@ -30,6 +32,7 @@ export const lessons: ILesson[] = [
       vi: 'Bạn là một du khách lạc đường trong một thành phố mới, đang tìm kiếm sự giúp đỡ về định hướng.',
     },
     level: 'A2',
+    image: 'https://img.icons8.com/color/96/restaurant-.png'
   },
   {
     id: 'lesson_004',
@@ -40,6 +43,7 @@ export const lessons: ILesson[] = [
       vi: 'Bạn là một khách hàng đang tìm cách mua một món quà cho sinh nhật của bạn.',
     },
     level: 'A1',
+    image: 'https://img.icons8.com/color/96/restaurant-.png'
   },
   {
     id: 'lesson_005',
@@ -50,6 +54,7 @@ export const lessons: ILesson[] = [
       vi: 'Bạn là một người dùng dự định đặt bàn cho một dịp đặc biệt.',
     },
     level: 'B2',
+    image: 'https://img.icons8.com/color/96/restaurant-.png'
   },
   {
     id: 'lesson_006',
@@ -60,5 +65,6 @@ export const lessons: ILesson[] = [
       vi: 'Bạn là người tìm việc đang cần sự hướng dẫn về cách chuẩn bị cho cuộc phỏng vấn công việc sắp tới.',
     },
     level: 'B2',
+    image: 'https://img.icons8.com/color/96/restaurant-.png'
   },
 ]

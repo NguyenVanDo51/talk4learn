@@ -7,4 +7,5 @@ export interface ILesson {
     vi: string
   }
   level: 'A1' | 'A2' | 'B2' | 'B1' // đánh giá độ khó của tình huống
+  image: string // ảnh minh họa cho tình huống
 }

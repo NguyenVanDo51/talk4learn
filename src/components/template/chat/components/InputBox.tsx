@@ -129,10 +129,12 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   }, [message, recording, sendMessage, inputType])
 
   const changeIcon = (
-    <AppTooltip title="Change input type">
+    <AppTooltip title="Đổi kiểu nhập">
       <i
         className={
-          inputType === 'text' ? 'fa-solid fa-arrows-rotate cursor-pointer' : 'fa-regular fa-keyboard cursor-pointer'
+          inputType === 'text'
+            ? 'fa-solid fa-arrows-rotate cursor-pointer'
+            : 'fa-regular fa-keyboard cursor-pointer'
         }
         onClick={() => changeInputType(inputType === 'text' ? 'voice' : 'text')}
       ></i>
@@ -163,22 +165,23 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
           <div className="flex-grow">
             <AppInput
               ref={messageRef as any}
-              placeholder={isRecording ? 'Recording your voice ...' : 'Send a message'}
+              placeholder={isRecording ? 'Đang ghi âm ...' : 'Nhập tin nhắn'}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="p-1 pl-4"
+              className="py-3 px-5"
               type="text"
+              size="large"
               disabled={isRecording}
               suffix={
                 <div className="flex items-center gap-4 lg:gap-5">
                   <i
                     onClick={handleRecord}
                     className={`fa-solid fa-microphone cursor-pointer text-xl ${
-                      isRecording ? 'text-purple-500' : ''
+                      isRecording ? 'text-blue-800' : ''
                     }`}
                   ></i>
-                  
-                  <AppButton
+
+                  {/* <AppButton
                     onClick={handleSendMessage}
                     className="flex items-center justify-center bg-primary hover:bg-indigo-600 text-white"
                     icon={
@@ -189,7 +192,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
                         alt="filled-sent"
                       />
                     }
-                  />
+                  /> */}
                 </div>
               }
               onKeyDown={(e) => {

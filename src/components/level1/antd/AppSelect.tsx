@@ -11,7 +11,7 @@ export const AppSelect = ({ onEnter, size = 'large', className = '', ...props }:
     <Select
       size={size}
       className={`rounded-2xl! ${className}`}
-      placeholder={'Please select'}
+      placeholder={'Vui lòng chọn'}
       {...props}
     />
   )

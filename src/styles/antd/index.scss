@@ -1,8 +1,6 @@
-// i[class*="fa-"] {
-//   &:not([class*="text-"]) {
-//     color: var(--icon-color);
-//   }
-// }
+[class*="ant-"], .ant-form-item .ant-form-item-label >label {
+  font-size: 16px;
+}
 
 @import './button';
 @import './collapse';

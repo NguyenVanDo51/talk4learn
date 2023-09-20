@@ -2,16 +2,20 @@ import './globals.css'
 import '../styles/index.scss'
 import '../../public/fontawesome/css/all.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { ReduxProvider } from '@/redux/provider'
 import { Analytics } from '@vercel/analytics/react'
 import ClientProvider from '@/components/layout/Provider'
 import { APP_NAME } from '@/types/constants'
 import Script from 'next/script'
 import { Suspense } from 'react'
+import { Roboto } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
-
+const roboto = Roboto({
+  weight: ['400', '500', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap',
+})
 const title = `${APP_NAME} - Practice English with AI Chatbot`
 const description = `Practice English, improve grammar, and enhance your skills with Ranga, the AI-powered chatbot.`
 
@@ -121,7 +125,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={roboto.className}>
         {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
         <Script
           strategy="beforeInteractive"

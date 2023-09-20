@@ -35,3 +35,12 @@ export class ModalInfo {
     })
   }
 }
+
+export class ModalSuccess {
+  static show({ ...args }: ModalFuncProps) {
+    Modal.success({
+      centered: true,
+      ...args,
+    })
+  }
+}
