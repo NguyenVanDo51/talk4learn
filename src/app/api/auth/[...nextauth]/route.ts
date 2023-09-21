@@ -1,7 +1,8 @@
 import NextAuth, { AuthOptions } from 'next-auth'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google'
-import { prisma } from '@/api/prismaInstance'
+import { FirestoreAdapter } from "@auth/firebase-adapter";
+import { cert } from "firebase-admin/app";
+import { firestore } from '@/service/firestore';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -10,7 +11,7 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
-  adapter: PrismaAdapter(prisma),
+  adapter: FirestoreAdapter(firestore) as any,
   callbacks: {
     session: async ({ session, token }) => {
       if (session?.user) {

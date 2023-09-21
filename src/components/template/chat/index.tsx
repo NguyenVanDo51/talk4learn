@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation'
 import { Header } from './components/Header'
 import { ModalInfo, ModalSuccess } from '@/components/level1/antd/AppModal'
 import { CupIcon } from './icons/cup'
-import { App, Modal } from 'antd'
+import { Alert, App, Modal } from 'antd'
 import { AppButton } from '@/components/level1/antd/AppButton'
 
 export type IAnalystMessage = IMessage & { comment: string }
@@ -187,7 +187,7 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
       </div>
 
       <div className="pt-4 flex flex-col gap-4">
-        <div className="p-4 rounded-md bg-white w-[300px] h-fit shadow-md">
+        <div className="p-4 rounded-md bg-white w-[380px] h-fit shadow-md">
           <div className="flex items-center gap-2">
             <Image
               width="28"
@@ -203,7 +203,8 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
             information?
           </div>
         </div>
-        <div className="p-4 rounded-md bg-white w-[300px] h-fit shadow-md">
+
+        <div className="p-4 rounded-md bg-white w-[380px] h-fit shadow-md">
           <div className="flex items-center gap-2">
             <Image
               width="28"
@@ -213,11 +214,13 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
             />
             <span className="font-bold">Dịch</span>
           </div>
+
           <div className="p-4 rounded-md border mt-3 bg-[#edeff829]">
             Hi Sarah, thank you for reaching out. I would like to know more about the benefits and
             requirements of your credit cards before applying. Can you provide me with that
             information?
           </div>
+          <Alert className='mt-3' message={'Gõ tay để ghi nhớ tốt hơn nhé'} type="info" showIcon closable />
         </div>
       </div>
     </div>

@@ -1,9 +1,8 @@
 import { AppButton } from '@/components/level1/antd/AppButton'
 import { IMessage } from '@/types/chat'
-import { Divider, Spin } from 'antd'
+import { Alert, Divider, Spin } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { IAIModel } from '@/types/chat/models'
 import { SpeakerService } from '@/service/speaker'
 import { useAppSelector } from '@/hooks/redux'
 import { LeftMessage } from './LeftMessage'
@@ -76,12 +75,7 @@ export const Message: FC<MessageProps> = (props) => {
       }}
     >
       {infomation && (
-        <div
-          className="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
-          role="alert"
-        >
-          {infomation}
-        </div>
+        <Alert message={infomation} type="info" showIcon />
       )}
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">

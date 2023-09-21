@@ -12,11 +12,11 @@ export const Sidebar = () => {
   const { data } = useSession()
   const pathname = usePathname()
   const [open, setOpen] = useState<boolean>(false)
-
+  console.log('pathname', pathname)
   const menuItems = [
     {
       key: '/app',
-      label: 'Hội thoại',
+      label: 'Trang chủ',
       icon: (
         <Image
           width="50"
@@ -106,7 +106,7 @@ export const Sidebar = () => {
               href={onClick ? '' : key}
               className={`flex border-2 border-transparent items-center px-4 py-[2px] text-gray-900 rounded-2xl dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${
                 pathname === key
-                  ? ' !border-primary bg-bg-primary hover:bg-bg-primary text-active'
+                  ? ' !border-primary !bg-bg-primary !hover:bg-bg-primary text-active'
                   : ''
               }`}
               onClick={(e) => {

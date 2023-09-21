@@ -6,9 +6,9 @@ import { Divider } from 'antd'
 
 const Conversations = () => {
   const lang = useAppSelector((t) => t.setting.lang)
-  console.log('categories', categories)
+
   return (
-    <div className="flex flex-col items-center justify-center py-5">
+    <div className="flex flex-col items-center justify-center">
       {categories.map((category) => (
         <div key={category.id} className='mt-3'>
           <Divider>
