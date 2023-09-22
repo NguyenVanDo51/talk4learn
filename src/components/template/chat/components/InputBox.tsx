@@ -17,12 +17,8 @@ interface IProps {
   sendMessage: (message: string, voiceRecoreded?: string) => void
 }
 
-let recognition: any = null
 let audioChunks: any = []
-let rec: any
-if (typeof window !== 'undefined') {
-  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
-}
+let rec: MediaRecorder | null = null
 
 export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   const [message, setMessage] = useState('')
@@ -43,17 +39,17 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
     setGranted(false)
     return getUserMedia({ audio: true }).then((stream: any) => {
       rec = new MediaRecorder(stream)
+
       rec.ondataavailable = (e: any) => {
         audioChunks = []
         audioChunks.push(e.data)
-        if (rec.state == 'inactive') {
+        if (rec?.state == 'inactive') {
           let blob = new Blob(audioChunks, { type: 'audio/mp3' })
+          console.log('blob', blob)
           setRecording(URL.createObjectURL(blob))
-          recognition.stop()
         }
       }
       setGranted(true)
-      return rec
     })
   }
 
@@ -64,20 +60,16 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
       })
       return
     }
+
     if (isRecording) {
-      recognition.stop()
       rec.stop()
-    } else {
-      setMessage('')
-      try {
-        recognition.start()
-        rec.start()
-      } catch {
-        recognition.stop()
-        rec.stop()
-      }
+      setIsRecording(false)
+      return
     }
-    setIsRecording(!isRecording)
+
+    setMessage('')
+    rec.start()
+    setIsRecording(true)
   }
 
   const handleSendMessage = () => {
@@ -100,22 +92,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   }, [chatMode])
 
   useEffect(() => {
-    if (!recognition) return
-
-    recognition.onresult = (event: { results: SpeechRecognitionResultList }) => {
-      rec?.stop()
-      const speechToText = event.results[0][0].transcript
-      setIsRecording(false)
-      if (speechToText) {
-        setMessage(speechToText)
-      }
-      setTimeout(() => {
-        messageRef.current?.focus()
-      }, 300)
-    }
-
     return () => {
-      recognition.stop()
       rec?.stop()
     }
   }, [granted])

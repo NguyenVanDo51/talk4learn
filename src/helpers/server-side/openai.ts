@@ -1,7 +1,7 @@
 import { SendMessageBody } from '@/service/chat/request'
 import { VIP_KEY } from '@/types/constants/openapikey'
 
-const { Configuration, OpenAIApi } = require('openai')
+import { Configuration, OpenAIApi } from 'openai'
 
 const configuration = new Configuration({
   apiKey: VIP_KEY[0],

@@ -6,11 +6,11 @@ import { Session } from 'next-auth'
 export const withAuth = async (callback: (session: Session) => any) => {
   const session: null | Session = await getServerSession(authOptions)
 
-  if (!session) {
-    return new Response('Unauthentication', {
-      status: 401,
-    })
-  }
+  // if (!session) {
+  //   return new Response('Unauthentication', {
+  //     status: 401,
+  //   })
+  // }
 
-  return callback(session)
+  return callback(session as any)
 }
