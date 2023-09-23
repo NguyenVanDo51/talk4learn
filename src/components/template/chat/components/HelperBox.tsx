@@ -18,7 +18,7 @@ export const HelperBox: FC<{
       {alert && (
         <Alert
           className="mt-3"
-          message={'Gõ tay để ghi nhớ tốt hơn nhé'}
+          message={alert}
           type="info"
           showIcon
           closable

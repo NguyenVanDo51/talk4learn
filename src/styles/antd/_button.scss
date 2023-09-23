@@ -8,7 +8,8 @@ button.ant-btn.ant-btn-lg {
   height: fit-content;
 }
 
-.ant-btn-link {
+button.ant-btn.ant-btn-link {
+  padding: 0;
   span {
     text-decoration-line: underline;
   }

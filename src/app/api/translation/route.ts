@@ -3,6 +3,7 @@ import { withAuth } from '@/helpers/server-side'
 import { NextApiRequest } from 'next'
 
 import { TranslationServiceClient } from '@google-cloud/translate'
+import axios, { AxiosResponse } from 'axios'
 
 const translationClient = new TranslationServiceClient({
   projectId: process.env?.FIREBASE_PROJECT_ID,
@@ -15,25 +16,40 @@ const location = 'global'
 
 export async function GET(req: Request) {
   return withAuth(async () => {
-    const searchParams = new URLSearchParams(req.url.split('?')[1])
+    const searchParams = new URLSearchParams(decodeURI(req.url).substring(req.url.indexOf('?')))
+    
     const text = searchParams?.get('text')
-    console.log('req', text)
+    const fromLang = searchParams?.get('fromLang')
+    const toLang = searchParams?.get('toLang')
+    console.log('req.url', req.url)
+    console.log('text', text)
+    console.log('fromLang', fromLang)
+    console.log('toLang', toLang)
+
+    if (!process.env?.GOOGLE_API_KEY) return new Response('text can not empty', { status: 201 })
     if (!text) return new Response('text can not empty', { status: 201 })
 
     try {
-      const [response] = await translationClient.translateText({
-        parent: `projects/${process.env?.FIREBASE_PROJECT_ID}/locations/${location}`,
-        contents: [cleanInput(text)],
-        mimeType: 'text/plain', // mime types: text/plain, text/html
-        sourceLanguageCode: 'en',
-        targetLanguageCode: 'vi',
-      })
+      let url = `https://translation.googleapis.com/language/translate/v2?key=${process.env?.GOOGLE_API_KEY}`
+      url += '&q=' + encodeURI(text)
+      url += `&source=${fromLang}`
+      url += `&target=${toLang}`
 
-      console.log(`Translation: ${response.translations}`)
-      return new Response('response?.translations')
+      const res: AxiosResponse<ITranslationResponse> = await axios.get(url)
+      return new Response(res.data.data.translations[0].translatedText)
     } catch (error: any) {
       console.error(error)
       return new Response('')
     }
   })
+}
+
+interface ITranslationResponse {
+  data: {
+    translations: [
+      {
+        translatedText: string
+      }
+    ]
+  }
 }

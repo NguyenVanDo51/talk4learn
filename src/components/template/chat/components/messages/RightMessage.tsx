@@ -1,13 +1,8 @@
 import { AppButton, AppDeleteButton } from '@/components/level1/antd/AppButton'
 import { SpeakerService } from '@/service/speaker'
 import { IMessage } from '@/types/chat'
-import { memo, useEffect, useState } from 'react'
+import { memo } from 'react'
 import { MessageProps } from '.'
-import { ChatService } from '@/service/chat/index.service'
-import { SendMessageBody } from '@/service/chat/request'
-import { Divider, Modal } from 'antd'
-import { AppSpin } from '@/components/level1/antd/AppSpin'
-import { ModalInfo } from '@/components/level1/antd/AppModal'
 
 interface RightMessageProps extends MessageProps {
   message: IMessage

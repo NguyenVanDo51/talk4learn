@@ -1,11 +1,8 @@
 'use client'
 import { FC, useCallback, useEffect, useState } from 'react'
 import { InputBox } from './components/InputBox'
-import { Message } from './messages'
+import { Message } from './components/messages'
 import { IMessage } from '@/types/chat'
-import { SendMessageBody } from '@/service/chat/request'
-import { ChatService } from '@/service/chat/index.service'
-import { OpenAIMessgaeResponse } from '@/service/chat/response'
 import { AxiosResponse } from 'axios'
 import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
 import { v4 } from 'uuid'
@@ -16,9 +13,15 @@ import { useRouter } from 'next/navigation'
 import { Header } from './components/Header'
 import { ModalInfo, ModalSuccess } from '@/components/level1/antd/AppModal'
 import { CupIcon } from './icons/cup'
-import { Alert, App, Modal } from 'antd'
+import { Alert, App, Divider, Input, Modal } from 'antd'
 import { AppButton } from '@/components/level1/antd/AppButton'
 import { HelperBox } from './components/HelperBox'
+import { ChatService } from './service'
+import { SendMessageBody } from './service/request'
+import { OpenAIMessgaeResponse } from './service/response'
+import { Translation } from './components/Translation'
+import { Suggestions } from './components/Suggestions'
+import { ChatContext } from './context'
 
 export type IAnalystMessage = IMessage & { comment: string }
 
@@ -35,18 +38,35 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
   const [systemMessage] = useState<string>(initialSystemMessage ?? AIModels[0].getDescription())
   const router = useRouter()
 
-  const sendMessage = (message: string, recorded?: string) => {
-    if (!message.trim() || isWaiting) return
+  const sendMessage = async (message: string | Blob, recorded?: string) => {
+    if (isWaiting) return
+    if (typeof message === 'string' && !message.trim()) return
+    const messageObject: IMessage = {
+      id: v4(),
+      role: 'user',
+      content: '',
+      recorded,
+    }
+
+    if (typeof message === 'string') {
+      messageObject.content = message
+    } else {
+      setIsWaiting(true)
+      const res = await ChatService.speechToText(message)
+      setIsWaiting(false)
+
+      if (res.data) {
+        messageObject.content = res.data
+      }
+    }
+
+    if (!messageObject.content) {
+      return
+    }
     setTimeout(() => {
       scrollToBottom(ScrollSelecter.Message)
     }, 100)
 
-    const messageObject: IMessage = {
-      id: v4(),
-      role: 'user',
-      content: message.trim(),
-      recorded,
-    }
     const newMesages: IMessage[] = [...messages, messageObject]
     setMessages(newMesages)
   }
@@ -97,7 +117,7 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     ChatService.sendMessage(bodyMessage)
       .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
         const messageResponse = res.data?.choices[0]?.message.content
-        if (messageResponse === 'Done_message') {
+        if (messageResponse.includes('Done_message')) {
           handleDoneMessage()
           return
         }
@@ -175,37 +195,27 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
   }, [initialMessages, storageKey])
 
   return (
-    <div className="flex flex-grow gap-4 justify-center h-full bg-[#ebedf8] overflow-hidden">
-      <div className="w-full md:w-[567px] bg-white shadow-md">
-        <Header />
-        <Message
-          infomation={infomation}
-          messages={messages}
-          isSending={isWaiting}
-          setMessages={setMessages}
-          reSend={reSend}
-        />
-        <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
-      </div>
+    <ChatContext.Provider value={{ messages }}>
+      <div className="flex flex-grow gap-4 justify-center h-full bg-[#ebedf8] overflow-hidden">
+        <div className="w-full md:w-[567px] bg-white shadow-md">
+          <Header />
+          <Message
+            infomation={infomation}
+            messages={messages}
+            isSending={isWaiting}
+            setMessages={setMessages}
+            reSend={reSend}
+          />
+          <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
+        </div>
 
-      <div className="pt-4 flex flex-col gap-4">
-        <HelperBox image="https://img.icons8.com/fluency/28/microsoft-tips.png" title="Gợi ý">
-          Hi Sarah, thank you for reaching out. I would like to know more about the benefits and
-          requirements of your credit cards before applying. Can you provide me with that
-          information?
-        </HelperBox>
+        <div className="pt-4 flex flex-col gap-4">
+          <Suggestions />
 
-        <HelperBox
-          image="https://img.icons8.com/fluency/28/google-translate-new-logo.png"
-          title="Dịch"
-          alert="Gõ tay để ghi nhớ tốt hơn nhé"
-        >
-          Hi Sarah, thank you for reaching out. I would like to know more about the benefits and
-          requirements of your credit cards before applying. Can you provide me with that
-          information?
-        </HelperBox>
+          <Translation />
+        </div>
       </div>
-    </div>
+    </ChatContext.Provider>
   )
 }
 

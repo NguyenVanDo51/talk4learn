@@ -13,7 +13,6 @@ class Speaker {
     const voicename = setting.voice
     const { speed } = setting
     responsiveVoice.setDefaultVoice(Voices[voicename] || VoiceDefault)
-    console.log('speed', speed)
     responsiveVoice.speak(text, Voices[voicename] || VoiceDefault, {
       ...options,
       rate: speed,
@@ -24,6 +23,11 @@ class Speaker {
         store.dispatch(setTextSpeaking(''))
       },
     })
+  }
+
+  speakFree = (text: string, voice: string) => {
+    responsiveVoice.setDefaultVoice(voice)
+    responsiveVoice.speak(text)
   }
 }
 

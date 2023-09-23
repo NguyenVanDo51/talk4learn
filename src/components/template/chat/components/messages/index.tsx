@@ -9,8 +9,8 @@ import { LeftMessage } from './LeftMessage'
 import { RightMessage } from './RightMessage'
 import { AppModal } from '@/components/level1/antd/AppModal'
 import { AppSpin } from '@/components/level1/antd/AppSpin'
-import { ChatService } from '@/service/chat/index.service'
-import { SendMessageBody } from '@/service/chat/request'
+import { ChatService } from '../../service'
+import { SendMessageBody } from '../../service/request'
 
 export interface MessageProps {
   isSending: boolean
@@ -33,7 +33,7 @@ export const Message: FC<MessageProps> = (props) => {
 
   const inputType = useAppSelector((t) => t.setting.inputType)
 
-  const inputHeight = inputType === 'text' ? 90 : 110
+  const inputHeight = inputType === 'text' ? 75 : 85
   const { data } = useSession()
   const readText = (text: string) => {
     SpeakerService.speak(text)
@@ -75,7 +75,7 @@ export const Message: FC<MessageProps> = (props) => {
       }}
     >
       {infomation && (
-        <Alert message={infomation} type="info" showIcon />
+        <Alert message={infomation} type="info" className='mb-3' />
       )}
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">

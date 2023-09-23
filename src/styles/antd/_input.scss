@@ -41,3 +41,9 @@ input.ant-input-lg,
 .ant-slider .ant-slider-handle::after {
   background-color: var(--primary);
 }
+
+.no-padding {
+  textarea {
+    padding-left: 0 !important;
+  }
+}
