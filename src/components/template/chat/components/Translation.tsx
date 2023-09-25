@@ -99,7 +99,7 @@ export const Translation: FC = () => {
             className="cursor-pointer absolute bg-blue-500 text-white !w-[36px] !h-[36px] flex items-center justify-center !p-0 !rounded-full top-[-28px] left-[45%]"
             onClick={swapLanguage}
           >
-            <i className="fa-solid fa-arrow-up-arrow-down"></i>
+            <i className="fa-regular fa-arrow-up-arrow-down"></i>
           </AppButton>
 
           <span>

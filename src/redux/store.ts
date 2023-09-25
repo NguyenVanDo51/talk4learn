@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import settingSlice from './slices/settingSlice'
 import appSlice from './slices/appSlice'
+import lessonsSlice from './slices/lessonsSlice'
 
 const store = configureStore({
   reducer: {
     setting: settingSlice,
     app: appSlice,
+    lessons: lessonsSlice,
   },
 })
 

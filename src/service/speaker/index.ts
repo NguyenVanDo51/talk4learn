@@ -8,26 +8,38 @@ class Speaker {
     responsiveVoice.cancel()
   }
 
-  speak = (text: string, voice = VoiceDefault, options: ResponsiveVoiceOption = {}) => {
+  speak = (text: string, options: ResponsiveVoiceOption = {}) => {
     const setting = store.getState().setting
-    const voicename = setting.voice
+    const voicename = setting.voice || VoiceDefault
     const { speed } = setting
-    responsiveVoice.setDefaultVoice(Voices[voicename] || VoiceDefault)
-    responsiveVoice.speak(text, Voices[voicename] || VoiceDefault, {
-      ...options,
-      rate: speed,
-      onstart: () => {
-        store.dispatch(setTextSpeaking(text))
-      },
-      onend: () => {
-        store.dispatch(setTextSpeaking(''))
-      },
-    })
+    responsiveVoice.setDefaultVoice(Voices[voicename])
+    try {
+      responsiveVoice.speak(text, Voices[voicename], {
+        ...options,
+        rate: speed || 1,
+        onstart: () => {
+          store.dispatch(setTextSpeaking(text))
+        },
+        onend: () => {
+          store.dispatch(setTextSpeaking(''))
+        },
+      })
+    } catch {
+      responsiveVoice.speak(text, Voices[voicename], {
+        ...options,
+        rate: speed || 1,
+        onstart: () => {
+          store.dispatch(setTextSpeaking(text))
+        },
+        onend: () => {
+          store.dispatch(setTextSpeaking(''))
+        },
+      })
+    }
   }
 
-  speakFree = (text: string, voice: string) => {
-    responsiveVoice.setDefaultVoice(voice)
-    responsiveVoice.speak(text)
+  speakFree = (text: string, voice: string = VoiceDefault) => {
+    responsiveVoice.speak(text, voice)
   }
 }
 

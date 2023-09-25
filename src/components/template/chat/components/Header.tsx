@@ -1,10 +1,14 @@
-import Image from "next/image"
-import { useRouter } from "next/navigation"
-import { CupIcon } from "../icons/cup"
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { CupIcon } from '../icons/cup'
+import { useLessonsCompleted } from '@/hooks/fetchers/useLessonsCompleted'
+import { useContext } from 'react'
+import { ChatContext } from '../context'
 
 export const Header = () => {
   const router = useRouter()
-
+  const { lessonsCompleted } = useLessonsCompleted()
+  const { lesson } = useContext(ChatContext)
   return (
     <div className="flex justify-between items-center px-4 h-16 border-b">
       <span onClick={() => router.back()} className="cursor-pointer">
@@ -16,7 +20,7 @@ export const Header = () => {
         />
       </span>
       <span>{'Bot'}</span>
-      <CupIcon />
+      <CupIcon isColor={lesson?.id ? lessonsCompleted?.includes(lesson.id) : false} />
     </div>
   )
 }

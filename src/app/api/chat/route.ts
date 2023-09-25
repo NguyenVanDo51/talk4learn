@@ -7,8 +7,8 @@ export async function POST(request: NextRequest) {
   return withAuth(async () => {
     const body = await request.json()
     return createChatCompletion(body.messages, body.max_tokens)
-      .then((res: any) => {
-        return NextResponse.json(res.data)
+      .then((data) => {
+        return NextResponse.json(data)
       })
       .catch((e: any) => {
         return new Response(e, {

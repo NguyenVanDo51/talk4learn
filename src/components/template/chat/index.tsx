@@ -18,24 +18,27 @@ import { AppButton } from '@/components/level1/antd/AppButton'
 import { HelperBox } from './components/HelperBox'
 import { ChatService } from './service'
 import { SendMessageBody } from './service/request'
-import { OpenAIMessgaeResponse } from './service/response'
 import { Translation } from './components/Translation'
 import { Suggestions } from './components/Suggestions'
 import { ChatContext } from './context'
+import { ILesson } from '@/types/lesson/type'
+import { lessons } from '@/api/lesson'
+import { useAppSelector } from '@/hooks/redux'
+import { LessonService } from '@/service/lesson/index.service'
+import { useLessonsCompleted } from '@/hooks/fetchers/useLessonsCompleted'
 
 export type IAnalystMessage = IMessage & { comment: string }
 
 interface IProps {
-  initialSystemMessage?: string
-  storageKey?: string
+  lesson?: ILesson
   initialMessages?: IMessage[]
   infomation?: string
 }
 
-const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages, infomation }) => {
+const AIChat: FC<IProps> = ({ lesson = lessons[0], initialMessages, infomation }) => {
   const [messages, setMessages] = useState<IMessage[]>(initialMessages ?? [])
   const [isWaiting, setIsWaiting] = useState(false)
-  const [systemMessage] = useState<string>(initialSystemMessage ?? AIModels[0].getDescription())
+  const { refreshLessonsCompleted } = useLessonsCompleted()
   const router = useRouter()
 
   const sendMessage = async (message: string | Blob, recorded?: string) => {
@@ -71,7 +74,7 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     setMessages(newMesages)
   }
 
-  const handleDoneMessage = useCallback(() => {
+  const handleDoneMessage = useCallback(async () => {
     ModalSuccess.show({
       title: '',
       icon: null,
@@ -96,7 +99,10 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
         </div>
       ),
     })
-  }, [router])
+
+    await LessonService.completeLesson(lesson?.id)
+    await refreshLessonsCompleted()
+  }, [lesson?.id, refreshLessonsCompleted, router])
 
   const getAnswer = useCallback(() => {
     const newMesages: IMessage[] = [...messages]
@@ -105,19 +111,15 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     if (userMessage.status === 'success') return
 
     setIsWaiting(true)
-    const bodyMessage: SendMessageBody[] = [
-      { role: 'system', content: systemMessage },
-      ...messages,
-      userMessage,
-    ].map((message) => ({
+    const bodyMessage: SendMessageBody[] = [...messages, userMessage].map((message) => ({
       role: message.role as SendMessageBody['role'],
       content: message.content.at(-1) !== '.' ? `${message.content}.` : message.content,
     }))
 
-    ChatService.sendMessage(bodyMessage)
-      .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
-        const messageResponse = res.data?.choices[0]?.message.content
-        if (messageResponse.includes('Done_message')) {
+    ChatService.sendMessage(lesson?.id, bodyMessage)
+      .then((res: AxiosResponse<string>) => {
+        const messageResponse = res.data
+        if (messageResponse.includes('Done_message') || messageResponse.includes('done_message')) {
           handleDoneMessage()
           return
         }
@@ -133,16 +135,13 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
         setMessages(newMesages)
       })
       .finally(() => setIsWaiting(false))
-  }, [handleDoneMessage, messages, systemMessage])
+  }, [handleDoneMessage, lesson, messages])
 
   const getFirstMessage = () => {
     setIsWaiting(true)
-    ChatService.sendMessage([
-      { role: 'system', content: systemMessage },
-      { role: 'user', content: 'excuse me' },
-    ])
-      .then((res: AxiosResponse<OpenAIMessgaeResponse>) => {
-        const messageResponse = res.data?.choices[0]?.message.content
+    ChatService.sendMessage(lesson?.id, [{ role: 'user', content: 'Excuse me!' }])
+      .then((res: AxiosResponse<string>) => {
+        const messageResponse = res.data
         const message: IMessage = {
           id: v4(),
           role: 'assistant',
@@ -158,8 +157,9 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
   const reSend = () => {
     getAnswer()
   }
-  const newestMessage = messages.at(-1)
 
+  const newestMessage = messages.at(-1)
+  
   useEffect(() => {
     if (newestMessage?.status !== 'error') {
       getAnswer()
@@ -169,6 +169,11 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
 
   useEffect(() => {
     scrollToBottom(ScrollSelecter.Message)
+
+    return () => {
+      SpeakerService.cancel()
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newestMessage])
 
@@ -176,36 +181,16 @@ const AIChat: FC<IProps> = ({ initialSystemMessage, storageKey, initialMessages,
     if (!initialMessages) {
       getFirstMessage()
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialMessages])
 
-  useEffect(() => {
-    if (storageKey && messages.length > 1) {
-      localStorage.setItem(storageKey, JSON.stringify(messages))
-    }
-  }, [messages, storageKey])
-
-  useEffect(() => {
-    if (!storageKey) return
-
-    const msg = localStorage.getItem(storageKey)
-    if (msg) {
-      setMessages(JSON.parse(msg))
-    }
-  }, [initialMessages, storageKey])
-
   return (
-    <ChatContext.Provider value={{ messages }}>
+    <ChatContext.Provider value={{ messages, lesson }}>
       <div className="flex flex-grow gap-4 justify-center h-full bg-[#ebedf8] overflow-hidden">
         <div className="w-full md:w-[567px] bg-white shadow-md">
           <Header />
-          <Message
-            infomation={infomation}
-            messages={messages}
-            isSending={isWaiting}
-            setMessages={setMessages}
-            reSend={reSend}
-          />
+          <Message isSending={isWaiting} setMessages={setMessages} reSend={reSend} />
           <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
         </div>
 

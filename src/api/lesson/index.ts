@@ -4,13 +4,16 @@ export const lessons: ILesson[] = [
   {
     id: 'lesson_001',
     name: 'Ordering Food',
-    modelContext: 'You are a waiter in a restaurant. The user wants to order.',
+    modelContext: 'You are a funny waiter in a restaurant. The user wants to order.',
     userContext: {
       en: 'You are a customer in a restaurant, trying to order a meal.',
       vi: 'Bạn là một khách hàng trong nhà hàng, đang cố gắng đặt món ăn.',
     },
+    endCondition: {
+      assistant: 'When the user has finished ordering',
+    },
     level: 'A2',
-    image: 'https://img.icons8.com/color/96/restaurant-.png'
+    image: 'https://img.icons8.com/color/96/restaurant-.png',
   },
   {
     id: 'lesson_002',
@@ -20,51 +23,87 @@ export const lessons: ILesson[] = [
       en: 'You are a traveler looking to reserve a hotel room for your upcoming trip.',
       vi: 'Bạn là một du khách đang tìm cách đặt phòng khách sạn cho chuyến đi sắp tới.',
     },
+    endCondition: {
+      assistant: 'When the user has finished ordering',
+    },
     level: 'B1',
-    image: 'https://img.icons8.com/color/96/restaurant-.png'
+    image: 'https://img.icons8.com/color/96/restaurant-.png',
   },
   {
     id: 'lesson_003',
     name: 'Asking for Directions',
-    modelContext: 'You are a local resident standing on the street, and there is a foreigner approaching you, trying to strike up a conversation and asking for directions to the library.',
+    modelContext:
+      'You are a local resident standing on the street, and there is a foreigner approaching you, trying to strike up a conversation and asking for directions to the library.',
+    endCondition: {
+      assistant: 'When the user has finished ordering',
+    },
     userContext: {
       en: 'You are a tourist lost in a new city, seeking help with directions.',
       vi: 'Bạn là một du khách lạc đường trong một thành phố mới, đang tìm kiếm sự giúp đỡ về định hướng.',
     },
     level: 'A2',
-    image: 'https://img.icons8.com/color/96/restaurant-.png'
+    image: 'https://img.icons8.com/color/96/restaurant-.png',
   },
   {
     id: 'lesson_004',
     name: 'Buying a Gift',
     modelContext: 'You are a shop assistant. The user wants to buy a gift.',
+    endCondition: {
+      assistant: 'When the user has finished ordering',
+    },
     userContext: {
       en: "You are a customer looking to purchase a gift for your friend's birthday.",
       vi: 'Bạn là một khách hàng đang tìm cách mua một món quà cho sinh nhật của bạn.',
     },
     level: 'A1',
-    image: 'https://img.icons8.com/color/96/restaurant-.png'
+    image: 'https://img.icons8.com/color/96/restaurant-.png',
   },
   {
     id: 'lesson_005',
     name: 'Making a Reservation',
     modelContext: 'You are a restaurant host. The user wants to make a reservation.',
+    endCondition: {
+      assistant: 'When the user has finished ordering',
+    },
     userContext: {
       en: 'You are a diner planning to reserve a table for a special occasion.',
       vi: 'Bạn là một người dùng dự định đặt bàn cho một dịp đặc biệt.',
     },
     level: 'B2',
-    image: 'https://img.icons8.com/color/96/restaurant-.png'
+    image: 'https://img.icons8.com/color/96/restaurant-.png',
   },
   {
     id: 'lesson_006',
     name: 'Job Interview Preparation',
-    modelContext: 'You are a career coach. The user needs assistance preparing for a job interview.',
+    modelContext:
+      'You are a career coach. The user needs assistance preparing for a job interview.',
+    endCondition: {
+      assistant: 'When the user has finished ordering',
+    },
     userContext: {
       en: 'You are a job seeker seeking guidance on how to prepare for an upcoming job interview.',
       vi: 'Bạn là người tìm việc đang cần sự hướng dẫn về cách chuẩn bị cho cuộc phỏng vấn công việc sắp tới.',
     },
     level: 'B2',
-    image: 'https://img.icons8.com/color/96/restaurant-.png'
+    image: 'https://img.icons8.com/color/96/restaurant-.png',
   },
 ]
+
+export const generateLessonPrompt = (lesson: ILesson, isReverse: boolean = false): string => {
+  const { modelContext, userContext, endCondition } = lesson
+
+  const prompt = `Your task is practice english with the user through a role-playing game.
+Situation: ${isReverse ? userContext.en : modelContext}.
+The Rules:
+- Provide concise answers.
+- Using simple words and sentences.
+- Maximum 50 words in 1 response.
+- In case the user responds with unrelated questions or statements, let them know.
+- Ask them practical questions when encountering real-life situations.
+- ${
+    isReverse
+      ? 'When the user no longer needs any support'
+      : endCondition.assistant + ' no longer needs any more support'
+  }, reply with 'done_message' to conclude the situation.`
+  return prompt
+}

@@ -51,7 +51,6 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
         }
       }
       setGranted(true)
-      
     })
   }, [sendMessage])
 
@@ -130,22 +129,33 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
 
   const changeIcon = (
     <AppTooltip title="Đổi kiểu nhập">
-      <i
-        className={
-          inputType === 'text'
-            ? 'fa-solid fa-arrows-rotate cursor-pointer'
-            : 'fa-regular fa-keyboard cursor-pointer'
+      <AppButton
+        type="text"
+        className='!rounded-md'
+        onClick={() => {
+          changeInputType(inputType === 'text' ? 'voice' : 'text')
+          setTimeout(() => {
+            messageRef.current?.focus()
+          }, 200)
+        }}
+        icon={
+          <i
+            className={
+              inputType === 'text'
+                ? 'fa-solid fa-arrows-rotate cursor-pointer'
+                : 'fa-regular fa-keyboard cursor-pointer'
+            }
+          ></i>
         }
-        onClick={() => changeInputType(inputType === 'text' ? 'voice' : 'text')}
-      ></i>
+      ></AppButton>
     </AppTooltip>
   )
 
   return (
-    <div className="flex gap-4 lg:gap-4 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 pl-6 lg:pl-6 lg:p-3">
+    <div className="flex gap-1 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 lg:p-3">
       {inputType === 'voice' ? (
-        <div className="flex pr-4 gap-6 justify-center flex-grow items-center relative">
-          <span className="absolute top-[25px] left-0">{changeIcon}</span>
+        <div className="flex gap-6 justify-center flex-grow items-center relative">
+          <span className="absolute top-[18px] left-0">{changeIcon}</span>
 
           <DebouncedButton
             onClick={handleRecord}
@@ -176,24 +186,11 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
               suffix={
                 <div className="flex items-center gap-4 lg:gap-5">
                   <i
-                    onClick={handleRecord}
-                    className={`fa-solid fa-microphone cursor-pointer text-xl ${
+                    onClick={handleSendMessage}
+                    className={`fa-solid fa-send cursor-pointer text-blue-500 text-xl ${
                       isRecording ? 'text-blue-800' : ''
                     }`}
                   ></i>
-
-                  {/* <AppButton
-                    onClick={handleSendMessage}
-                    className="flex items-center justify-center bg-primary hover:bg-indigo-600 text-white"
-                    icon={
-                      <Image
-                        width={48}
-                        height={48}
-                        src="https://img.icons8.com/pulsar-color/48/filled-sent.png"
-                        alt="filled-sent"
-                      />
-                    }
-                  /> */}
                 </div>
               }
               onKeyDown={(e) => {

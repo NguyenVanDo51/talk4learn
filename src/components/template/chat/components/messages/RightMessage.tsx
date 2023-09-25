@@ -20,11 +20,19 @@ export const RightMessage = memo(function RightMessage({
   return (
     <div className="col-start-2 col-end-13 p-1 rounded-lg  message-item" id={message.id}>
       <div className="flex items-center gap-3 justify-start  flex-row-reverse">
-        <div className="relative bg-indigo-100 dark:bg-dark-primary p-3 px-4 shadow rounded-3xl">
+        <div
+          className="relative bg-indigo-100 rounded-2xl dark:bg-dark-primary p-3 px-4 shadow"
+          style={{ borderBottomRightRadius: 0 }}
+        >
           <div>{message.content}</div>
           <div className="flex justify-end">
-            <AppButton size="small" type="link" className="rounded-full text-xs" onClick={() => setMessageToCheck(message)}>
-              Check
+            <AppButton
+              size="small"
+              type="link"
+              className="rounded-full text-xs"
+              onClick={() => setMessageToCheck(message)}
+            >
+              Kiểm tra
             </AppButton>
           </div>
         </div>

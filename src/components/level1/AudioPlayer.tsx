@@ -34,7 +34,7 @@ export const AudioPlayer = ({ text }: IProps) => {
 
   return (
     <div className="flex gap-3 items-center cursor-pointer overflow-hidden" onClick={onClick}>
-      <span className="cursor-pointer inline-block w-3">
+      <span className="cursor-pointer inline-block w-3 text-[#594ead]">
         {isPlaying ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
       </span>
 

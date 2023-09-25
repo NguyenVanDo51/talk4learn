@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { withAuth } from '@/helpers/server-side'
 import { createChatCompletion } from '@/helpers/server-side/openai'
 import { generateLessonPrompt, lessons } from '@/api/lesson'
-import { NextApiRequest } from 'next'
 
 export const GET = () => {
   return NextResponse.json(lessons)
@@ -18,15 +17,19 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const messages = [{ role: 'system', content: generateLessonPrompt(lesson) }, ...body.messages]
+    const messages = [
+      { role: 'system', content: generateLessonPrompt(lesson, true) },
+      ...body.messages,
+    ]
+    console.log('messages', messages)
 
-    return createChatCompletion(messages, { max_tokens: 500, temperature: 1.5 })
-      .then((res: any) => {
-        return NextResponse.json(res)
+    return createChatCompletion(messages, { max_tokens: 200, temperature: 1.2 })
+      .then((data) => {
+        return NextResponse.json(data?.toLowerCase().includes('done_message') ? 'ok' : data)
       })
       .catch((e: any) => {
-        return new Response(e, {
-          status: e.response?.status || 500,
+        return new Response(e.response ?? e, {
+          status: e.response.status || 500,
         })
       })
   })

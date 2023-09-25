@@ -1,6 +1,6 @@
+import { SendMessageBody } from '@/components/template/chat/service/request'
 import { withAuth } from '@/helpers/server-side'
 import { createChatCompletion, openai } from '@/helpers/server-side/openai'
-import { SendMessageBody } from '@/service/chat/request'
 import { SettingLangEnum, SettingLangMapping } from '@/service/user/request'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     return createChatCompletion(messages, body.max_tokens || 500)
       .then((res: any) => {
-        return NextResponse.json(res.data)
+        return NextResponse.json(res)
       })
       .catch((e: any) => {
         return new Response(e, {
