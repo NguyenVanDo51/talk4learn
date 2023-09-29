@@ -13,7 +13,7 @@ const AIChat = dynamic(() => import('@/components/template/chat'), {
 })
 
 export default function AIChatPage() {
-  return <AIChat storageKey={LocalStorageKey.CHAT_HISTORY} initialMessages={initialConversation} />
+  return <AIChat initialMessages={initialConversation} />
 }
 
 export async function getServerSideProps({ res }: any) {

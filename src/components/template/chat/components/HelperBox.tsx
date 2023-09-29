@@ -6,7 +6,7 @@ export const HelperBox: FC<{
   image: string
   title: string
   children: ReactNode
-  action: ReactNode
+  action?: ReactNode
   alert?: string
 }> = ({ image, title, alert, children, action }) => {
   return (
