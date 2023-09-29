@@ -95,6 +95,7 @@ const AIChat: FC<IProps> = ({ lesson = lessons[0], initialMessages, infomation }
           >
             Hoàn thành
           </AppButton>
+          
           <AppButton onClick={() => Modal.destroyAll()}>Tiếp tục</AppButton>
         </div>
       ),
