@@ -10,5 +10,6 @@ export interface ILesson {
     assistant: string // điều kiện để kết thúc tình huống
   }
   level: 'A1' | 'A2' | 'B2' | 'B1' // đánh giá độ khó của tình huống
-  image: string // ảnh minh họa cho tình huống
+  image: string, // ảnh minh họa cho tình huống
+  assistantFirstMessage: string // câu đầu tiên của assistant
 }

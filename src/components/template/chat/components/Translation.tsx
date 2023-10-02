@@ -55,7 +55,6 @@ export const Translation: FC = () => {
     <HelperBox
       image="https://img.icons8.com/fluency/28/google-translate-new-logo.png"
       title="Dịch"
-      alert="Nhập thủ công để ghi nhớ tốt hơn nhé"
     >
       <div className="grid gap-3">
         <div>

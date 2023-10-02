@@ -6,7 +6,7 @@ import { ISetting } from '@/redux/slices/settingSlice'
 import { SpeakerService } from '@/service/speaker'
 import { IMessage } from '@/types/chat'
 import { AIModels } from '@/types/chat/models'
-import { Avatar } from 'antd'
+import { Avatar, Tooltip } from 'antd'
 import { memo, useState, useEffect } from 'react'
 import { MessageProps } from '.'
 
@@ -62,14 +62,16 @@ export const LeftMessage = memo(function LeftMessage({
                 icon={<i className="fa-solid fa-volume-low"></i>}
               />
             )}
-
-            <AppButton
-              onClick={onChangeType}
-              type="link"
-              size="small"
-              danger={false}
-              icon={<i className="fa-solid fa-arrows-rotate"></i>}
-            />
+            
+            <Tooltip title={type === 'text' ? "Chuyển sang văn bản" : 'Chuyển sang audio'}>
+              <AppButton
+                onClick={onChangeType}
+                type="link"
+                size="small"
+                danger={false}
+                icon={<i className="fa-solid fa-arrows-rotate"></i>}
+                />
+              </Tooltip>
           </div>
         </div>
       </div>

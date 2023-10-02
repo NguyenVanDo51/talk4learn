@@ -156,7 +156,11 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
       {inputType === 'voice' ? (
         <div className="flex gap-6 justify-center flex-grow items-center relative">
           <span className="absolute top-[18px] left-0">{changeIcon}</span>
-
+          
+          {isRecording ? <span onClick={handleRecord} className='cursor-pointer'>
+            <Image src="/images/gif-recording.gif" className='w-[auto] h-[64px]' alt="record" width={300} height={54} />
+          </span> : 
+            
           <DebouncedButton
             onClick={handleRecord}
             className={`!w-[4rem] !h-[4rem] flex items-center justify-center !text-[1.6rem] !rounded-full ${
@@ -168,7 +172,8 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
             ) : (
               <i className="fa-solid fa-microphone"></i>
             )}
-          </DebouncedButton>
+            </DebouncedButton>
+          }
         </div>
       ) : (
         <>
