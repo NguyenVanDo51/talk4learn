@@ -6,12 +6,12 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --main-text: rgba(0, 0, 0, 0.88);
+  --main-text: #1a1a1a;
   --primary: #fb9a60;
   --main-bg: #fffd;
   --main-active-bg: #fff;
   --icon-color: #1e3050;
-  --line-color: #aba8a8;
+  --line-color: #e5e5e5;
 }
 
 .dark {
@@ -20,17 +20,35 @@
   --background-end-rgb: 255, 255, 255;
   --main-text: #e3e3e3;
   --primary: #6366f1;
-  --main-bg: rgba(0,0,0,.8);
+  --main-bg: rgba(0, 0, 0, 0.8);
   --main-active-bg: #222327;
   --icon-color: #e3e3e3;
   --line-color: #737070;
 }
 
+* {
+  border-color: var(--line-color);
+}
+
+button {
+  text-transform: capitalize;
+}
+
+html {
+  overflow: hidden;
+}
+
+html,
 body {
   color: var(--main-text);
+  height: 100%;
   background-color: var(--main-bg);
-  font-size: 14px;
+  font-size: 16px;
   overflow-x: hidden;
+}
+
+main {
+  height: 100%;
 }
 
 ::-webkit-scrollbar {

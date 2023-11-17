@@ -1,7 +1,7 @@
 export const Logo = () => (
   <svg
     version="1.0"
-    width="100"
+    width="80"
     height="34"
     viewBox="86.852 96.199 166.597 56.395"
     preserveAspectRatio="xMidYMid meet"

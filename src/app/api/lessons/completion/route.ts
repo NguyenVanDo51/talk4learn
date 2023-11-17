@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // a next api to get all completed lessons
 export const GET = () => {
-  return withAuth(async (session) => {
+  return withAuth(async (user) => {
     try {
-      const result = await firestore.doc('lessonUser/' + session.user.id).get()
+      const result = await firestore.doc("lessonUser/" + user.id).get()
       return NextResponse.json(result.data()?.completedLessons ?? [])
     } catch (e: any) {
       return new Response(e, {
@@ -18,12 +18,11 @@ export const GET = () => {
 
 // a next api to mark complete a lesson
 export const PUT = (req: NextRequest) => {
-  return withAuth(async (session) => {
+  return withAuth(async (user) => {
     const body = await req.json()
     try {
-      const doc = await firestore.collection('lessonUser').doc(session.user.id)
+      const doc = await firestore.collection("lessonUser").doc(user.id)
       const data = await doc.get()
-      console.log('data', data.exists, data.data(), session, body)
       let result = null
 
       if (data?.exists) {

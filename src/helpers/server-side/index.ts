@@ -1,16 +1,12 @@
-import { NextResponse } from 'next/server'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { getServerSession } from 'next-auth/next'
-import { Session } from 'next-auth'
+import { Session, User, auth, currentUser } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server"
 
-export const withAuth = async (callback: (session: Session) => any) => {
-  const session: null | Session = await getServerSession(authOptions)
+export const withAuth = async (callback: (session: User) => any) => {
+  const user = await currentUser()
 
-  // if (!session) {
-  //   return new Response('Unauthentication', {
-  //     status: 401,
-  //   })
-  // }
+  if (!user || !user.firstName || !user.id) {
+    return new NextResponse("Unauthorized", { status: 401 })
+  }
 
-  return callback(session as any)
+  return callback(user)
 }

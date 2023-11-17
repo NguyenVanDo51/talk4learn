@@ -1,16 +1,16 @@
-import { redirect } from 'next/navigation'
-import { Logo } from '../level1/Logo'
-import Link from 'next/link'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { Sidebar } from './sidebar'
-import 'antd/lib/'
+import { redirect } from "next/navigation"
+import { Logo } from "../level1/Logo"
+import Link from "next/link"
+import { getServerSession } from "next-auth/next"
+import { Sidebar } from "./sidebar"
+import "antd/lib/"
+import { UserButton, auth, redirectToSignIn } from "@clerk/nextjs"
 
 export const AuthenLayout = async ({ children }: any) => {
-  const session = await getServerSession(authOptions)
+  const { userId } = auth()
 
-  if (!session?.user) {
-    return redirect('/')
+  if (!userId) {
+    return redirectToSignIn()
   }
 
   return (
@@ -35,23 +35,29 @@ export const AuthenLayout = async ({ children }: any) => {
         </svg>
       </button>
 
-      <aside
-        id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 border-r"
-        aria-label="Sidebar"
-      >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-          <Link href="/app" className="flex items-center pl-5 pt-4 mb-5">
+      <div className="bg-white h-fit min-h-full">
+        <header className="py-2 px-6 border-b h-14 flex justify-between items-center sticky top-0 bg-white z-50">
+          <Link href="/" className="flex items-center">
             <Logo />
           </Link>
 
-          <ul className="space-y-2 font-medium mt-10">
-            <Sidebar />
-          </ul>
-        </div>
-      </aside>
+          <UserButton afterSignOutUrl="/" />
+        </header>
 
-      <div className="p-4 sm:ml-64 bg-white h-fit min-h-full">{children}</div>
+        <main>
+          <aside
+            id="logo-sidebar"
+            className="fixed top-14 left-0 z-40 w-20 h-screen transition-transform -translate-x-full sm:translate-x-0"
+            aria-label="Sidebar"
+          >
+            <div className="h-full py-2 px-2 overflow-y-auto bg-white dark:bg-gray-800">
+              <Sidebar />
+            </div>
+          </aside>
+
+          <div className="sm:ml-20">{children}</div>
+        </main>
+      </div>
     </>
   )
 }

@@ -18,11 +18,9 @@ export async function POST(request: NextRequest) {
     }
 
     const messages = [
-      { role: 'system', content: generateLessonPrompt(lesson, true) },
+      { role: "system", content: generateLessonPrompt(lesson, true) },
       ...body.messages,
     ]
-    console.log('messages', messages)
-
     return createChatCompletion(messages, { max_tokens: 200, temperature: 1.2 })
       .then((data) => {
         return NextResponse.json(data?.toLowerCase().includes('done_message') ? 'ok' : data)

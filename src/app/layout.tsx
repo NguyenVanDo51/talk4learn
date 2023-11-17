@@ -1,68 +1,97 @@
-import './globals.css'
-import '../styles/index.scss'
-import '../../public/fontawesome/css/all.css'
-import type { Metadata } from 'next'
-import { ReduxProvider } from '@/redux/provider'
-import { Analytics } from '@vercel/analytics/react'
-import ClientProvider from '@/components/layout/Provider'
-import { APP_NAME } from '@/types/constants'
-import Script from 'next/script'
-import { Suspense } from 'react'
-import { Roboto } from 'next/font/google'
+import "./globals.css"
+import "../styles/index.scss"
+import "../../public/fontawesome/css/all.css"
+import type { Metadata } from "next"
+import { ReduxProvider } from "@/redux/provider"
+import { Analytics } from "@vercel/analytics/react"
+import ClientProvider from "@/components/layout/Provider"
+import { APP_NAME } from "@/types/constants"
+import Script from "next/script"
+import { Suspense } from "react"
+import { Inter, Roboto } from "next/font/google"
+import { ClerkProvider } from "@clerk/nextjs"
 
-const roboto = Roboto({
-  weight: ['400', '500', '700'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  display: 'swap',
+const inter = Roboto({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
 })
 const title = `${APP_NAME} - Practice English with AI Chatbot`
 const description = `Practice English, improve grammar, and enhance your skills with Ranga, the AI-powered chatbot.`
 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={inter.className}>
+          {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
+          <Script
+            strategy="beforeInteractive"
+            src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
+          ></Script>
+
+          <ClientProvider>
+            <ReduxProvider>
+              <Suspense fallback="Loading...">
+                <main>{children}</main>
+              </Suspense>
+            </ReduxProvider>
+          </ClientProvider>
+          <Analytics />
+        </body>
+      </html>
+    </ClerkProvider>
+  )
+}
+
 export const metadata: Metadata = {
   title,
   description,
-  generator: 'andy510@gmail.com',
-  applicationName: 'andy510@gmail.com',
-  referrer: 'origin-when-cross-origin',
+  generator: "andy510@gmail.com",
+  applicationName: "andy510@gmail.com",
+  referrer: "origin-when-cross-origin",
   keywords: [
-    'ranga',
-    'ranga ai',
-    'ranga chatbot',
-    'learn english',
-    'english chating',
-    'practice english with ai',
-    'ai chat',
-    'practice with ai',
-    'chatgpt',
-    'learning english',
+    "ranga",
+    "ranga ai",
+    "ranga chatbot",
+    "learn english",
+    "english chating",
+    "practice english with ai",
+    "ai chat",
+    "practice with ai",
+    "chatgpt",
+    "learning english",
   ],
-  authors: [{ name: 'Andy' }, { name: 'Andy', url: 'https://andydev.com' }],
-  colorScheme: 'dark',
-  creator: 'Andy',
-  publisher: 'Andy',
+  authors: [{ name: "Andy" }, { name: "Andy", url: "https://andydev.com" }],
+  colorScheme: "dark",
+  creator: "Andy",
+  publisher: "Andy",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   alternates: {
-    canonical: '/',
+    canonical: "/",
     languages: {
-      'en-US': '/en-US',
+      "en-US": "/en-US",
     },
   },
-  metadataBase: new URL('https://rangachat.com/'),
+  metadataBase: new URL("https://rangachat.com/"),
   openGraph: {
     title,
     description,
-    url: 'https://rangachat.com/',
+    url: "https://rangachat.com/",
     siteName: APP_NAME,
-    locale: 'en_US',
-    type: 'website',
+    locale: "en_US",
+    type: "website",
     images: [
       {
-        url: '/mac-perview.png',
+        url: "/mac-perview.png",
         width: 800,
         height: 600,
       },
@@ -71,12 +100,12 @@ export const metadata: Metadata = {
   twitter: {
     title,
     description,
-    siteId: '1467726470533754880',
-    creator: '@Andy',
-    creatorId: '1467726470533754880',
+    siteId: "1467726470533754880",
+    creator: "@Andy",
+    creatorId: "1467726470533754880",
     images: [
       {
-        url: '/mac-perview.png',
+        url: "/mac-perview.png",
         width: 800,
         height: 600,
       },
@@ -90,57 +119,34 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       noimageindex: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   icons: {
-    icon: '/logo125.png',
-    shortcut: '/logo125.png',
-    apple: '/logo125.png',
+    icon: "/logo125.png",
+    shortcut: "/logo125.png",
+    apple: "/logo125.png",
     other: {
-      rel: '/logo125.png',
-      url: '/logo125.png',
+      rel: "/logo125.png",
+      url: "/logo125.png",
     },
   },
-  themeColor: 'black',
+  themeColor: "black",
   viewport: {
-    width: 'device-width',
+    width: "device-width",
     initialScale: 1,
     maximumScale: 1,
   },
-  manifest: '/site.webmanifest',
+  manifest: "/site.webmanifest",
   verification: {
-    google: 'google',
-    yandex: 'yandex',
-    yahoo: 'yahoo',
+    google: "google",
+    yandex: "yandex",
+    yahoo: "yahoo",
   },
-  category: 'education',
+  category: "education",
   other: {
-    'shortcut icon': '/images/favicon.ico',
+    "shortcut icon": "/images/favicon.ico",
   },
-}
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body className={roboto.className}>
-        {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
-        <Script
-          strategy="beforeInteractive"
-          src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
-        ></Script>
-
-        <ClientProvider>
-          <ReduxProvider>
-            <Suspense fallback="Loading...">
-              <main>{children}</main>
-            </Suspense>
-          </ReduxProvider>
-        </ClientProvider>
-        <Analytics />
-      </body>
-    </html>
-  )
 }

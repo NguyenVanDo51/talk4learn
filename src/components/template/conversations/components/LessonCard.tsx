@@ -17,7 +17,7 @@ export const LessonCard: React.FC<LessonCardProps> = ({
   lang = SettingLangEnum.EN,
 }) => {
   return (
-    <Link href={`/app/conversations/${lesson.id}`}>
+    <Link href={`/conversations/${lesson.id}`}>
       <div className="bg-white shadow-md rounded-md p-4 cursor-pointer hover:bg-gray-100 transition duration-300 w-full md:w-[300px] h-[185px]">
         <div className="flex items-center justify-between">
           <Image width={56} height={56} src={lesson.image} alt={lesson.name} />
