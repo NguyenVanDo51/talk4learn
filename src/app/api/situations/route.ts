@@ -8,10 +8,19 @@ import { NextResponse } from "next/server"
 export const SITUATION_TABLE = "situations"
 
 // a next api to get all completed lessons
-export const GET = async () => {
+export const GET = async (req: Request) => {
+  console.log(req)
   try {
-    const result = await firestore.doc(SITUATION_TABLE).get()
-    return NextResponse.json(result.data() ?? [])
+    const result = await firestore.collection(SITUATION_TABLE).get()
+    // .then((docSnapshot) => {
+    //   const d: ILesson[] = []
+    //   docSnapshot.forEach((doc) => {
+    //     d.push(doc.data() as ILesson)
+    //   })
+    //   return d
+    // })
+    const data = result.docs.map((doc) => doc.data())
+    return NextResponse.json(data)
   } catch (e: any) {
     return new Response(e, {
       status: 500,
@@ -30,7 +39,8 @@ export const POST = async (req: Request) => {
       id,
       ...body,
       used: 1,
-      createdBy: user?.id,
+      createdBy: user?.username,
+      createdAt: new Date(),
     }
     let result = await doc.set(payload)
 

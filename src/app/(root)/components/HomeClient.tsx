@@ -5,6 +5,7 @@ import { ILesson } from "@/types/lesson/type"
 import Link from "next/link"
 
 export const HomeClient = ({ bots }: { bots: ILesson[] }) => {
+  console.log("bots", bots)
   return (
     <div className="container max-w-2xl my-0 mx-auto p-3">
       <h1 className="font-medium text-lg">Your bots</h1>

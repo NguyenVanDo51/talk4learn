@@ -75,7 +75,7 @@ export const Message: FC<MessageProps> = (props) => {
         height: `calc(100vh - ${inputHeight + 64}px)`,
       }}
     >
-      {lesson && (
+      {lesson?.author && (
         <div className="bg-[#f7f7f7] rounded-xl p-4">
           <div className="flex gap-3">
             <div>

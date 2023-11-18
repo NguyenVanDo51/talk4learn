@@ -3,7 +3,7 @@ import { WebhookEvent } from "@clerk/nextjs/server"
 import { randomUUID } from "crypto"
 import { NextResponse } from "next/server"
 
-const USER_TABLE = "users"
+export const USER_TABLE = "users"
 
 export const POST = async (req: Request) => {
   const body = await req.json()

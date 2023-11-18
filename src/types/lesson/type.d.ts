@@ -1,3 +1,5 @@
+import { User } from "@clerk/nextjs/server"
+
 export interface ILesson {
   id: string
   name: string // tên của tình huống
@@ -10,10 +12,5 @@ export interface ILesson {
   createdBy: string
   used: number
 
-  author: {
-    id: string
-    email: string
-    imageUrl: string
-    username: string
-  }
+  author?: User
 }
