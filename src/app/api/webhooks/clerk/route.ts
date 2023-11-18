@@ -9,16 +9,22 @@ export const POST = async (req: Request) => {
   const body = await req.json()
   const id = body.data.id ?? randomUUID()
 
-  const evt = body?.evt as WebhookEvent
-  switch (evt.type) {
-    case "user.created":
-    case "user.updated":
-      await firestore.collection(USER_TABLE).doc(id).set(body.data)
-      break
-    case "user.deleted":
-      await firestore.collection(USER_TABLE).doc(id).delete()
-    default:
-      break
+  try {
+    switch (body.type) {
+      case "user.created":
+      case "user.updated":
+        await firestore.collection(USER_TABLE).doc(id).set(body.data)
+        break
+      case "user.deleted":
+        await firestore.collection(USER_TABLE).doc(id).delete()
+      default:
+        break
+    }
+    return new NextResponse("ok", { status: 200 })
+  } catch (e: any) {
+    return new Response(e, {
+      status: 500,
+    })
   }
-  return new NextResponse(null, { status: 200 })
+  
 }
