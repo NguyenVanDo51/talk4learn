@@ -51,6 +51,7 @@ export const Message: FC<MessageProps> = (props) => {
         content: messageToCheck.content,
       },
     ]
+
     ChatService.checkGrammar(bodyMessage)
       .then((res) => {
         const result = res.data
@@ -92,7 +93,7 @@ export const Message: FC<MessageProps> = (props) => {
                 <span>
                   <Avatar
                     alt="bot-image"
-                    src={lesson.author.imageUrl}
+                    src={lesson.author?.imageUrl}
                     size={20}
                     className="inline-block"
                   />

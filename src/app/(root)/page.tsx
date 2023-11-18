@@ -8,7 +8,7 @@ export default async function Home() {
   const user = await currentUser()
   const result = await firestore
     .collection(SITUATION_TABLE)
-    .where("author.id", "==", user?.id)
+    .where("createdBy", "==", user?.id)
     .get()
 
   const bots: ILesson[] = []

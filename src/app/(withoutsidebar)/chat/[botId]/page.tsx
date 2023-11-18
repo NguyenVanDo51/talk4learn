@@ -10,6 +10,7 @@ export default async function ChatPage(req: { params: { botId: string } }) {
     .doc(req.params.botId)
     .get()
     .then((r) => r.data())
+  console.log("bot", bot)
 
   if (!bot) redirect("/")
 

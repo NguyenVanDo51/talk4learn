@@ -7,7 +7,7 @@ import {
   generateLessonPrompt,
 } from "@/helpers/server-side/openai"
 import { ILesson } from "@/types/lesson/type"
-import { DocumentData } from "firebase/firestore"
+import { DocumentData } from "firebase-admin/firestore"
 
 // a next api to get all completed lessons
 export const GET = (req: Request, { params }: { params: { id: string } }) => {
