@@ -1,5 +1,6 @@
 import { withAuth } from "@/helpers/server-side"
 import { firestore } from "@/service/firestore"
+import { ILesson } from "@/types/lesson/type"
 import { randomUUID } from "crypto"
 import { NextResponse } from "next/server"
 
@@ -25,18 +26,13 @@ export const POST = (req: Request) => {
     const id = body.id ?? randomUUID()
     try {
       const doc = await firestore.collection(SITUATION_TABLE).doc(id)
-      console.log("user", user)
-      let result = await doc.set({
+      const payload: ILesson = {
+        id,
         ...body,
-        author: JSON.parse(
-          JSON.stringify({
-            id: user.id,
-            email: user.emailAddresses,
-            imageUrl: user.imageUrl,
-            username: user.username,
-          })
-        ),
-      })
+        used: 1,
+        createdBy: user.id,
+      }
+      let result = await doc.set(payload)
 
       return NextResponse.json(result)
     } catch (e: any) {

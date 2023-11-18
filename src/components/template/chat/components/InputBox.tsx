@@ -1,17 +1,24 @@
-'use client'
-import { AppButton, DebouncedButton } from '@/components/level1/antd/AppButton'
-import { AppInput } from '@/components/level1/antd/AppInput'
-import { getUserMedia } from '@/helpers/mp3'
-import { FC, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react'
-import { Button } from 'antd'
-import { AppTooltip } from '@/components/level1/antd/AppTooltip'
-import { AppNotifycation } from '@/components/level1/antd/AppNotification'
-import { ISetting, setInputType } from '@/redux/slices/settingSlice'
-import { useAppSelector } from '@/hooks/redux'
-import { useDispatch } from 'react-redux'
-import { ScrollSelecter, scrollToBottom } from '@/helpers/dom'
-import Image from 'next/image'
-import { ChatService } from '../service'
+"use client"
+import { AppButton, DebouncedButton } from "@/components/level1/antd/AppButton"
+import { AppInput } from "@/components/level1/antd/AppInput"
+import { getUserMedia } from "@/helpers/mp3"
+import {
+  FC,
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
+import { Button } from "antd"
+import { AppTooltip } from "@/components/level1/antd/AppTooltip"
+import { AppNotifycation } from "@/components/level1/antd/AppNotification"
+import { ISetting, setInputType } from "@/redux/slices/settingSlice"
+import { useAppSelector } from "@/hooks/redux"
+import { useDispatch } from "react-redux"
+import { ScrollSelecter, scrollToBottom } from "@/helpers/dom"
+import Image from "next/image"
+import { ChatService } from "../service"
 
 interface IProps {
   isWaiting: boolean
@@ -22,7 +29,7 @@ let audioChunks: any = []
 let rec: MediaRecorder | null = null
 
 export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState("")
   const [isRecording, setIsRecording] = useState(false)
   const [granted, setGranted] = useState(false)
   const chatMode = useAppSelector((state) => state.setting.chatMode)
@@ -30,7 +37,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
 
   const dispatch = useDispatch()
 
-  const changeInputType = (type: ISetting['inputType']) => {
+  const changeInputType = (type: ISetting["inputType"]) => {
     dispatch(setInputType(type))
   }
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
@@ -41,11 +48,11 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
       rec = new MediaRecorder(stream)
 
       rec.ondataavailable = (e: any) => {
-        console.log('e', e)
+        console.log("e", e)
         audioChunks = []
         audioChunks.push(e.data)
-        if (rec?.state == 'inactive') {
-          let blob = new Blob(audioChunks, { type: 'audio/mp3' })
+        if (rec?.state == "inactive") {
+          let blob = new Blob(audioChunks, { type: "audio/mp3" })
 
           sendMessage(blob, URL.createObjectURL(blob))
         }
@@ -68,7 +75,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
       return
     }
 
-    setMessage('')
+    setMessage("")
     rec.start()
     setIsRecording(true)
   }
@@ -79,32 +86,32 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
     messageRef.current?.focus()
     if (!message.length) return
     sendMessage(message)
-    setMessage('')
+    setMessage("")
   }
 
   useEffect(() => {
     scrollToBottom(ScrollSelecter.Message)
-    if (inputType === 'voice') {
+    if (inputType === "voice") {
       requestAccessMicro()
     }
   }, [inputType, requestAccessMicro])
 
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.code === 'Space') {
+      if (e.ctrlKey && e.code === "Space") {
         handleRecord()
       }
     }
 
-    if (inputType === 'voice') {
-      window.removeEventListener('keydown', handleKeydown)
-      window.addEventListener('keydown', handleKeydown)
+    if (inputType === "voice") {
+      window.removeEventListener("keydown", handleKeydown)
+      window.addEventListener("keydown", handleKeydown)
     } else {
-      window.removeEventListener('keydown', handleKeydown)
+      window.removeEventListener("keydown", handleKeydown)
     }
 
     return () => {
-      window.removeEventListener('keydown', handleKeydown)
+      window.removeEventListener("keydown", handleKeydown)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputType, isRecording])
@@ -121,59 +128,64 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   }, [granted])
 
   useEffect(() => {
-    if (message && inputType === 'voice') {
+    if (message && inputType === "voice") {
       sendMessage(message)
-      setMessage('')
+      setMessage("")
     }
   }, [message, sendMessage, inputType])
 
   const changeIcon = (
-    <AppTooltip title="Đổi kiểu nhập">
-      <AppButton
-        type="text"
-        className='!rounded-md'
-        onClick={() => {
-          changeInputType(inputType === 'text' ? 'voice' : 'text')
-          setTimeout(() => {
-            messageRef.current?.focus()
-          }, 200)
-        }}
-        icon={
-          <i
-            className={
-              inputType === 'text'
-                ? 'fa-solid fa-arrows-rotate cursor-pointer'
-                : 'fa-regular fa-keyboard cursor-pointer'
-            }
-          ></i>
-        }
-      ></AppButton>
-    </AppTooltip>
+    <AppButton
+      type="text"
+      className="!rounded-md"
+      onClick={() => {
+        changeInputType(inputType === "text" ? "voice" : "text")
+        setTimeout(() => {
+          messageRef.current?.focus()
+        }, 200)
+      }}
+      icon={
+        <i
+          className={
+            inputType === "text"
+              ? "fa-solid fa-arrows-rotate cursor-pointer"
+              : "fa-regular fa-keyboard cursor-pointer"
+          }
+        ></i>
+      }
+    ></AppButton>
   )
 
   return (
     <div className="flex gap-1 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 lg:p-3">
-      {inputType === 'voice' ? (
+      {inputType === "voice" ? (
         <div className="flex gap-6 justify-center flex-grow items-center relative">
           <span className="absolute top-[18px] left-0">{changeIcon}</span>
-          
-          {isRecording ? <span onClick={handleRecord} className='cursor-pointer'>
-            <Image src="/images/gif-recording.gif" className='w-[auto] h-[64px]' alt="record" width={300} height={54} />
-          </span> : 
-            
-          <DebouncedButton
-            onClick={handleRecord}
-            className={`!w-[4rem] !h-[4rem] flex items-center justify-center !text-[1.6rem] !rounded-full ${
-              isRecording ? '!bg-red-400' : ''
-            }`}
-          >
-            {isRecording ? (
-              <i className="fa-solid fa-pause"></i>
-            ) : (
-              <i className="fa-solid fa-microphone"></i>
-            )}
+
+          {isRecording ? (
+            <span onClick={handleRecord} className="cursor-pointer">
+              <Image
+                src="/images/gif-recording.gif"
+                className="w-[auto] h-[64px]"
+                alt="record"
+                width={300}
+                height={54}
+              />
+            </span>
+          ) : (
+            <DebouncedButton
+              onClick={handleRecord}
+              className={`!w-[4rem] !h-[4rem] flex items-center justify-center !text-[1.6rem] !rounded-full ${
+                isRecording ? "!bg-red-400" : ""
+              }`}
+            >
+              {isRecording ? (
+                <i className="fa-solid fa-pause"></i>
+              ) : (
+                <i className="fa-solid fa-microphone"></i>
+              )}
             </DebouncedButton>
-          }
+          )}
         </div>
       ) : (
         <>
@@ -181,7 +193,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
           <div className="flex-grow">
             <AppInput
               ref={messageRef as any}
-              placeholder={isRecording ? 'Đang ghi âm ...' : 'Nhập tin nhắn'}
+              placeholder={isRecording ? "Đang ghi âm ..." : "Nhập tin nhắn"}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="py-3 px-5"
@@ -193,13 +205,13 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
                   <i
                     onClick={handleSendMessage}
                     className={`fa-solid fa-send cursor-pointer text-blue-500 text-xl ${
-                      isRecording ? 'text-blue-800' : ''
+                      isRecording ? "text-blue-800" : ""
                     }`}
                   ></i>
                 </div>
               }
               onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSendMessage()
+                if (e.key === "Enter") handleSendMessage()
               }}
             />
           </div>

@@ -7,11 +7,9 @@ import { ChatContext } from '../context'
 
 export const Header = () => {
   const router = useRouter()
-  const { lessonsCompleted } = useLessonsCompleted()
-  const { lesson } = useContext(ChatContext)
   return (
     <div className="flex justify-between items-center px-4 h-16 border-b">
-      <span onClick={() => router.back()} className="cursor-pointer">
+      <span onClick={() => router.push("/")} className="cursor-pointer">
         <Image
           width="32"
           height="32"
@@ -19,8 +17,6 @@ export const Header = () => {
           alt="delete-sign"
         />
       </span>
-      <span>{'Bot'}</span>
-      <CupIcon isColor={lesson?.id ? lessonsCompleted?.includes(lesson.id) : false} />
     </div>
   )
 }

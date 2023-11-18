@@ -1,9 +1,7 @@
-import AIChatPage from "@/components/pages/chat"
 import { firestore } from "@/service/firestore"
-import { auth, redirectToSignIn, useAuth } from "@clerk/nextjs"
 import { SITUATION_TABLE } from "../api/situations/route"
 import { currentUser } from "@clerk/nextjs/server"
-import { MyBotClient } from "./components/MyBotClient"
+import { HomeClient } from "./components/HomeClient"
 import { ILesson } from "@/types/lesson/type"
 
 export default async function Home() {
@@ -19,5 +17,5 @@ export default async function Home() {
     bots.push(b.data() as ILesson)
   })
 
-  return <MyBotClient bots={bots} />
+  return <HomeClient bots={bots} />
 }

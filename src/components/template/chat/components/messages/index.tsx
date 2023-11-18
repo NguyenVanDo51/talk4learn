@@ -1,17 +1,17 @@
-import { AppButton } from '@/components/level1/antd/AppButton'
-import { IMessage } from '@/types/chat'
-import { Alert, Divider, Spin } from 'antd'
-import { FC, useContext, useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { useAppSelector } from '@/hooks/redux'
-import { LeftMessage } from './LeftMessage'
-import { RightMessage } from './RightMessage'
-import { AppModal } from '@/components/level1/antd/AppModal'
-import { AppSpin } from '@/components/level1/antd/AppSpin'
-import { ChatService } from '../../service'
-import { SendMessageBody } from '../../service/request'
-import { ChatContext } from '../../context'
-import { useLessonsCompleted } from '@/hooks/fetchers/useLessonsCompleted'
+import { AppButton } from "@/components/level1/antd/AppButton"
+import { IMessage } from "@/types/chat"
+import { Avatar, Divider, Spin } from "antd"
+import { FC, useContext, useEffect, useState } from "react"
+import { useAppSelector } from "@/hooks/redux"
+import { LeftMessage } from "./LeftMessage"
+import { RightMessage } from "./RightMessage"
+import { AppModal } from "@/components/level1/antd/AppModal"
+import { AppSpin } from "@/components/level1/antd/AppSpin"
+import { ChatService } from "../../service"
+import { SendMessageBody } from "../../service/request"
+import { ChatContext } from "../../context"
+import { useUser } from "@clerk/nextjs"
+import Image from "next/image"
 
 export interface MessageProps {
   isSending: boolean
@@ -26,16 +26,14 @@ export const Message: FC<MessageProps> = (props) => {
   const [loading, setLoading] = useState(false)
   const [messageToCheck, setMessageToCheck] = useState<IMessage>()
 
-  const infomation = lesson?.userContext['vi']
-
   const reStart = (index: number) => {
     setMessages(messages.slice(0, index))
   }
 
   const inputType = useAppSelector((t) => t.setting.inputType)
 
-  const inputHeight = inputType === 'text' ? 75 : 85
-  const { data } = useSession()
+  const inputHeight = inputType === "text" ? 75 : 85
+  const { user } = useUser()
 
   useEffect(() => {
     if (!messageToCheck) return
@@ -48,7 +46,7 @@ export const Message: FC<MessageProps> = (props) => {
     setLoading(true)
     const bodyMessage: SendMessageBody[] = [
       {
-        role: 'user',
+        role: "user",
         content: messageToCheck.content,
       },
     ]
@@ -56,9 +54,11 @@ export const Message: FC<MessageProps> = (props) => {
       .then((res) => {
         const result = res.data
         console.log(result)
-        setCheckResult(result === 'Perfect.' ? 'Câu trả lời hoàn hảo' : result)
+        setCheckResult(result === "Perfect." ? "Câu trả lời hoàn hảo" : result)
         setMessages(
-          [...messages].map((m) => (m.id === messageToCheck.id ? { ...m, comment: result } : m))
+          [...messages].map((m) =>
+            m.id === messageToCheck.id ? { ...m, comment: result } : m
+          )
         )
       })
       .finally(() => setLoading(false))
@@ -73,11 +73,52 @@ export const Message: FC<MessageProps> = (props) => {
         height: `calc(100vh - ${inputHeight + 64}px)`,
       }}
     >
-      {infomation && <Alert message={infomation} type="info" className="mb-3" />}
+      {lesson && (
+        <div className="bg-[#f7f7f7] rounded-xl p-4">
+          <div className="flex gap-3">
+            <div>
+              <Image
+                alt="bot-image"
+                src={lesson?.botImage || "/bot_placeholder.png"}
+                width={64}
+                height={64}
+                className="rounded-full min-w-[64px]"
+              />
+            </div>
+
+            <div className="flex flex-col gap-0.5 justify-center">
+              <p className="font-medium m-0 text-lg">{lesson?.name}</p>
+
+              <span className="text-sm">
+                Operated by{" "}
+                <span>
+                  <Image
+                    alt="bot-image"
+                    src={lesson.author.imageUrl}
+                    width={20}
+                    height={20}
+                    className="rounded-full inline-block"
+                  />
+
+                  <span className="text-blue-400">
+                    {lesson.author?.username}
+                  </span>
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <span className="mt-2 text-sm text-[#5d6565]">
+            {lesson.used ?? 1} monthly user{lesson.used > 1 ? "s" : ""}
+          </span>
+
+          <div className="text-sm p-0 mt-2">{lesson?.userInstruction}</div>
+        </div>
+      )}
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">
           {messages.map((message, index) =>
-            message.role === 'assistant' ? (
+            message.role === "assistant" ? (
               <LeftMessage
                 {...props}
                 inputType={inputType}
@@ -89,7 +130,7 @@ export const Message: FC<MessageProps> = (props) => {
               <RightMessage
                 key={`msg_${index}`}
                 {...props}
-                avatar={data?.user?.image}
+                avatar={user?.imageUrl}
                 message={message}
                 reStart={() => reStart(index)}
                 setMessageToCheck={(msg) => setMessageToCheck(msg)}
@@ -110,14 +151,19 @@ export const Message: FC<MessageProps> = (props) => {
         open={!!messageToCheck}
         onCancel={() => setMessageToCheck(undefined)}
         footer={[
-          <AppButton key={'as'} size="middle" onClick={() => setMessageToCheck(undefined)}>
+          <AppButton
+            key={"as"}
+            size="middle"
+            onClick={() => setMessageToCheck(undefined)}
+          >
             Đóng
           </AppButton>,
         ]}
       >
         <div className="grid gap-3">
           <div>
-            Bạn đã trả lời: <span className="font-medium">{messageToCheck?.content}</span>
+            Bạn đã trả lời:{" "}
+            <span className="font-medium">{messageToCheck?.content}</span>
           </div>
           <Divider className="m-0" />
           <div>{loading ? <AppSpin /> : checkResult}</div>

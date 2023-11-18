@@ -4,11 +4,9 @@ import "../../public/fontawesome/css/all.css"
 import type { Metadata } from "next"
 import { ReduxProvider } from "@/redux/provider"
 import { Analytics } from "@vercel/analytics/react"
-import ClientProvider from "@/components/layout/Provider"
 import { APP_NAME } from "@/types/constants"
 import Script from "next/script"
-import { Suspense } from "react"
-import { Inter, Roboto } from "next/font/google"
+import { Roboto } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
 
 const inter = Roboto({
@@ -33,14 +31,9 @@ export default function RootLayout({
             strategy="beforeInteractive"
             src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
           ></Script>
-
-          <ClientProvider>
-            <ReduxProvider>
-              <Suspense fallback="Loading...">
-                <main>{children}</main>
-              </Suspense>
-            </ReduxProvider>
-          </ClientProvider>
+          <ReduxProvider>
+            <main>{children}</main>
+          </ReduxProvider>
           <Analytics />
         </body>
       </html>

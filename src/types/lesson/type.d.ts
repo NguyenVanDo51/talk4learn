@@ -7,4 +7,13 @@ export interface ILesson {
   assistantFirstMessage?: string // câu đầu tiên của assistant
   public: boolean // có public hay không
   tags: string[] // các tags mô tả về tình huống. vd: work, school,...
+  createdBy: string
+  used: number
+
+  author: {
+    id: string
+    email: string
+    imageUrl: string
+    username: string
+  }
 }

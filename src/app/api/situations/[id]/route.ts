@@ -2,8 +2,10 @@ import { withAuth } from "@/helpers/server-side"
 import { firestore } from "@/service/firestore"
 import { NextResponse } from "next/server"
 import { SITUATION_TABLE } from "../route"
-import { generateLessonPrompt } from "@/api/lesson"
-import { createChatCompletion } from "@/helpers/server-side/openai"
+import {
+  createChatCompletion,
+  generateLessonPrompt,
+} from "@/helpers/server-side/openai"
 import { ILesson } from "@/types/lesson/type"
 import { DocumentData } from "firebase/firestore"
 

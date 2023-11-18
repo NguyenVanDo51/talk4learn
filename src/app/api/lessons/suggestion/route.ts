@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withAuth } from '@/helpers/server-side'
-import { createChatCompletion } from '@/helpers/server-side/openai'
-import { generateLessonPrompt, lessons } from '@/api/lesson'
+import {
+  createChatCompletion,
+  generateLessonPrompt,
+} from "@/helpers/server-side/openai"
+import { lessons } from "@/helpers/server-side/lesson/lesson"
 
 export const GET = () => {
   return NextResponse.json(lessons)

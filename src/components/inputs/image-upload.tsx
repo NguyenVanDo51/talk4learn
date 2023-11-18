@@ -52,7 +52,7 @@ export const ImageUpload = ({
             <Image
               fill
               alt="Upload"
-              src={value || "/bot_placeholder.png"}
+              src={value}
               className="rounded-lg object-cover"
             />
           </div>

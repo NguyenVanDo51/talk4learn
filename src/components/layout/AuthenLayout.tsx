@@ -1,7 +1,5 @@
-import { redirect } from "next/navigation"
 import { Logo } from "../level1/Logo"
 import Link from "next/link"
-import { getServerSession } from "next-auth/next"
 import { Sidebar } from "./sidebar"
 import "antd/lib/"
 import { UserButton, auth, redirectToSignIn } from "@clerk/nextjs"

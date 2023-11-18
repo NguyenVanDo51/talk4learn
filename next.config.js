@@ -8,7 +8,7 @@ const nextConfig = {
     serverActions: true
   },
   images: {
-    domains: ['via.placeholder.com', 'authjs.dev', 'img.icons8.com', 'lh3.googleusercontent.com', "res.cloudinary.com",],
+    domains: ['via.placeholder.com', 'authjs.dev', 'img.icons8.com', 'lh3.googleusercontent.com', "res.cloudinary.com", "img.clerk.com"],
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],

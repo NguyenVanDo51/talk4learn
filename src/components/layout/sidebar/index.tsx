@@ -1,17 +1,15 @@
 "use client"
-import { Avatar, Popover } from "antd"
-import { signOut, useSession } from "next-auth/react"
-import Image from "next/image"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { SettingModal } from "./components/settings"
 import { useEffect, useState } from "react"
 import { UserService } from "@/service/user/index.service"
+import { useAuth } from "@clerk/nextjs"
 
 export const Sidebar = () => {
-  const { data } = useSession()
   const pathname = usePathname()
   const [open, setOpen] = useState<boolean>(false)
+  const { userId } = useAuth()
 
   const menuItems = [
     {
@@ -36,10 +34,10 @@ export const Sidebar = () => {
   }
 
   useEffect(() => {
-    if (!data?.user?.email) return
+    if (!userId) return
     getSettings()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.user?.email])
+  }, [userId])
 
   return (
     <ul className="space-y-2">

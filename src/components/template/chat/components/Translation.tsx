@@ -60,11 +60,16 @@ export const Translation: FC = () => {
         <div>
           <div className="flex justify-between text-blue-500">
             <span>
-              <span className="text-gray-600">{LanguageNameMapping[sourceLanguage]}</span>{' '}
+              <span className="text-gray-600">
+                {LanguageNameMapping[sourceLanguage]}
+              </span>{" "}
               <span
                 className="cursor-pointer inline-block mt-1 text-blue-500"
                 onClick={() => {
-                  SpeakerService.speakFree(text.trim(), LanguageVoiceMapping[sourceLanguage])
+                  SpeakerService.speakFree(
+                    text.trim(),
+                    LanguageVoiceMapping[sourceLanguage]
+                  )
                 }}
               >
                 <i className="fa-solid fa-volume"></i>
@@ -76,15 +81,14 @@ export const Translation: FC = () => {
             ref={inputRef}
             autoSize
             value={text}
-            allowClear
             onChange={(e) => setText(e.target.value)}
             maxLength={500}
-            className="!min-h-[72px] mt-1 !p-0 no-padding"
+            className="!min-h-[72px] mt-1 !px-0 no-padding"
             placeholder="Nhập văn bản và nhấn Enter để dịch"
             rows={3}
             bordered={false}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 e.preventDefault()
                 e.stopPropagation()
                 startTranslate()
@@ -102,11 +106,16 @@ export const Translation: FC = () => {
           </AppButton>
 
           <span>
-            <span className="text-gray-600">{LanguageNameMapping[targetLanguage]}</span>{' '}
+            <span className="text-gray-600">
+              {LanguageNameMapping[targetLanguage]}
+            </span>{" "}
             <span
               className="cursor-pointer inline-block mt-1 text-blue-500"
               onClick={() => {
-                SpeakerService.speakFree(textTranslated.trim(), LanguageVoiceMapping[targetLanguage])
+                SpeakerService.speakFree(
+                  textTranslated.trim(),
+                  LanguageVoiceMapping[targetLanguage]
+                )
               }}
             >
               <i className="fa-solid fa-volume"></i>
