@@ -18,7 +18,7 @@ export const Sidebar = () => {
       icon: <i className="fa-regular fa-house"></i>,
     },
     {
-      key: "/conversations",
+      key: "/explore",
       label: "Explore",
       icon: <i className="fa-regular fa-magnifying-glass"></i>,
     },
