@@ -7,6 +7,7 @@ import { ImageUpload } from "@/components/inputs/image-upload"
 import { ILesson } from "@/types/lesson/type"
 import { BotService } from "@/service/bot/index.service"
 import { useRouter } from "next/navigation"
+import { AppNotifycation } from "@/components/level1/antd/AppNotification"
 
 const tagOptions = [
   "working",
@@ -26,10 +27,16 @@ export const CreateBotClient = () => {
     if (isLoading) return
     console.log("values", values)
     setIsLoading(true)
-    BotService.create({ ...values, botImage }).finally(() => {
-      setIsLoading(false)
-      router.push("/")
-    })
+    BotService.create({ ...values, botImage })
+      .then(() => {
+        AppNotifycation.success({
+          message: "Your topic is created successfully",
+        })
+        router.push("/")
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (

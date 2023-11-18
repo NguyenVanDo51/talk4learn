@@ -1,6 +1,6 @@
 import { AppButton } from "@/components/level1/antd/AppButton"
 import { IMessage } from "@/types/chat"
-import { Avatar, Divider, Spin } from "antd"
+import { Divider, Spin } from "antd"
 import { FC, useContext, useEffect, useState } from "react"
 import { useAppSelector } from "@/hooks/redux"
 import { LeftMessage } from "./LeftMessage"
@@ -12,6 +12,7 @@ import { SendMessageBody } from "../../service/request"
 import { ChatContext } from "../../context"
 import { useUser } from "@clerk/nextjs"
 import Image from "next/image"
+import { Avatar } from "@/components/displayers/Avatar"
 
 export interface MessageProps {
   isSending: boolean
@@ -77,12 +78,9 @@ export const Message: FC<MessageProps> = (props) => {
         <div className="bg-[#f7f7f7] rounded-xl p-4">
           <div className="flex gap-3">
             <div>
-              <Image
+              <Avatar
                 alt="bot-image"
                 src={lesson?.botImage || "/bot_placeholder.png"}
-                width={64}
-                height={64}
-                className="rounded-full min-w-[64px]"
               />
             </div>
 
@@ -92,12 +90,11 @@ export const Message: FC<MessageProps> = (props) => {
               <span className="text-sm">
                 Operated by{" "}
                 <span>
-                  <Image
+                  <Avatar
                     alt="bot-image"
                     src={lesson.author.imageUrl}
-                    width={20}
-                    height={20}
-                    className="rounded-full inline-block"
+                    size={20}
+                    className="inline-block"
                   />
 
                   <span className="text-blue-400">

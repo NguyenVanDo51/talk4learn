@@ -1,7 +1,7 @@
 "use client"
 
+import { Avatar } from "@/components/displayers/Avatar"
 import { ILesson } from "@/types/lesson/type"
-import { Avatar, Badge } from "antd"
 import Link from "next/link"
 
 export const HomeClient = ({ bots }: { bots: ILesson[] }) => {
@@ -20,7 +20,6 @@ export const HomeClient = ({ bots }: { bots: ILesson[] }) => {
               src={bot.botImage || "/bot_placeholder.png"}
               size={64}
               shape="square"
-              className="min-w-[64px]"
             />
             <div className="">
               <p className="font-medium m-0">{bot.name}</p>
