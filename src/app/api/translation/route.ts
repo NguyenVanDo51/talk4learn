@@ -1,18 +1,6 @@
-import { cleanInput } from "@/helpers/utils"
 import { withAuth } from "@/helpers/server-side"
-import { NextApiRequest } from "next"
 
-import { TranslationServiceClient } from "@google-cloud/translate"
 import axios, { AxiosResponse } from "axios"
-
-const translationClient = new TranslationServiceClient({
-  projectId: process.env?.FIREBASE_PROJECT_ID,
-  credentials: {
-    client_email: process.env.FIREBASE_CLIENT_EMAIL,
-    private_key: process.env.FIREBASE_PRIVATE_KEY,
-  },
-})
-const location = "global"
 
 export async function GET(req: Request) {
   return withAuth(async () => {

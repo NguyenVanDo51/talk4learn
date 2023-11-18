@@ -1816,11 +1816,6 @@
   dependencies:
     lodash "^4.17.21"
 
-"@next-auth/firebase-adapter@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@next-auth/firebase-adapter/-/firebase-adapter-2.0.1.tgz#a1da62ef92f30664eaf6a3bc403475d5c172af00"
-  integrity sha512-4bQTa+IU8/I/mSOQcnrpQ9BYM6Xpk5BJx1TrxDpk4xKl2z0ZKE7Un+yl+U/9crmfpTvCoLOh6j9axmJMacJV2w==
-
 "@next/env@13.5.3":
   version "13.5.3"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-13.5.3.tgz#402da9a0af87f93d853519f0c2a602b1ab637c2c"
