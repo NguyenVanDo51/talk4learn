@@ -8,11 +8,11 @@ export default async function Home() {
   const user = await currentUser()
   const result = await firestore
     .collection(SITUATION_TABLE)
-    .where("createdBy", "==", user?.id)
+    .where("createdBy", "==", user?.username)
+    .orderBy("createdAt", "desc")
     .get()
 
   const bots: ILesson[] = []
-
   result?.forEach((b) => {
     bots.push(b.data() as ILesson)
   })
