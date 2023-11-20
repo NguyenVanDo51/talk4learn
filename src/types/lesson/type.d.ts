@@ -1,4 +1,5 @@
 import { User } from "@clerk/nextjs/server"
+import { Dayjs } from "dayjs"
 
 export interface ILesson {
   id: string
@@ -10,6 +11,7 @@ export interface ILesson {
   public: boolean // có public hay không
   tags: string[] // các tags mô tả về tình huống. vd: work, school,...
   createdBy: string
+  createdAt: string | number
   used: number
 
   author?: User

@@ -60,7 +60,6 @@ export const metadata: Metadata = {
     "learning english",
   ],
   authors: [{ name: "Andy" }, { name: "Andy", url: "https://andydev.com" }],
-  colorScheme: "dark",
   creator: "Andy",
   publisher: "Andy",
   formatDetection: {
@@ -125,12 +124,6 @@ export const metadata: Metadata = {
       rel: "/logo125.png",
       url: "/logo125.png",
     },
-  },
-  themeColor: "black",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
   },
   manifest: "/site.webmanifest",
   verification: {
