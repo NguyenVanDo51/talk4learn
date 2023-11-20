@@ -1,9 +1,8 @@
-import { withAuth } from "@/helpers/server-side"
 import { firestore } from "@/service/firestore"
 import { ILesson } from "@/types/lesson/type"
 import { currentUser } from "@clerk/nextjs/server"
 import { randomUUID } from "crypto"
-import { NextApiRequest } from "next"
+import { CollectionReference } from "firebase-admin/firestore"
 import { NextRequest, NextResponse } from "next/server"
 
 export const SITUATION_TABLE = "situations"
@@ -12,14 +11,31 @@ export const SITUATION_TABLE = "situations"
 export const GET = async (req: NextRequest) => {
   const url = new URL(req.url)
   const searchParams = new URLSearchParams(url.search)
-  console.log(req, req.url, searchParams.get("offset"))
 
   const offset = Number(searchParams.get("offset") || 0)
   const limit = Number(searchParams.get("limit") || 10)
+  const tag = searchParams.get("tag") ?? ""
+  const name = searchParams.get("name") ?? ""
 
   try {
-    const result = await firestore
-      .collection(SITUATION_TABLE)
+    let ref = firestore.collection(SITUATION_TABLE)
+
+    if (tag?.trim()) {
+      ref = ref.where(
+        "tags",
+        "array-contains",
+        tag
+      ) as CollectionReference<ILesson>
+    }
+
+    if (name?.trim()) {
+      ref = ref
+        .where("name", ">=", name)
+        .where("name", "<=", name + "\uf8ff")
+        .orderBy("name", "asc") as CollectionReference<ILesson>
+    }
+
+    const result = await ref
       .orderBy("used", "desc")
       .offset(offset)
       .limit(limit)
