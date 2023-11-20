@@ -9,7 +9,7 @@ import { BotService } from "@/service/bot/index.service"
 import { useRouter } from "next/navigation"
 import { AppNotifycation } from "@/components/level1/antd/AppNotification"
 
-const tagOptions = [
+export const tagOptions = [
   "working",
   "school",
   "interview",
