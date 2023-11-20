@@ -3,16 +3,26 @@ import { firestore } from "@/service/firestore"
 import { ILesson } from "@/types/lesson/type"
 import { currentUser } from "@clerk/nextjs/server"
 import { randomUUID } from "crypto"
-import { NextResponse } from "next/server"
+import { NextApiRequest } from "next"
+import { NextRequest, NextResponse } from "next/server"
 
 export const SITUATION_TABLE = "situations"
 
 // a next api to get all completed lessons
-export const GET = async (req: Request) => {
-  console.log(req)
+export const GET = async (req: NextRequest) => {
+  const url = new URL(req.url)
+  const searchParams = new URLSearchParams(url.search)
+  console.log(req, req.url, searchParams.get("offset"))
+
+  const offset = Number(searchParams.get("offset") || 0)
+  const limit = Number(searchParams.get("limit") || 10)
+
   try {
     const result = await firestore
       .collection(SITUATION_TABLE)
+      .orderBy("used", "desc")
+      .offset(offset)
+      .limit(limit)
       .get()
       .then((docSnapshot) => {
         const d: ILesson[] = []

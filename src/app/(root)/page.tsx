@@ -14,7 +14,7 @@ export default async function Home() {
 
   const bots: ILesson[] = []
   result?.forEach((b) => {
-    bots.push(b.data() as ILesson)
+    bots.push(JSON.parse(JSON.stringify(b.data())) as ILesson)
   })
 
   return <HomeClient bots={bots} />
