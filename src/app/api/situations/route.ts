@@ -11,16 +11,17 @@ export const SITUATION_TABLE = "situations"
 export const GET = async (req: Request) => {
   console.log(req)
   try {
-    const result = await firestore.collection(SITUATION_TABLE).get()
-    // .then((docSnapshot) => {
-    //   const d: ILesson[] = []
-    //   docSnapshot.forEach((doc) => {
-    //     d.push(doc.data() as ILesson)
-    //   })
-    //   return d
-    // })
-    const data = result.docs.map((doc) => doc.data())
-    return NextResponse.json(data)
+    const result = await firestore
+      .collection(SITUATION_TABLE)
+      .get()
+      .then((docSnapshot) => {
+        const d: ILesson[] = []
+        docSnapshot.forEach((doc) => {
+          d.push(doc.data() as ILesson)
+        })
+        return d
+      })
+    return NextResponse.json(result)
   } catch (e: any) {
     return new Response(e, {
       status: 500,
