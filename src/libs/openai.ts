@@ -5,7 +5,7 @@ import { ILesson } from "@/types/lesson/type"
 import OpenAI from "openai"
 
 const openai = new OpenAI({
-  apiKey: VIP_KEY[0],
+  apiKey: process.env.OPENAI_API_KEY,
 })
 
 export const createChatCompletion = (

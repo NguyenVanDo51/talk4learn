@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createChatCompletion } from "@/helpers/server-side/openai"
+import { createChatCompletion } from "@/libs/openai"
 
 export async function POST(request: NextRequest) {
   const body = await request.json()

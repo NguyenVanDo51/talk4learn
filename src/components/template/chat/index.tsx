@@ -8,17 +8,16 @@ import { Translation } from "./components/Translation"
 import { Suggestions } from "./components/Suggestions"
 import { ChatContext } from "./context"
 import { ILesson } from "@/types/lesson/type"
-import { lessons } from "@/helpers/server-side/lesson/lesson"
 import { useChat } from "./hooks/useChat"
 
 export type IAnalystMessage = IMessage & { comment: string }
 
 interface IProps {
-  lesson?: ILesson
+  lesson: ILesson
   initialMessages?: IMessage[]
 }
 
-const AIChat: FC<IProps> = ({ lesson = lessons[0], initialMessages }) => {
+const AIChat: FC<IProps> = ({ lesson, initialMessages }) => {
   const { messages, isWaiting, setMessages, reSend, sendMessage } = useChat(
     lesson,
     initialMessages

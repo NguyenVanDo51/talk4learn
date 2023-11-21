@@ -1,6 +1,6 @@
 export enum ScrollSelecter {
-  Message = '#message-container',
-  AnalystMessage = '#analyst',
+  Message = "#message-container",
+  AnalystMessage = "#analyst",
 }
 
 export const scrollToBottom = (selector: ScrollSelecter) => {

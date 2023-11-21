@@ -66,6 +66,7 @@ export const Message: FC<MessageProps> = (props) => {
       .finally(() => setLoading(false))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messageToCheck])
+  console.log("lesson.author", lesson?.author)
 
   return (
     <div

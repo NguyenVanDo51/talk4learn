@@ -1,7 +1,7 @@
 "use client"
 import { AppButton, DebouncedButton } from "@/components/level1/antd/AppButton"
 import { AppInput } from "@/components/level1/antd/AppInput"
-import { getUserMedia } from "@/helpers/mp3"
+import { getUserMedia } from "@/libs/helpers/mp3"
 import {
   FC,
   MutableRefObject,
@@ -16,7 +16,7 @@ import { AppNotifycation } from "@/components/level1/antd/AppNotification"
 import { ISetting, setInputType } from "@/redux/slices/settingSlice"
 import { useAppSelector } from "@/hooks/redux"
 import { useDispatch } from "react-redux"
-import { ScrollSelecter, scrollToBottom } from "@/helpers/dom"
+import { ScrollSelecter, scrollToBottom } from "@/libs/helpers/dom"
 import Image from "next/image"
 import { ChatService } from "../service"
 

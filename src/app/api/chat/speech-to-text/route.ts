@@ -1,6 +1,6 @@
 import fs from "fs"
 import path from "path"
-import { openai } from "@/helpers/server-side/openai"
+import { openai } from "@/libs/openai"
 
 export async function POST(req: any) {
   const form = await req.formData()

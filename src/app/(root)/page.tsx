@@ -8,7 +8,7 @@ export default async function Home() {
   const user = await currentUser()
   const result = await firestore
     .collection(SITUATION_TABLE)
-    .where("createdBy", "==", user?.username)
+    .where("createdBy", "==", user?.id)
     .orderBy("createdAt", "desc")
     .get()
 

@@ -1,4 +1,4 @@
-import { scrollToBottom, ScrollSelecter } from "@/helpers/dom"
+import { scrollToBottom, ScrollSelecter } from "@/libs/helpers/dom"
 import { SpeakerService } from "@/service/speaker"
 import { IMessage } from "@/types/chat"
 import { AxiosResponse } from "axios"

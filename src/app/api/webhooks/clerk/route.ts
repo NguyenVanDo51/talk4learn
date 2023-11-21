@@ -9,11 +9,13 @@ export const POST = async (req: Request) => {
   const body = await req.json()
   const id = body.data.id ?? randomUUID()
 
+  const user = convertKeysToCamelCase(body.data)
+
   try {
     switch (body.type) {
       case "user.created":
       case "user.updated":
-        await firestore.collection(USER_TABLE).doc(id).set(body.data)
+        await firestore.collection(USER_TABLE).doc(id).set(user)
         break
       case "user.deleted":
         await firestore.collection(USER_TABLE).doc(id).delete()
@@ -26,5 +28,19 @@ export const POST = async (req: Request) => {
       status: 500,
     })
   }
-  
+}
+
+const convertKeysToCamelCase: any = (obj: Record<string, any>) => {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => convertKeysToCamelCase(item))
+  } else if (obj !== null && typeof obj === "object") {
+    return Object.keys(obj).reduce((acc: Record<string, any>, key) => {
+      const camelCaseKey = key.replace(/_([a-z])/g, (match) =>
+        match[1].toUpperCase()
+      )
+      acc[camelCaseKey] = convertKeysToCamelCase(obj[key])
+      return acc
+    }, {})
+  }
+  return obj
 }

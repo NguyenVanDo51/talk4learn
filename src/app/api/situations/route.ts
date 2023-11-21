@@ -66,7 +66,7 @@ export const POST = async (req: Request) => {
       id,
       ...body,
       used: 1,
-      createdBy: user?.username,
+      createdBy: user?.id,
       createdAt: new Date(),
     }
     let result = await doc.set(payload)

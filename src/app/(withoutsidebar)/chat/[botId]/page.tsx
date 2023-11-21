@@ -21,7 +21,9 @@ export default async function ChatPage(req: { params: { botId: string } }) {
         .collection(USER_TABLE)
         .doc(bot.createdBy)
         .get()
-        .then((r) => r.data())) as User
+        .then((r) => {
+          return r.data()
+        })) as User
 
       return bot
     })

@@ -1,7 +1,7 @@
 import { AudioPlayer } from '@/components/level1/AudioPlayer'
 import { AppButton } from '@/components/level1/antd/AppButton'
-import { scrollToBottom, ScrollSelecter } from '@/helpers/dom'
-import { speak } from "@/helpers/speech"
+import { scrollToBottom, ScrollSelecter } from "@/libs/helpers/dom"
+import { speak } from "@/libs/helpers/speech"
 import { ISetting } from '@/redux/slices/settingSlice'
 import { SpeakerService } from '@/service/speaker'
 import { IMessage } from '@/types/chat'
