@@ -10,62 +10,75 @@ import { ILesson } from "@/types/lesson/type"
 const ExploreBotClient = () => {
   const [searchValue, setSearchValue] = useState("")
   const [searchResult, setSearchResult] = useState<ILesson[]>([])
-  const [page, setPage] = useState(1) // số trang hiện tại
+  const [page, setPage] = useState(0) // số trang hiện tại
   const [isLoading, setIsLoading] = useState(false) // hiện thị loading gọi api
-  const [reachedEnd, setReachedEnd] = useState(false) // kiểm tra xem người dùng scroll đến cuối trang chưa
+  const [reachedEnd, setReachedEnd] = useState(true) // kiểm tra xem người dùng scroll đến cuối trang chưa
   // dùng state để theo dõi trạng thái của nút
-  const [isButtonClicked, setIsButtonClicked] = useState("")
+  const [tagSelected, setTagSelected] = useState("")
   //khi người nhập dừng 3000ms thì giá trị debounced được updete bằng giá trị mới nhất của searchValue
   const debounced = useDebounce(searchValue, 3000)
 
   useEffect(() => {
     function handleScroll() {
-      console.log("handleScroll")
+      // console.log("handleScroll")
       const scrollY = window.scrollY || window.pageYOffset // scrollY vị trí cuộn
       const clientHeight = document.documentElement.clientHeight //clientHeight là kích thước màn hình
       const scrollHeight = document.documentElement.scrollHeight // scrollHeight là chiều cao trang
 
-      if (scrollY + clientHeight >= scrollHeight - 200) {
-        if (!reachedEnd) {
+      if (scrollY + clientHeight >= scrollHeight - 10) {
+        // Khi người dùng scroll đến cuối trang và reachedEnd chưa đc đánh dấu thì
+        // console.log("đã đến trang 2")
+        if (reachedEnd === false) {
           setPage(page + 1)
+          // Nếu chưa đến cuối trang (để tránh gọi API nhiều lần)
         }
       }
     }
     // đăng kí sự kiện cuộn
-    document.body.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll)
     // loại bỏ nó khi component bị huỷ
     return () => {
-      document.body.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("scroll", handleScroll)
     }
   }, [reachedEnd, page])
 
-  // useEffect(() => {
-  //   onSearch(debounced)
-  // }, [])
-
   useEffect(() => {
     onSearch(debounced)
-  }, [debounced])
+    console.log("tagSelected", tagSelected)
+  }, [debounced, page, tagSelected])
 
   const onSearch = async (debounce: string) => {
-    const result = await BotService.get({ name: debounce, limit: 5 })
+    setReachedEnd(true) // setReachedEnd(true) để người dùng scroll đến cuối k gọi api
+    const result = await BotService.get({
+      // truyền name, limit offset vào để tính số trang, ngắt trang
+      name: debounce,
+      limit: 5,
+      offset: page * 5,
+      tag: tagSelected,
+    })
+
     if (result.data.length > 0) {
+      // nếu độ dài result lớn hơn 0 thì
+      setReachedEnd(false) // gọi tiếp api của trang 2
       setSearchResult([...searchResult, ...result.data]) // cập nhật trạng thái reachedEnd nếu đã hết dữ liệu
     } else {
+      setReachedEnd(true) // độ dài nhỏ bằng 0 thì sẽ k gọi api
     }
-    console.log("result", result.data)
-    setSearchResult(result.data)
+    // console.log("result", result.data)
   }
 
   const handleChange = (e: any) => {
     const searchValueConten = e.target.value
-    console.log(searchValueConten)
+    // console.log(searchValueConten)
 
     setSearchValue(searchValueConten)
   }
   const handleOnClick = (tagOption: string) => {
     // đảo ngược trạng thái của nút
-    setIsButtonClicked(tagOption)
+    // console.log("tagOption", tagOption)
+    setTagSelected(tagOption)
+    setPage(0)
+    setSearchResult([])
   }
   // màu nền của nút sẽ thay đổi dựa vào trạng thái nút
 
@@ -84,9 +97,9 @@ const ExploreBotClient = () => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
               </svg>
@@ -111,7 +124,7 @@ const ExploreBotClient = () => {
               <Button
                 onClick={() => handleOnClick(tagOption)}
                 className={
-                  isButtonClicked === tagOption ? "bg-blue-500 text-white" : ""
+                  tagSelected === tagOption ? "bg-blue-500 text-white" : ""
                 }
               >
                 {tagOption}

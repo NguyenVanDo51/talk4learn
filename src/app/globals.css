@@ -34,16 +34,12 @@ button {
   text-transform: capitalize;
 }
 
-html {
-  overflow: hidden;
-}
 
 html,
 body {
   color: var(--main-text);
   height: 100%;
   background-color: var(--main-bg);
-  overflow-x: hidden;
 }
 
 main {
