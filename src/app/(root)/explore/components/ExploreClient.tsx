@@ -1,29 +1,74 @@
 "use client"
 import { Button } from "antd"
 import { tagOptions } from "../../create/components/CreateClient"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import useDebounce from "@/hooks/debounce/useDebounce"
+import { BotService } from "@/service/bot/index.service"
+import PostCap from "@/components/displayers/botsCap"
+import { ILesson } from "@/types/lesson/type"
 
 const ExploreBotClient = () => {
   const [searchValue, setSearchValue] = useState("")
-  const [searchResult, setSearchResult] = useState([])
+  const [searchResult, setSearchResult] = useState<ILesson[]>([])
+  const [page, setPage] = useState(1) // số trang hiện tại
+  const [isLoading, setIsLoading] = useState(false) // hiện thị loading gọi api
+  const [reachedEnd, setReachedEnd] = useState(false) // kiểm tra xem người dùng scroll đến cuối trang chưa
+  // dùng state để theo dõi trạng thái của nút
+  const [isButtonClicked, setIsButtonClicked] = useState("")
+  //khi người nhập dừng 3000ms thì giá trị debounced được updete bằng giá trị mới nhất của searchValue
   const debounced = useDebounce(searchValue, 3000)
 
   useEffect(() => {
-    if (!debounced.trim()) {
-      setSearchResult([])
-      return
-    }
+    function handleScroll() {
+      console.log("handleScroll")
+      const scrollY = window.scrollY || window.pageYOffset // scrollY vị trí cuộn
+      const clientHeight = document.documentElement.clientHeight //clientHeight là kích thước màn hình
+      const scrollHeight = document.documentElement.scrollHeight // scrollHeight là chiều cao trang
 
-    console.log(debounced)
+      if (scrollY + clientHeight >= scrollHeight - 200) {
+        if (!reachedEnd) {
+          setPage(page + 1)
+        }
+      }
+    }
+    // đăng kí sự kiện cuộn
+    document.body.addEventListener("scroll", handleScroll)
+    // loại bỏ nó khi component bị huỷ
+    return () => {
+      document.body.removeEventListener("scroll", handleScroll)
+    }
+  }, [reachedEnd, page])
+
+  // useEffect(() => {
+  //   onSearch(debounced)
+  // }, [])
+
+  useEffect(() => {
+    onSearch(debounced)
   }, [debounced])
 
-  const handleChange = (e) => {
+  const onSearch = async (debounce: string) => {
+    const result = await BotService.get({ name: debounce, limit: 5 })
+    if (result.data.length > 0) {
+      setSearchResult([...searchResult, ...result.data]) // cập nhật trạng thái reachedEnd nếu đã hết dữ liệu
+    } else {
+    }
+    console.log("result", result.data)
+    setSearchResult(result.data)
+  }
+
+  const handleChange = (e: any) => {
     const searchValueConten = e.target.value
     console.log(searchValueConten)
 
     setSearchValue(searchValueConten)
   }
+  const handleOnClick = (tagOption: string) => {
+    // đảo ngược trạng thái của nút
+    setIsButtonClicked(tagOption)
+  }
+  // màu nền của nút sẽ thay đổi dựa vào trạng thái nút
+
   return (
     <>
       <div className="flex justify-center flex-col mt-[20px]">
@@ -50,6 +95,7 @@ const ExploreBotClient = () => {
               type="search"
               value={searchValue}
               onChange={handleChange}
+              spellCheck={false}
               id="default-search"
               className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Mockups, Logos..."
@@ -57,16 +103,27 @@ const ExploreBotClient = () => {
             />
           </div>
         </form>
-        {
-          <div className="mt-3 flex gap-2">
-            {/* Thêm nội dung bạn muốn hiển thị */}
-            {tagOptions?.map((tagOption, index) => (
-              <div key={index}>
-                <Button className="">{tagOption}</Button>
-              </div>
-            ))}
-          </div>
-        }
+
+        <div className="mt-3 flex gap-2">
+          {/* Thêm nội dung bạn muốn hiển thị */}
+          {tagOptions?.map((tagOption, index) => (
+            <div key={index}>
+              <Button
+                onClick={() => handleOnClick(tagOption)}
+                className={
+                  isButtonClicked === tagOption ? "bg-blue-500 text-white" : ""
+                }
+              >
+                {tagOption}
+              </Button>
+            </div>
+          ))}
+        </div>
+        <div>
+          {searchResult?.map((bot) => (
+            <PostCap key={bot.id} bot={bot} />
+          ))}
+        </div>
       </div>
     </>
   )

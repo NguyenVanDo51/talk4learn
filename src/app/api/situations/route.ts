@@ -13,7 +13,7 @@ export const GET = async (req: NextRequest) => {
   const searchParams = new URLSearchParams(url.search)
 
   const offset = Number(searchParams.get("offset") || 0)
-  const limit = Number(searchParams.get("limit") || 10)
+  const limit = Number(searchParams.get("limit") || 5)
   const tag = searchParams.get("tag") ?? ""
   const name = searchParams.get("name") ?? ""
 
