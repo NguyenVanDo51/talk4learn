@@ -17,11 +17,12 @@ export const Avatar: FC<IProps> = ({
   return (
     <Image
       width={size}
-      height={64}
+      height={size}
       className={`${
         shape === "square" ? "rounded-lg" : "rounded-full"
-      } min-w-[${size}px] h-[${size}px] ${className} object-cover`}
+      } ${className} object-cover`}
       alt={alt}
+      style={{ width: size, height: size }}
       {...props}
     />
   )

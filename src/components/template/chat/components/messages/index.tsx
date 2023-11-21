@@ -87,9 +87,9 @@ export const Message: FC<MessageProps> = (props) => {
             </div>
 
             <div className="flex flex-col gap-0.5 justify-center">
-              <p className="font-medium m-0 text-lg">{lesson?.name}</p>
+              <p className="font-medium m-0 text-lg ">{lesson?.name}</p>
 
-              <span className="text-sm">
+              <span className="text-sm text-[#5d6565]">
                 Operated by{" "}
                 <span>
                   <Avatar
@@ -97,8 +97,7 @@ export const Message: FC<MessageProps> = (props) => {
                     src={lesson.author?.imageUrl}
                     size={20}
                     className="inline-block"
-                  />
-
+                  />{" "}
                   <span className="text-blue-400">
                     {lesson.author?.username}
                   </span>

@@ -72,10 +72,8 @@ export class ChatService {
       return { role: message.role, content: message.content }
     })
 
-    console.log("uar alo", bodyMessages)
-    return httpClient.post("/api/lessons/suggestion", {
+    return httpClient.post("/api/situations/" + lessonId + "/suggestions", {
       messages: bodyMessages,
-      lessonId,
     })
   }
 }
