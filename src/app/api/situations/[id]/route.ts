@@ -9,7 +9,6 @@ import {
 import { ILesson } from "@/types/lesson/type"
 import { DocumentData } from "firebase-admin/firestore"
 
-// a next api to get all completed lessons
 export const GET = (req: Request, { params }: { params: { id: string } }) => {
   return withAuth(async () => {
     try {
@@ -63,7 +62,7 @@ export const POST = (req: Request, { params }: { params: { id: string } }) => {
       { role: "system", content: generateLessonPrompt(lesson as ILesson) },
       ...body.messages,
     ]
-
+    console.log("messages", messages[0])
     try {
       const res = await createChatCompletion(messages, {
         max_tokens: 500,
@@ -71,6 +70,7 @@ export const POST = (req: Request, { params }: { params: { id: string } }) => {
       })
       return NextResponse.json(res)
     } catch (e: any) {
+      console.log("POST /api/situations" + params.id, e)
       return new Response(e, {
         status: e.response?.status || 500,
       })

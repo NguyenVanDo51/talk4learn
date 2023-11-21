@@ -13,7 +13,7 @@ export class ChatService {
     if (bodyMessages.length > 12) {
       bodyMessages.splice(1, bodyMessages.length - 10)
     }
-    return httpClient.post("/api/lessons/", {
+    return httpClient.post("/api/situations/" + lessonId, {
       messages: bodyMessages,
       lessonId,
     })

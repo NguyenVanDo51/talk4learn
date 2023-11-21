@@ -6,6 +6,7 @@ import { ILesson } from "@/types/lesson/type"
 import { USER_TABLE } from "@/app/api/webhooks/clerk/route"
 import { DocumentData } from "firebase-admin/firestore"
 import { User } from "@clerk/nextjs/server"
+import dayjs from "dayjs"
 
 export default async function ChatPage(req: { params: { botId: string } }) {
   const bot = await firestore
@@ -28,5 +29,9 @@ export default async function ChatPage(req: { params: { botId: string } }) {
 
   if (!bot) redirect("/")
 
-  return <ChatPageClient bot={bot as ILesson} />
+  return (
+    <ChatPageClient
+      bot={{ ...bot, createdAt: dayjs(bot.createdAt).valueOf() } as ILesson}
+    />
+  )
 }
