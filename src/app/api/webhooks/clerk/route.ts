@@ -1,9 +1,7 @@
+import { USER_TABLE } from "@/libs/table-name"
 import { firestore } from "@/service/firestore"
-import { WebhookEvent } from "@clerk/nextjs/server"
 import { randomUUID } from "crypto"
 import { NextResponse } from "next/server"
-
-export const USER_TABLE = "users"
 
 export const POST = async (req: Request) => {
   const body = await req.json()

@@ -1,5 +1,5 @@
 import { firestore } from "@/service/firestore"
-import { SITUATION_TABLE } from "../api/situations/route"
+import { SITUATION_TABLE } from "@/libs/table-name"
 import { currentUser } from "@clerk/nextjs/server"
 import { HomeClient } from "./components/HomeClient"
 import { ILesson } from "@/types/lesson/type"

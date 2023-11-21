@@ -1,9 +1,9 @@
 import { firestore } from "@/service/firestore"
 import { NextResponse } from "next/server"
-import { SITUATION_TABLE } from "../route"
 import { createChatCompletion, generateLessonPrompt } from "@/libs/openai"
 import { ILesson } from "@/types/lesson/type"
 import { DocumentData } from "firebase-admin/firestore"
+import { SITUATION_TABLE } from "@/libs/table-name"
 
 export const GET = async (
   req: Request,

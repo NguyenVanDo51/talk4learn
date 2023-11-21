@@ -1,11 +1,10 @@
+import { SITUATION_TABLE } from "@/libs/table-name"
 import { firestore } from "@/service/firestore"
 import { ILesson } from "@/types/lesson/type"
 import { currentUser } from "@clerk/nextjs/server"
 import { randomUUID } from "crypto"
 import { CollectionReference } from "firebase-admin/firestore"
 import { NextRequest, NextResponse } from "next/server"
-
-export const SITUATION_TABLE = "situations"
 
 // a next api to get all completed lessons
 export const GET = async (req: NextRequest) => {
