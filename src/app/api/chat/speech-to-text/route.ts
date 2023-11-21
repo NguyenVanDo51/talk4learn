@@ -32,16 +32,16 @@ export async function POST(req: any) {
       file: fs.createReadStream(filepath) as any,
       model: "whisper-1",
       language: "en",
-      response_format: "json",
+      response_format: "text",
       temperature: 0,
       prompt: "transcrip correct content of audio",
     })
 
-    return new Response(result?.data?.text, {
+    return new Response(result, {
       status: 200,
     })
   } catch (error: any) {
-    return new Response("", {
+    return new Response(error, {
       status: 200,
     })
   }

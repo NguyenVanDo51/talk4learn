@@ -14,14 +14,11 @@ export type IAnalystMessage = IMessage & { comment: string }
 
 interface IProps {
   lesson: ILesson
-  initialMessages?: IMessage[]
 }
 
-const AIChat: FC<IProps> = ({ lesson, initialMessages }) => {
-  const { messages, isWaiting, setMessages, reSend, sendMessage } = useChat(
-    lesson,
-    initialMessages
-  )
+const AIChat: FC<IProps> = ({ lesson }) => {
+  const { messages, isWaiting, setMessages, reSend, sendMessage } =
+    useChat(lesson)
 
   return (
     <ChatContext.Provider value={{ messages, lesson }}>

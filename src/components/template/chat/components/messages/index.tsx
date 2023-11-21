@@ -77,7 +77,7 @@ export const Message: FC<MessageProps> = (props) => {
       }}
     >
       {lesson?.author && (
-        <div className="bg-[#f7f7f7] rounded-xl p-4">
+        <div className="bg-[#f7f7f7] rounded-xl p-4 mt-1 mb-3">
           <div className="flex gap-3">
             <div>
               <Avatar

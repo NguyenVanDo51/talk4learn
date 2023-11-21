@@ -8,8 +8,8 @@ import { ChatService } from "../service"
 import { SendMessageBody } from "../service/request"
 import { ILesson } from "@/types/lesson/type"
 
-export const useChat = (lesson: ILesson, initialMessages?: IMessage[]) => {
-  const [messages, setMessages] = useState<IMessage[]>(initialMessages ?? [])
+export const useChat = (lesson: ILesson) => {
+  const [messages, setMessages] = useState<IMessage[]>([])
   const [isWaiting, setIsWaiting] = useState(false)
 
   const sendMessage = async (message: string | Blob, recorded?: string) => {
@@ -75,6 +75,7 @@ export const useChat = (lesson: ILesson, initialMessages?: IMessage[]) => {
           content: messageResponse,
         })
         setMessages(newMesages)
+        localStorage.setItem(lesson.id, JSON.stringify(newMesages))
       })
       .catch(() => {
         newMesages[messages.length - 1].status = "error"
@@ -83,7 +84,7 @@ export const useChat = (lesson: ILesson, initialMessages?: IMessage[]) => {
       .finally(() => setIsWaiting(false))
   }, [lesson, messages])
 
-  const getFirstMessage = () => {
+  const getFirstMessage = useCallback(() => {
     const messageResponse = lesson.assistantFirstMessage
 
     if (!messageResponse) return
@@ -94,7 +95,7 @@ export const useChat = (lesson: ILesson, initialMessages?: IMessage[]) => {
     }
     SpeakerService.speak(messageResponse)
     setMessages([message])
-  }
+  }, [lesson.assistantFirstMessage])
 
   const reSend = () => {
     getAnswer()
@@ -106,8 +107,18 @@ export const useChat = (lesson: ILesson, initialMessages?: IMessage[]) => {
     if (newestMessage?.status !== "error") {
       getAnswer()
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
+
+  useEffect(() => {
+    const oldMessageParsed = JSON.parse(localStorage.getItem(lesson.id) || "[]")
+    if (Array.isArray(oldMessageParsed) && oldMessageParsed?.length > 0) {
+      setMessages(oldMessageParsed)
+      return
+    }
+    getFirstMessage()
+  }, [getFirstMessage, lesson.id])
 
   useEffect(() => {
     scrollToBottom(ScrollSelecter.Message)
@@ -118,14 +129,6 @@ export const useChat = (lesson: ILesson, initialMessages?: IMessage[]) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newestMessage])
-
-  useEffect(() => {
-    if (!initialMessages) {
-      getFirstMessage()
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialMessages])
 
   return { messages, isWaiting, setMessages, reSend, sendMessage }
 }

@@ -8,7 +8,7 @@ const PostCap = ({ bot }: { bot: ILesson }) => {
       <Link
         href={`/chat/${bot.id}`}
         key={bot.id}
-        className="flex gap-3 border-b hover:bg-gray-100 p-2"
+        className="flex gap-3 bg-gray-100 p-2 mb-2 rounded-xl border shadow border-transparent hover:border-blue-500"
       >
         <Avatar
           src={bot.botImage || "/bot_placeholder.png"}
