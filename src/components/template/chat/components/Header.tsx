@@ -1,24 +1,20 @@
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { CupIcon } from "../icons/cup"
-import { useLessonsCompleted } from "@/hooks/fetchers/useLessonsCompleted"
-import { useContext, useEffect, useState } from "react"
-import { ChatContext } from "../context"
 import { Button, Modal } from "antd"
 import { ExclamationCircleFilled } from "@ant-design/icons"
 import { BotService } from "@/service/bot/index.service"
+import { ILesson } from "@/types/lesson/type"
+import { FC } from "react"
+import { useUser } from "@clerk/nextjs"
 
-export const Header = () => {
-  const [deleteConfirm, setDeleteConfirm] = useState("")
+interface IProps {
+  lesson: ILesson
+}
+export const Header: FC<IProps> = ({ lesson }) => {
   const { confirm } = Modal
 
-  useEffect(() => {
-    getDeleteComfirm()
-  }, [])
-
-  const getDeleteComfirm = async () => {
-    const result = await BotService.get()
-  }
+  const { isSignedIn, user, isLoaded } = useUser()
+  const router = useRouter()
 
   const showDeleteConfirm = () => {
     confirm({
@@ -28,15 +24,24 @@ export const Header = () => {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      onOk() {
-        console.log("OK")
+      onOk: async () => {
+        try {
+          // console.log(lesson)
+          // console.log("user", user)
+          const result = await BotService.delete(lesson.id)
+          console.log("OK")
+
+          // sau khi xoá thành công thì chuyển hướng về trang chủ dùng router.push
+          router.push("/")
+        } catch (error) {
+          console.log("Error deleting data:", error)
+        }
       },
       onCancel() {
         console.log("Cancel")
       },
     })
   }
-  const router = useRouter()
 
   return (
     <div className="flex justify-between items-center px-4 h-16 border-b">
@@ -48,14 +53,16 @@ export const Header = () => {
           alt="delete-sign"
         />
       </span>
-      <Button
-        className="text-xl"
-        style={{ color: "#f45d5d" }}
-        onClick={showDeleteConfirm}
-        type="dashed"
-      >
-        <i className="fa-solid fa-trash-can"></i>
-      </Button>
+      {lesson?.author?.username === user?.username ? (
+        <Button
+          className="text-xl"
+          style={{ color: "#f45d5d" }}
+          onClick={showDeleteConfirm}
+          type="dashed"
+        >
+          <i className="fa-solid fa-trash-can"></i>
+        </Button>
+      ) : null}
     </div>
   )
 }

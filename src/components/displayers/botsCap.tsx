@@ -19,7 +19,7 @@ const PostCap = ({ bot }: { bot: ILesson }) => {
         <div className="">
           <p className="font-medium m-0">{bot.name}</p>
 
-          <span className="text-gray-500 text-sm p-0 truncate block">
+          <span className="truncate max-w-[515px] text-gray-500 text-sm p-0 truncate block">
             {bot.userInstruction}
           </span>
 

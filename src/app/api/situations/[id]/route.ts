@@ -23,6 +23,22 @@ export const GET = async (
   }
 }
 
+export const DELETE = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
+  try {
+    const result = await firestore
+      .collection(SITUATION_TABLE)
+      .doc(params.id)
+      .delete()
+
+    return NextResponse.json(result)
+  } catch (e: any) {
+    return new Response(e, { status: 500 })
+  }
+}
+
 export const PUT = async (
   req: Request,
   { params }: { params: { id: string } }

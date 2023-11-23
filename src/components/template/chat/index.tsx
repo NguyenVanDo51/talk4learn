@@ -9,6 +9,7 @@ import { Suggestions } from "./components/Suggestions"
 import { ChatContext } from "./context"
 import { ILesson } from "@/types/lesson/type"
 import { useChat } from "./hooks/useChat"
+import { useUser } from "@clerk/nextjs"
 
 export type IAnalystMessage = IMessage & { comment: string }
 
@@ -19,12 +20,15 @@ interface IProps {
 const AIChat: FC<IProps> = ({ lesson }) => {
   const { messages, isWaiting, setMessages, reSend, sendMessage } =
     useChat(lesson)
+  // console.log("lesson", lesson)
+  const { isSignedIn, user, isLoaded } = useUser()
+  // console.log("user", user)
 
   return (
     <ChatContext.Provider value={{ messages, lesson }}>
       <div className="flex flex-grow gap-4 justify-center h-full bg-[#ebedf8] overflow-hidden">
         <div className="w-full md:w-[567px] bg-white shadow-md">
-          <Header />
+          <Header lesson={lesson} />
 
           <Message
             isSending={isWaiting}
