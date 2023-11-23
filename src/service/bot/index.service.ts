@@ -15,5 +15,8 @@ export class BotService {
   }) => {
     return httpClient.get("/api/situations", { params })
   }
+  // static delete = (id?: string ) => {
+
+  // }
 }
  

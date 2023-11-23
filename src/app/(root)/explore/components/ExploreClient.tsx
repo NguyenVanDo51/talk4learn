@@ -6,6 +6,7 @@ import useDebounce from "@/hooks/debounce/useDebounce"
 import { BotService } from "@/service/bot/index.service"
 import PostCap from "@/components/displayers/botsCap"
 import { ILesson } from "@/types/lesson/type"
+import { Spin } from "antd/lib"
 
 const ExploreBotClient = () => {
   const [searchValue, setSearchValue] = useState("")
@@ -28,6 +29,7 @@ const ExploreBotClient = () => {
       if (scrollY + clientHeight >= scrollHeight - 10) {
         // Khi người dùng scroll đến cuối trang và reachedEnd chưa đc đánh dấu thì
         // console.log("đã đến trang 2")
+        // rearchEnd là status để xác định xem còn dữ liệu để lấy hay k, bằng false vẫn còn trang kế tiếp
         if (reachedEnd === false) {
           setPage(page + 1)
           // Nếu chưa đến cuối trang (để tránh gọi API nhiều lần)
@@ -44,10 +46,13 @@ const ExploreBotClient = () => {
 
   useEffect(() => {
     onSearch(debounced)
-    console.log("tagSelected", tagSelected)
   }, [debounced, page, tagSelected])
 
   const onSearch = async (debounce: string) => {
+    if (isLoading) {
+      return
+    }
+    setIsLoading(true)
     setReachedEnd(true) // setReachedEnd(true) để người dùng scroll đến cuối k gọi api
     const result = await BotService.get({
       // truyền name, limit offset vào để tính số trang, ngắt trang
@@ -57,20 +62,27 @@ const ExploreBotClient = () => {
       tag: tagSelected,
     })
 
-    if (result.data.length > 0) {
-      // nếu độ dài result lớn hơn 0 thì
-      setReachedEnd(false) // gọi tiếp api của trang 2
-      setSearchResult([...searchResult, ...result.data]) // cập nhật trạng thái reachedEnd nếu đã hết dữ liệu
+    // nếu page = 0 thì tức là mới bắt đầu tìm kiếm, k phải đang scroll nên k cần nối
+    if (page === 0) {
+      setSearchResult(result.data) // setSearchResult là mảng mới khi đã tìm kiếm
     } else {
-      setReachedEnd(true) // độ dài nhỏ bằng 0 thì sẽ k gọi api
+      //
+      if (result.data.length > 0) {
+        // nếu độ dài result lớn hơn 0 thì
+        setReachedEnd(false) // xác định rằng vẫn chưa lấy hết dữ liệu vẫn có thể gọi đc trang kê tiếp
+        setSearchResult([...searchResult, ...result.data]) //nối dữ liệu cũ với dữ liệu trang mới dể hiện thị ra màn hình
+      } else {
+        setReachedEnd(true) // xét bằng true đã lấy hết dữ liệu k còn trang kế tiếp
+      }
     }
+
+    setIsLoading(false)
     // console.log("result", result.data)
   }
 
+  // console.log("searchResult", searchResult)
   const handleChange = (e: any) => {
     const searchValueConten = e.target.value
-    // console.log(searchValueConten)
-
     setSearchValue(searchValueConten)
   }
   const handleOnClick = (tagOption: string) => {
@@ -104,6 +116,7 @@ const ExploreBotClient = () => {
                 />
               </svg>
             </div>
+
             <input
               type="search"
               value={searchValue}
@@ -132,6 +145,7 @@ const ExploreBotClient = () => {
             </div>
           ))}
         </div>
+        {isLoading ? <Spin /> : null}
         <div>
           {searchResult?.map((bot) => (
             <PostCap key={bot.id} bot={bot} />

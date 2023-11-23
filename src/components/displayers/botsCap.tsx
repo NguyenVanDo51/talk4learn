@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Avatar } from "@/components/displayers/Avatar"
 import { ILesson } from "@/types/lesson/type"
+import { Button } from "antd"
 
 const PostCap = ({ bot }: { bot: ILesson }) => {
   return (
