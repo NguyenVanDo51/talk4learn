@@ -18,5 +18,6 @@ export class BotService {
   static delete = (id: string) => {
     return httpClient.delete("/api/situations/" + id)
   }
+ 
 }
  

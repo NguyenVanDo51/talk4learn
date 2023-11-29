@@ -6,6 +6,8 @@ import { BotService } from "@/service/bot/index.service"
 import { ILesson } from "@/types/lesson/type"
 import { FC } from "react"
 import { useUser } from "@clerk/nextjs"
+import Link from "next/link"
+import Edit from "@/app/(root)/explore/[id]/edit/page"
 
 interface IProps {
   lesson: ILesson
@@ -54,14 +56,26 @@ export const Header: FC<IProps> = ({ lesson }) => {
         />
       </span>
       {lesson?.author?.username === user?.username ? (
-        <Button
-          className="text-xl"
-          style={{ color: "#f45d5d" }}
-          onClick={showDeleteConfirm}
-          type="dashed"
-        >
-          <i className="fa-solid fa-trash-can"></i>
-        </Button>
+        <div className="flex gap-2">
+          <Link href={`/explore/${lesson.id}/edit`}>
+            <Button
+              className="text-xl"
+              style={{ color: "#f45d5d" }}
+              type="dashed"
+              onClick={Edit}
+            >
+              <i className="fa-regular fa-pen-to-square"></i>
+            </Button>
+          </Link>
+          <Button
+            className="text-xl"
+            style={{ color: "#f45d5d" }}
+            onClick={showDeleteConfirm}
+            type="dashed"
+          >
+            <i className="fa-solid fa-trash-can"></i>
+          </Button>
+        </div>
       ) : null}
     </div>
   )
