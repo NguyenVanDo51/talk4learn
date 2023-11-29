@@ -7,6 +7,7 @@ import { BotService } from "@/service/bot/index.service"
 import PostCap from "@/components/displayers/botsCap"
 import { ILesson } from "@/types/lesson/type"
 import { Spin } from "antd/lib"
+import { AppButton } from "@/components/level1/antd/AppButton"
 
 const ExploreBotClient = () => {
   const [searchValue, setSearchValue] = useState("")
@@ -96,7 +97,7 @@ const ExploreBotClient = () => {
 
   return (
     <>
-      <div className="container max-w-2xl my-0 mx-auto p-3 ">
+      <div className="container max-w-2xl my-0 mx-auto p-3">
         <div className="flex justify-center flex-col mt-[20px]">
           <form className="w-[634px]">
             <div className="relative w-[634px]">
@@ -135,22 +136,24 @@ const ExploreBotClient = () => {
             {/* Thêm nội dung bạn muốn hiển thị */}
             {tagOptions?.map((tagOption, index) => (
               <div key={index}>
-                <Button
+                <AppButton
                   onClick={() => handleOnClick(tagOption)}
-                  className={
-                    tagSelected === tagOption ? "bg-blue-500 text-white" : ""
-                  }
+                  type={tagSelected !== tagOption ? "default" : "primary"}
                 >
                   {tagOption}
-                </Button>
+                </AppButton>
               </div>
             ))}
           </div>
-          {isLoading ? <Spin /> : null}
-          <div className="container max-w-2xl my-0 mx-auto p-3">
-            {searchResult?.map((bot) => (
-              <PostCap key={bot.id} bot={bot} />
-            ))}
+
+          <div className="mt-3">
+            {isLoading ? (
+              <div className="text-center">
+                <Spin />
+              </div>
+            ) : (
+              searchResult?.map((bot) => <PostCap key={bot.id} bot={bot} />)
+            )}
           </div>
         </div>
       </div>
