@@ -20,14 +20,11 @@ interface IProps {
 const AIChat: FC<IProps> = ({ lesson }) => {
   const { messages, isWaiting, setMessages, reSend, sendMessage } =
     useChat(lesson)
-  // console.log("lesson", lesson)
-  const { isSignedIn, user, isLoaded } = useUser()
-  // console.log("user", user)
 
   return (
     <ChatContext.Provider value={{ messages, lesson }}>
       <div className="flex flex-grow gap-4 justify-center h-full bg-[#ebedf8] overflow-hidden">
-        <div className="w-full md:w-[567px] bg-white shadow-md">
+        <div className="w-full md:w-[992px] bg-white shadow-md">
           <Header lesson={lesson} />
 
           <Message
@@ -39,10 +36,10 @@ const AIChat: FC<IProps> = ({ lesson }) => {
           <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
         </div>
 
-        <div className="pt-4 flex flex-col gap-4">
+        {/* <div className="pt-4 flex flex-col gap-4">
           <Suggestions />
           <Translation />
-        </div>
+        </div> */}
       </div>
     </ChatContext.Provider>
   )

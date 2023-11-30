@@ -63,7 +63,7 @@ export const useChat = (lesson: ILesson) => {
       })
     )
 
-    ChatService.sendMessage(lesson?.id, bodyMessage)
+    ChatService.sendMessageInSituation(lesson, bodyMessage)
       .then((res: AxiosResponse<string>) => {
         let messageResponse = res.data
         SpeakerService.speak(messageResponse)

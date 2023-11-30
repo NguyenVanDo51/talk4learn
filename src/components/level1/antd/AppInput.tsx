@@ -14,10 +14,10 @@ export const AppInput: ForwardRefExoticComponent<IProps & RefAttributes<InputRef
       <Input
         ref={ref}
         size={size}
-        placeholder='Please type'
-        className={`rounded-2xl! ${className}`}
+        placeholder="Please type"
+        className={`${className}`}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') {
+          if (e.key === "Enter") {
             onEnter?.()
           }
         }}

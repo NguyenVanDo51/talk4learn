@@ -10,11 +10,7 @@ export const POST = async (
   { params }: { params: { id: string } }
 ) => {
   const body = await req.json()
-  const lesson: DocumentData | ILesson | null | undefined = await firestore
-    .collection(SITUATION_TABLE)
-    .doc(params.id)
-    .get()
-    .then((r) => r.data())
+  const lesson = body.lesson
 
   const messages = [
     { role: "system", content: generateLessonPrompt(lesson as ILesson, true) },

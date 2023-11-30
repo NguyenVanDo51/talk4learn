@@ -18,7 +18,7 @@ export const Suggestions: FC = () => {
 
     setIsGetting(true)
     setSuggestion('')
-    ChatService.getSuggestion(lesson?.id, messages)
+    ChatService.getSuggestion(lesson!, messages)
       .then((res) => {
         lastMessage = messages.at(-1)?.content
         setSuggestion(res.data)

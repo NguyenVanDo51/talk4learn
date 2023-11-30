@@ -196,7 +196,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
               placeholder={isRecording ? "Đang ghi âm ..." : "Nhập tin nhắn"}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="py-3 px-5"
+              className="py-3 px-5 !rounded-full"
               type="text"
               size="large"
               disabled={isRecording}

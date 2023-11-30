@@ -5,29 +5,16 @@ import { IMessage } from "@/types/chat"
 import { ILesson } from "@/types/lesson/type"
 
 export class ChatService {
-  static sendMessage = (
-    lessonId: ILesson["id"],
-    messages: SendMessageBody[]
-  ) => {
-    const bodyMessages = [...messages]
-    if (bodyMessages.length > 12) {
-      bodyMessages.splice(1, bodyMessages.length - 10)
-    }
-    return httpClient.post("/api/situations/" + lessonId, {
-      messages: bodyMessages,
-      lessonId,
-    })
-  }
-
   static sendMessageInSituation = (
-    lessonId: ILesson["id"],
+    lesson: ILesson,
     messages: SendMessageBody[]
   ) => {
     const bodyMessages = [...messages]
     if (bodyMessages.length > 12) {
       bodyMessages.splice(1, bodyMessages.length - 10)
     }
-    return httpClient.post("/api/situations/" + lessonId, {
+    return httpClient.post("/api/situations/" + lesson.id, {
+      lesson,
       messages: bodyMessages,
     })
   }
@@ -54,10 +41,7 @@ export class ChatService {
     })
   }
 
-  static getSuggestion = (
-    lessonId: ILesson["id"] | undefined,
-    messages: SendMessageBody[]
-  ) => {
+  static getSuggestion = (lesson: ILesson, messages: SendMessageBody[]) => {
     let bodyMessages: IMessage[] = JSON.parse(JSON.stringify(messages))
     if (bodyMessages.length > 12) {
       bodyMessages.splice(1, bodyMessages.length - 10)
@@ -72,7 +56,8 @@ export class ChatService {
       return { role: message.role, content: message.content }
     })
 
-    return httpClient.post("/api/situations/" + lessonId + "/suggestions", {
+    return httpClient.post("/api/situations/" + lesson.id + "/suggestions", {
+      lesson,
       messages: bodyMessages,
     })
   }
