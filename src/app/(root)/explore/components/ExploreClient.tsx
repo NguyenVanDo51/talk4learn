@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "antd"
 import { tagOptions } from "../../create/components/CreateClient"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import useDebounce from "@/hooks/debounce/useDebounce"
 import { BotService } from "@/service/bot/index.service"
 import PostCap from "@/components/displayers/botsCap"
@@ -88,11 +88,8 @@ const ExploreBotClient = () => {
     setSearchValue(searchValueConten)
   }
   const handleOnClick = (tagOption: string) => {
-    // đảo ngược trạng thái của nút
-    // console.log("tagOption", tagOption)
     setTagSelected(tagOption)
     setPage(0)
-    setSearchResult([])
   }
   // màu nền của nút sẽ thay đổi dựa vào trạng thái nút
 
@@ -104,7 +101,7 @@ const ExploreBotClient = () => {
             value={searchValue}
             onChange={handleChange}
             spellCheck={false}
-            prefix={<i className="fa-regular fa-search"></i>}
+            prefix={<i className="fa-regular fa-search text-sm"></i>}
             placeholder="Search"
             required
           />
