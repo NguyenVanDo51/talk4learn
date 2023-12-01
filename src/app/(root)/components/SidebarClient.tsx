@@ -33,13 +33,13 @@ export const SidebarClient = ({ mobile }: { mobile?: boolean }) => {
   }, [pathname])
 
   const menu = (
-    <ul className="space-y-2">
+    <ul className="space-y-1 sm:space-y-2">
       {menuItems.map(({ key, icon, label }) => {
         return (
           <li key={key}>
             <Link
               href={key}
-              className={`flex sm:flex-col items-center gap-1 px-2 sm:px-0 py-2 rounded-lg dark:text-white hover:bg-[#00000015] dark:hover:bg-gray-700 hover:font-medium group ${
+              className={`flex sm:flex-col items-center gap-1 px-2 sm:px-0 py-2 rounded sm:rounded-lg dark:text-white hover:bg-[#00000015] dark:hover:bg-gray-700 hover:font-medium group ${
                 pathname === key ? "!bg-[#00000015] font-medium" : ""
               }`}
             >

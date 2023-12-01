@@ -8,6 +8,7 @@ import { APP_NAME } from "@/types/constants"
 import Script from "next/script"
 import { Roboto } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
+import StyledComponentsRegistry from "../libs/AntdStyledComponentsRegistry"
 
 const inter = Roboto({
   weight: ["400", "500", "700"],
@@ -32,7 +33,9 @@ export default function RootLayout({
             src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
           ></Script>
           <ReduxProvider>
-            <main>{children}</main>
+            <StyledComponentsRegistry>
+              <main>{children}</main>
+            </StyledComponentsRegistry>
           </ReduxProvider>
           <Analytics />
         </body>
