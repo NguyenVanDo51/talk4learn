@@ -19,7 +19,7 @@ export const tagOptions = [
 ]
 
 interface CreateScenarioProps {
-  scenario: ScenarioInterface
+  scenario?: ScenarioInterface
 }
 
 export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
