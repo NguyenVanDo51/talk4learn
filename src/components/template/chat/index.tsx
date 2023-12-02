@@ -7,14 +7,14 @@ import { Header } from "./components/Header"
 import { Translation } from "./components/Translation"
 import { Suggestions } from "./components/Suggestions"
 import { ChatContext } from "./context"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 import { useChat } from "./hooks/useChat"
 import { useUser } from "@clerk/nextjs"
 
 export type IAnalystMessage = IMessage & { comment: string }
 
 interface IProps {
-  lesson: ILesson
+  lesson: ScenarioInterface
 }
 
 const AIChat: FC<IProps> = ({ lesson }) => {

@@ -2,6 +2,8 @@ import { Logo } from "@/components/level1/Logo"
 import { auth, redirectToSignIn, UserButton } from "@clerk/nextjs"
 import Link from "next/link"
 import { SidebarClient } from "./components/SidebarClient"
+import { AppButton } from "@/components/level1/antd/AppButton"
+import { UpgradeButton } from "./components/UpgradeButton"
 
 export default function RootLayout({
   children,
@@ -24,7 +26,10 @@ export default function RootLayout({
             <Logo />
           </Link>
 
-          <UserButton afterSignOutUrl="/" />
+          <div className="flex gap-6 items-center">
+            <UpgradeButton />
+            <UserButton />
+          </div>
         </header>
 
         <main>

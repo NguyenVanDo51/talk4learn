@@ -3,14 +3,13 @@ import { useRouter } from "next/navigation"
 import { Button, Modal } from "antd"
 import { ExclamationCircleFilled } from "@ant-design/icons"
 import { BotService } from "@/service/bot/index.service"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 import { FC } from "react"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
-import Edit from "@/app/(root)/explore/[id]/edit/page"
 
 interface IProps {
-  lesson: ILesson
+  lesson: ScenarioInterface
 }
 export const Header: FC<IProps> = ({ lesson }) => {
   const { confirm } = Modal
@@ -55,18 +54,19 @@ export const Header: FC<IProps> = ({ lesson }) => {
           alt="delete-sign"
         />
       </span>
+
       {lesson?.author?.username === user?.username ? (
         <div className="flex gap-2">
-          <Link href={`/explore/${lesson.id}/edit`}>
+          <Link href={`/edit/${lesson.id}`}>
             <Button
               className="text-xl"
               style={{ color: "#f45d5d" }}
               type="dashed"
-              onClick={Edit}
             >
               <i className="fa-regular fa-pen-to-square"></i>
             </Button>
           </Link>
+
           <Button
             className="text-xl"
             style={{ color: "#f45d5d" }}

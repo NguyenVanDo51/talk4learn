@@ -1,18 +1,17 @@
 "use client"
-import { Button } from "antd"
-import { tagOptions } from "../../create/components/CreateClient"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import useDebounce from "@/hooks/debounce/useDebounce"
 import { BotService } from "@/service/bot/index.service"
 import PostCap from "@/components/displayers/botsCap"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 import { Spin } from "antd/lib"
 import { AppButton } from "@/components/level1/antd/AppButton"
 import { AppInput } from "@/components/level1/antd/AppInput"
+import { tagOptions } from "@/components/template/create-scenario"
 
 const ExploreBotClient = () => {
   const [searchValue, setSearchValue] = useState("")
-  const [searchResult, setSearchResult] = useState<ILesson[]>([])
+  const [searchResult, setSearchResult] = useState<ScenarioInterface[]>([])
   const [page, setPage] = useState(0) // số trang hiện tại
   const [isLoading, setIsLoading] = useState(false) // hiện thị loading gọi api
   const [reachedEnd, setReachedEnd] = useState(true) // kiểm tra xem người dùng scroll đến cuối trang chưa

@@ -6,12 +6,13 @@ import { ReduxProvider } from "@/redux/provider"
 import { Analytics } from "@vercel/analytics/react"
 import { APP_NAME } from "@/types/constants"
 import Script from "next/script"
-import { Roboto } from "next/font/google"
+import { Hanken_Grotesk } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
 import StyledComponentsRegistry from "../libs/AntdStyledComponentsRegistry"
+import { ProModal } from "@/components/template/pro-modal"
 
-const inter = Roboto({
-  weight: ["400", "500", "700"],
+const inter = Hanken_Grotesk({
+  weight: ["400", "500", "700", "800"],
   subsets: ["latin"],
   display: "swap",
 })
@@ -32,12 +33,13 @@ export default function RootLayout({
             strategy="beforeInteractive"
             src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
           ></Script>
+
           <ReduxProvider>
-            <StyledComponentsRegistry>
-              <main>{children}</main>
-            </StyledComponentsRegistry>
+            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
           </ReduxProvider>
+
           <Analytics />
+          <ProModal />
         </body>
       </html>
     </ClerkProvider>

@@ -1,8 +1,8 @@
-import { ILesson } from '@/types/lesson/type'
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { ScenarioInterface } from "@/types/lesson/type"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 export interface ILessonSlice {
-  lessonsCompleted: ILesson['id'][]
+  lessonsCompleted: ScenarioInterface["id"][]
 }
 
 const initialState: ILessonSlice = {
@@ -10,10 +10,13 @@ const initialState: ILessonSlice = {
 }
 
 export const lessonsSlice = createSlice({
-  name: 'lessons',
+  name: "lessons",
   initialState,
   reducers: {
-    setLessonsCompleted: (state, action: PayloadAction<ILessonSlice['lessonsCompleted']>) => {
+    setLessonsCompleted: (
+      state,
+      action: PayloadAction<ILessonSlice["lessonsCompleted"]>
+    ) => {
       state.lessonsCompleted = action.payload
     },
   },

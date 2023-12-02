@@ -6,9 +6,9 @@ import { useState, useCallback, useEffect } from "react"
 import { v4 } from "uuid"
 import { ChatService } from "../service"
 import { SendMessageBody } from "../service/request"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 
-export const useChat = (lesson: ILesson) => {
+export const useChat = (lesson: ScenarioInterface) => {
   const [messages, setMessages] = useState<IMessage[]>([])
   const [isWaiting, setIsWaiting] = useState(false)
 
@@ -75,7 +75,6 @@ export const useChat = (lesson: ILesson) => {
           content: messageResponse,
         })
         setMessages(newMesages)
-        localStorage.setItem(lesson.id, JSON.stringify(newMesages))
       })
       .catch(() => {
         newMesages[messages.length - 1].status = "error"
@@ -108,6 +107,7 @@ export const useChat = (lesson: ILesson) => {
       getAnswer()
     }
 
+    localStorage.setItem(lesson.id, JSON.stringify(messages))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
 

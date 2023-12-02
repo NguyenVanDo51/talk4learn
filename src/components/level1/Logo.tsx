@@ -36,7 +36,6 @@ export const Logo = () => (
                     height="50.76"
                     filter="colorsb3135940945"
                     className="image-svg-svg primary"
-                    // style="overflow: visible;"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

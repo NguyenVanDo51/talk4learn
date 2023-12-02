@@ -1,6 +1,6 @@
 import { SendMessageBody } from "@/components/template/chat/service/request"
 import { VIP_KEY } from "@/types/constants/openapikey"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 
 import OpenAI from "openai"
 
@@ -27,7 +27,7 @@ export const createChatCompletion = (
 }
 
 export const generateLessonPrompt = (
-  lesson: ILesson,
+  lesson: ScenarioInterface,
   isReverse: boolean = false
 ): string => {
   const { assistantInstruction } = lesson

@@ -1,9 +1,8 @@
 import Link from "next/link"
 import { Avatar } from "@/components/displayers/Avatar"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 
-
-const PostCap = ({ bot }: { bot: ILesson }) => {
+const PostCap = ({ bot }: { bot: ScenarioInterface }) => {
   return (
     <>
       <Link

@@ -1,7 +1,7 @@
 import { generateLessonPrompt, createChatCompletion } from "@/libs/openai"
 import { SITUATION_TABLE } from "@/libs/table-name"
 import { firestore } from "@/service/firestore"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 import { DocumentData } from "firebase-admin/firestore"
 import { NextResponse, NextRequest } from "next/server"
 
@@ -13,7 +13,10 @@ export const POST = async (
   const lesson = body.lesson
 
   const messages = [
-    { role: "system", content: generateLessonPrompt(lesson as ILesson, true) },
+    {
+      role: "system",
+      content: generateLessonPrompt(lesson as ScenarioInterface, true),
+    },
     ...body.messages,
   ]
 

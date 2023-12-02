@@ -1,7 +1,7 @@
 import { firestore } from "@/service/firestore"
 import { NextResponse } from "next/server"
 import { createChatCompletion, generateLessonPrompt } from "@/libs/openai"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 import { DocumentData } from "firebase-admin/firestore"
 import { SITUATION_TABLE } from "@/libs/table-name"
 
@@ -69,7 +69,10 @@ export const POST = async (
     })
   }
   const messages = [
-    { role: "system", content: generateLessonPrompt(lesson as ILesson) },
+    {
+      role: "system",
+      content: generateLessonPrompt(lesson as ScenarioInterface),
+    },
     ...body.messages,
   ]
   console.log("messages", messages[0])

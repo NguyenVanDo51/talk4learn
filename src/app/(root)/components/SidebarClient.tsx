@@ -12,7 +12,7 @@ export const SidebarClient = ({ mobile }: { mobile?: boolean }) => {
 
   const menuItems = [
     {
-      key: "/",
+      key: "/home",
       label: "Home",
       icon: <i className="fa-regular fa-house"></i>,
     },

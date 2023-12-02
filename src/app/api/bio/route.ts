@@ -1,7 +1,5 @@
 import { firestore } from "@/service/firestore"
-import { ILesson } from "@/types/lesson/type"
-import { currentUser } from "@clerk/nextjs/server"
-import { randomUUID } from "crypto"
+import { ScenarioInterface } from "@/types/lesson/type"
 import { CollectionReference } from "firebase-admin/firestore"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -19,16 +17,16 @@ export const GET = async (req: NextRequest) => {
       ref = ref
         .where("name", ">=", name)
         .where("name", "<=", name + "\uf8ff")
-        .orderBy("name", "asc") as CollectionReference<ILesson>
+        .orderBy("name", "asc") as CollectionReference<ScenarioInterface>
     }
 
     const result = await ref
       .orderBy("used", "desc")
       .get()
       .then((docSnapshot) => {
-        const d: ILesson[] = []
+        const d: ScenarioInterface[] = []
         docSnapshot.forEach((doc) => {
-          d.push(doc.data() as ILesson)
+          d.push(doc.data() as ScenarioInterface)
         })
         return d
       })
@@ -52,7 +50,7 @@ export const POST = async (req: Request) => {
 
   try {
     const doc = await firestore.collection(TABLE_NAME).doc(id)
-    const payload: ILesson = {
+    const payload: ScenarioInterface = {
       id,
       ...body,
       createdAt: new Date().valueOf(),

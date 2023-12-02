@@ -1,6 +1,6 @@
 import { SITUATION_TABLE } from "@/libs/table-name"
 import { firestore } from "@/service/firestore"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 import { currentUser } from "@clerk/nextjs/server"
 import { randomUUID } from "crypto"
 import { CollectionReference } from "firebase-admin/firestore"
@@ -24,14 +24,14 @@ export const GET = async (req: NextRequest) => {
         "tags",
         "array-contains",
         tag
-      ) as CollectionReference<ILesson>
+      ) as CollectionReference<ScenarioInterface>
     }
 
     if (name?.trim()) {
       ref = ref
         .where("name", ">=", name)
         .where("name", "<=", name + "\uf8ff")
-        .orderBy("name", "asc") as CollectionReference<ILesson>
+        .orderBy("name", "asc") as CollectionReference<ScenarioInterface>
     }
 
     const result = await ref
@@ -40,9 +40,9 @@ export const GET = async (req: NextRequest) => {
       .limit(limit)
       .get()
       .then((docSnapshot) => {
-        const d: ILesson[] = []
+        const d: ScenarioInterface[] = []
         docSnapshot.forEach((doc) => {
-          d.push(doc.data() as ILesson)
+          d.push(doc.data() as ScenarioInterface)
         })
         return d
       })
@@ -61,7 +61,7 @@ export const POST = async (req: Request) => {
 
   try {
     const doc = await firestore.collection(SITUATION_TABLE).doc(id)
-    const payload: ILesson = {
+    const payload: ScenarioInterface = {
       id,
       ...body,
       used: 1,

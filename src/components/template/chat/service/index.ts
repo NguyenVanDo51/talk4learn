@@ -2,11 +2,11 @@ import { SendMessageBody } from "./request"
 import { httpClient } from "../../../../service/httpClient"
 import store from "@/redux/store"
 import { IMessage } from "@/types/chat"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 
 export class ChatService {
   static sendMessageInSituation = (
-    lesson: ILesson,
+    lesson: ScenarioInterface,
     messages: SendMessageBody[]
   ) => {
     const bodyMessages = [...messages]
@@ -41,7 +41,10 @@ export class ChatService {
     })
   }
 
-  static getSuggestion = (lesson: ILesson, messages: SendMessageBody[]) => {
+  static getSuggestion = (
+    lesson: ScenarioInterface,
+    messages: SendMessageBody[]
+  ) => {
     let bodyMessages: IMessage[] = JSON.parse(JSON.stringify(messages))
     if (bodyMessages.length > 12) {
       bodyMessages.splice(1, bodyMessages.length - 10)

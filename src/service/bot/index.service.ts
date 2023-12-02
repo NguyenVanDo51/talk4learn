@@ -1,10 +1,10 @@
 import store from "@/redux/store"
 import { httpClient } from "../httpClient"
 import { AxiosResponse } from "axios"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 
 export class BotService {
-  static create = (payload: Omit<ILesson, "id">) => {
+  static create = (payload: Omit<ScenarioInterface, "id">) => {
     return httpClient.post("/api/situations", payload)
   }
   static get = (params?: {
@@ -18,6 +18,5 @@ export class BotService {
   static delete = (id: string) => {
     return httpClient.delete("/api/situations/" + id)
   }
- 
 }
  

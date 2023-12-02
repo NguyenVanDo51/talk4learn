@@ -1,6 +1,6 @@
 import AIChat from "@/components/template/chat"
-import { ILesson } from "@/types/lesson/type"
+import { ScenarioInterface } from "@/types/lesson/type"
 
-export const ChatPageClient = ({ bot }: { bot: ILesson }) => {
+export const ChatPageClient = ({ bot }: { bot: ScenarioInterface }) => {
   return <AIChat lesson={bot} />
 }

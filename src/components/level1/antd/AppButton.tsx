@@ -7,7 +7,12 @@ interface AppButtonProps extends ButtonProps {
   children?: React.ReactNode
 }
 
-export const AppButton: FC<AppButtonProps> = ({ children, type = 'primary', size = 'large', ...props }) => {
+export const AppButton: FC<AppButtonProps> = ({
+  children,
+  type = "primary",
+  size = "middle",
+  ...props
+}) => {
   return (
     <AntButton type={type} size={size} {...props}>
       {children}
