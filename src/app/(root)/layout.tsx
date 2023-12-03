@@ -4,8 +4,9 @@ import Link from "next/link"
 import { SidebarClient } from "./components/SidebarClient"
 import { AppButton } from "@/components/level1/antd/AppButton"
 import { UpgradeButton } from "./components/UpgradeButton"
+import { checkSubscription } from "@/libs/stripe"
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
@@ -15,6 +16,8 @@ export default function RootLayout({
   if (!userId) {
     return redirectToSignIn()
   }
+
+  const isPro = await checkSubscription()
 
   return (
     <>
@@ -27,7 +30,7 @@ export default function RootLayout({
           </Link>
 
           <div className="flex gap-6 items-center">
-            <UpgradeButton />
+            {isPro ? "Pro Version" : <UpgradeButton />}
             <UserButton />
           </div>
         </header>
