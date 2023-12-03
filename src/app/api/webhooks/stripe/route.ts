@@ -32,6 +32,8 @@ export async function POST(req: Request) {
       return new NextResponse("User id is required", { status: 400 })
     }
 
+    console.log("session", session)
+
     await firestore
       .collection(SUBSCRIPTION_TABLE)
       .doc(session?.metadata?.userId)
@@ -54,6 +56,7 @@ export async function POST(req: Request) {
     if (!session?.metadata?.userId) {
       return new NextResponse("User id is required", { status: 400 })
     }
+    console.log("session", session)
 
     await firestore
       .collection(SUBSCRIPTION_TABLE)
