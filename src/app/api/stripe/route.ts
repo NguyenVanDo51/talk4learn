@@ -4,7 +4,7 @@ import { firestore } from "@/service/firestore"
 import { auth, currentUser } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
 
-const settingsUrl = absoluteUrl("/home?pro=1")
+const settingsUrl = absoluteUrl("/home")
 
 export async function GET() {
   try {
