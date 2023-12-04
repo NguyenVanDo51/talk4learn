@@ -14,6 +14,7 @@ class Speaker {
     const { speed } = setting
 
     try {
+      SpeakerService.cancel()
       responsiveVoice.speak(text, voicename, {
         ...options,
         rate: speed || 1,

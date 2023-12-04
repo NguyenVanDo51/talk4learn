@@ -123,10 +123,6 @@ export const useChat = (lesson: ScenarioInterface) => {
   useEffect(() => {
     scrollToBottom(ScrollSelecter.Message)
 
-    return () => {
-      SpeakerService.cancel()
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newestMessage])
 

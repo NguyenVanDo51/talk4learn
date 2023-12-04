@@ -1,43 +1,58 @@
-import { AppButton, AppDeleteButton } from '@/components/level1/antd/AppButton'
-import { SpeakerService } from '@/service/speaker'
-import { IMessage } from '@/types/chat'
-import { memo } from 'react'
-import { MessageProps } from '.'
+import { AppButton, AppDeleteButton } from "@/components/level1/antd/AppButton"
+import { SpeakerService } from "@/service/speaker"
+import { IMessage } from "@/types/chat"
+import { memo } from "react"
+import { MessageProps } from "."
+import { Divider } from "antd"
+import { AppSpin } from "@/components/level1/antd/AppSpin"
 
 interface RightMessageProps extends MessageProps {
   message: IMessage
   avatar: string | null | undefined
+  isCheckingGrammar: boolean
   reStart: () => void
   setMessageToCheck: (message: IMessage) => void
 }
 
 export const RightMessage = memo(function RightMessage({
+  isCheckingGrammar,
   message,
   setMessageToCheck,
   reStart,
   reSend,
 }: RightMessageProps) {
   return (
-    <div className="col-start-2 col-end-13 p-1 rounded-lg  message-item" id={message.id}>
+    <div className="col-start-4 col-end-13 p-1 message-item" id={message.id}>
       <div className="flex items-center gap-3 justify-start  flex-row-reverse">
-        <div
-          className="relative bg-indigo-100 rounded-2xl dark:bg-dark-primary p-3 px-4 shadow"
-          style={{ borderBottomRightRadius: 0 }}
-        >
+        <div className="relative bg-indigo-100 rounded-lg dark:bg-dark-primary p-3 px-4 min-w-[140px]">
           <div>{message.content}</div>
-          <div className="flex justify-end">
-            <AppButton
-              size="small"
-              type="link"
-              className="rounded-full text-xs"
-              onClick={() => setMessageToCheck(message)}
-            >
-              Kiểm tra
-            </AppButton>
-          </div>
+
+          {!message.comment && (
+            <div className="flex justify-end">
+              {isCheckingGrammar ? (
+                <AppSpin />
+              ) : (
+                <AppButton
+                  size="small"
+                  type="link"
+                  className="rounded-full text-xs"
+                  onClick={() => setMessageToCheck(message)}
+                >
+                  Check Grammar
+                </AppButton>
+              )}
+            </div>
+          )}
+
+          {message.comment && (
+            <>
+              <Divider className="my-2 !border-indigo-200" />
+              <div>{message.comment}</div>
+            </>
+          )}
         </div>
 
-        {message.status === 'error' ? (
+        {message.status === "error" ? (
           <AppButton
             onClick={reSend}
             type="link"

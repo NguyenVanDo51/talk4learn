@@ -1,22 +1,25 @@
-import { AudioPlayer } from '@/components/level1/AudioPlayer'
-import { AppButton } from '@/components/level1/antd/AppButton'
+import { AudioPlayer } from "@/components/level1/AudioPlayer"
+import { AppButton } from "@/components/level1/antd/AppButton"
 import { scrollToBottom, ScrollSelecter } from "@/libs/helpers/dom"
 import { speak } from "@/libs/helpers/speech"
-import { ISetting } from '@/redux/slices/settingSlice'
-import { SpeakerService } from '@/service/speaker'
-import { IMessage } from '@/types/chat'
-import { AIModels } from '@/types/chat/models'
-import { Avatar, Tooltip } from 'antd'
-import { memo, useState, useEffect } from 'react'
-import { MessageProps } from '.'
+import { ISetting } from "@/redux/slices/settingSlice"
+import { SpeakerService } from "@/service/speaker"
+import { IMessage } from "@/types/chat"
+import { AIModels } from "@/types/chat/models"
+import { Tooltip } from "antd"
+import { memo, useState, useEffect } from "react"
+import { MessageProps } from "."
+import { Avatar } from "@/components/displayers/Avatar"
 
 interface LeftMessageProps extends MessageProps {
+  avatar: string | undefined
   message: IMessage
   isLastItem: boolean
-  inputType: ISetting['inputType']
+  inputType: ISetting["inputType"]
 }
 
 export const LeftMessage = memo(function LeftMessage({
+  avatar,
   message,
   inputType,
   isLastItem,
@@ -25,7 +28,7 @@ export const LeftMessage = memo(function LeftMessage({
   const [type, setType] = useState(inputType)
 
   const onChangeType = () => {
-    setType(type === 'text' ? 'voice' : 'text')
+    setType(type === "text" ? "voice" : "text")
     SpeakerService.cancel()
     if (isLastItem) {
       scrollToBottom(ScrollSelecter.Message)
@@ -38,15 +41,12 @@ export const LeftMessage = memo(function LeftMessage({
 
   return (
     <>
-      <div className="col-start-1 col-end-12 p-1 rounded-lg message-item" id={message.id}>
+      <div className="col-start-1 col-end-12 p-1 message-item" id={message.id}>
         <div className="flex gap-2 lg:gap-3 flex-row items-center">
-          <Avatar src={AIModels[0].avatar} size={'default'} className="min-w-[32px]"></Avatar>
+          <Avatar src={avatar as string} size={34} />
 
-          <div
-            className="bg-zinc-50 dark:bg-slate-700 py-1 px-4 shadow rounded-2xl max-w-full overflow-hidden whitespace-break-spaces"
-            style={{ borderBottomLeftRadius: 0 }}
-          >
-            {type === 'voice' ? (
+          <div className="bg-zinc-100 dark:bg-slate-700 py-1 px-4  rounded-lg max-w-full overflow-hidden whitespace-break-spaces">
+            {type === "voice" ? (
               <AudioPlayer text={content} />
             ) : (
               <div className="py-1">{content}</div>
@@ -54,7 +54,7 @@ export const LeftMessage = memo(function LeftMessage({
           </div>
 
           <div className="message-actions flex items-center gap-2">
-            {type === 'text' && (
+            {type === "text" && (
               <AppButton
                 onClick={() => speak(content)}
                 size="small"
@@ -62,16 +62,16 @@ export const LeftMessage = memo(function LeftMessage({
                 icon={<i className="fa-solid fa-volume-low"></i>}
               />
             )}
-            
-            <Tooltip title={type === 'text' ? "Chuyển sang văn bản" : 'Chuyển sang audio'}>
+
+            <Tooltip title={type === "text" ? "Text" : "Audio"}>
               <AppButton
                 onClick={onChangeType}
                 type="link"
                 size="small"
                 danger={false}
                 icon={<i className="fa-solid fa-arrows-rotate"></i>}
-                />
-              </Tooltip>
+              />
+            </Tooltip>
           </div>
         </div>
       </div>

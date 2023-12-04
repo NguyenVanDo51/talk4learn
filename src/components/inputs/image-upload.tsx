@@ -1,25 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import { useEffect, useState } from "react"
-import { CldUploadButton } from "next-cloudinary"
+import { CldUploadButton, CldUploadWidgetResults } from "next-cloudinary"
+import { useMounted } from "@/hooks/helpers/use-mounted"
 
 interface ImageUploadProps {
   value: string
   onChange: (src: string) => void
-  disabled?: boolean
 }
 
-export const ImageUpload = ({
-  value,
-  onChange,
-  disabled,
-}: ImageUploadProps) => {
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+export const ImageUpload = ({ value, onChange }: ImageUploadProps) => {
+  const isMounted = useMounted()
 
   if (!isMounted) {
     return false
@@ -29,7 +20,14 @@ export const ImageUpload = ({
     <div className="space-y-4 w-full flex flex-col justify-center items-center">
       <CldUploadButton
         options={{ maxFiles: 1 }}
-        onUpload={(result: any) => onChange(result.info.secure_url)}
+        onUpload={(result: any) =>
+          onChange(
+            (result.info?.secure_url as string).replace(
+              "/upload",
+              "/upload/w_100,f_auto,q_auto"
+            )
+          )
+        }
         uploadPreset="fzznci3y"
       >
         <div

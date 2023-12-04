@@ -1,9 +1,6 @@
 import { generateLessonPrompt, createChatCompletion } from "@/libs/openai"
-import { SITUATION_TABLE } from "@/libs/table-name"
-import { firestore } from "@/service/firestore"
 import { ScenarioInterface } from "@/types/lesson/type"
-import { DocumentData } from "firebase-admin/firestore"
-import { NextResponse, NextRequest } from "next/server"
+import { NextResponse } from "next/server"
 
 export const POST = async (
   req: Request,

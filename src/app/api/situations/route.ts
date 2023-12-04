@@ -12,14 +12,15 @@ export const GET = async (req: NextRequest) => {
   const searchParams = new URLSearchParams(url.search)
 
   const offset = Number(searchParams.get("offset") || 0)
-  const limit = Number(searchParams.get("limit") || 5)
-  const tag = searchParams.get("tag") ?? ""
-  const name = searchParams.get("name") ?? ""
+  const limit = Number(searchParams.get("limit") || 10)
+  const tag = searchParams.get("tag")?.trim() ?? ""
+  const name = searchParams.get("name")?.trim() ?? ""
+  const userId = searchParams.get("userId")?.trim() ?? ""
 
   try {
     let ref = firestore.collection(SITUATION_TABLE)
 
-    if (tag?.trim()) {
+    if (tag) {
       ref = ref.where(
         "tags",
         "array-contains",
@@ -27,11 +28,19 @@ export const GET = async (req: NextRequest) => {
       ) as CollectionReference<ScenarioInterface>
     }
 
-    if (name?.trim()) {
+    if (name) {
       ref = ref
         .where("name", ">=", name)
         .where("name", "<=", name + "\uf8ff")
         .orderBy("name", "asc") as CollectionReference<ScenarioInterface>
+    }
+
+    if (userId) {
+      ref = ref.where(
+        "createdBy",
+        "==",
+        userId
+      ) as CollectionReference<ScenarioInterface>
     }
 
     const result = await ref
@@ -68,7 +77,7 @@ export const POST = async (req: Request) => {
       createdBy: user?.id,
       createdAt: new Date(),
     }
-    let result = await doc.set(payload)
+    let result = await doc.set(payload, { merge: true })
 
     return NextResponse.json(result)
   } catch (e: any) {

@@ -2,11 +2,10 @@ import { firestore } from "@/service/firestore"
 import { NextResponse } from "next/server"
 import { createChatCompletion, generateLessonPrompt } from "@/libs/openai"
 import { ScenarioInterface } from "@/types/lesson/type"
-import { DocumentData } from "firebase-admin/firestore"
 import { SITUATION_TABLE } from "@/libs/table-name"
 
 export const GET = async (
-  req: Request,
+  _: Request,
   { params }: { params: { id: string } }
 ) => {
   try {
@@ -24,7 +23,7 @@ export const GET = async (
 }
 
 export const DELETE = async (
-  req: Request,
+  _: Request,
   { params }: { params: { id: string } }
 ) => {
   try {
@@ -75,7 +74,7 @@ export const POST = async (
     },
     ...body.messages,
   ]
-  console.log("messages", messages[0])
+
   try {
     const res = await createChatCompletion(messages, {
       max_tokens: 500,

@@ -2,7 +2,6 @@ import { Logo } from "@/components/level1/Logo"
 import { auth, redirectToSignIn, UserButton } from "@clerk/nextjs"
 import Link from "next/link"
 import { SidebarClient } from "./components/SidebarClient"
-import { AppButton } from "@/components/level1/antd/AppButton"
 import { UpgradeButton } from "./components/UpgradeButton"
 import { checkSubscription } from "@/libs/stripe"
 

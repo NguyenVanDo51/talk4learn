@@ -23,8 +23,8 @@ const AIChat: FC<IProps> = ({ lesson }) => {
 
   return (
     <ChatContext.Provider value={{ messages, lesson }}>
-      <div className="flex flex-grow gap-4 justify-center h-full bg-[#ebedf8] overflow-hidden">
-        <div className="w-full md:w-[992px] bg-white shadow-md">
+      <div className="flex flex-grow gap-4 justify-center h-full overflow-hidden">
+        <div className="w-full md:w-[992px]">
           <Header lesson={lesson} />
 
           <Message

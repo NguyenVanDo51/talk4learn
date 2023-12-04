@@ -1,13 +1,15 @@
 "use client"
 
 import { Divider, Form, Input, Select } from "antd"
-import { FC, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 import { AppButton } from "@/components/level1/antd/AppButton"
 import { ImageUpload } from "@/components/inputs/image-upload"
 import { ScenarioInterface } from "@/types/lesson/type"
 import { BotService } from "@/service/bot/index.service"
 import { useRouter } from "next/navigation"
 import { AppNotifycation } from "@/components/level1/antd/AppNotification"
+import { LoadingScreen } from "@/components/level1/Loading"
+import { useMounted } from "@/hooks/helpers/use-mounted"
 
 export const tagOptions = [
   "working",
@@ -17,21 +19,25 @@ export const tagOptions = [
   "conversation",
   "networking",
 ]
-
 interface CreateScenarioProps {
   scenario?: ScenarioInterface
 }
 
 export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
+  const isMounted = useMounted()
   const [botImage, setBotImage] = useState("/bot_placeholder.png")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
+  const nameRef = useRef<HTMLInputElement>()
+
+  const [form] = Form.useForm<ScenarioInterface>()
+
   const onFinish = (values: ScenarioInterface) => {
     if (isLoading) return
-    console.log("values", values)
     setIsLoading(true)
-    BotService.create({ ...values, botImage })
+
+    BotService.create({ ...(scenario ?? {}), ...values, botImage })
       .then(() => {
         AppNotifycation.success({
           message: "Your topic is created successfully",
@@ -42,6 +48,23 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
         setIsLoading(false)
       })
   }
+
+  useEffect(() => {
+    if (!scenario) return
+    nameRef.current?.focus()
+
+    setBotImage(scenario.botImage)
+    form.setFieldsValue({
+      name: scenario.name,
+      tags: scenario.tags,
+      public: scenario.public,
+      assistantInstruction: scenario.assistantInstruction,
+      userInstruction: scenario.userInstruction,
+      assistantFirstMessage: scenario.assistantFirstMessage,
+    })
+  }, [form, scenario])
+
+  if (!isMounted) return <LoadingScreen noLogo />
 
   return (
     <div className="container max-w-4xl my-0 mx-auto">
@@ -62,6 +85,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
           className="grid gap-2"
           layout="vertical"
           requiredMark="optional"
+          form={form}
         >
           <Form.Item<ScenarioInterface>
             label="Name of sutiation"
@@ -71,7 +95,12 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
               { min: 10, message: "Name must be at least 10 characters" },
             ]}
           >
-            <Input min={10} max={50} placeholder="e.g. Meeting New People" />
+            <Input
+              ref={nameRef as any}
+              min={10}
+              max={50}
+              placeholder="e.g. Meeting New People"
+            />
           </Form.Item>
 
           <div className="grid grid-cols-2 gap-4">
@@ -86,11 +115,14 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
               />
             </Form.Item>
 
-            <Form.Item<ScenarioInterface> label="Public access" name="public">
+            <Form.Item<ScenarioInterface>
+              label="Public access"
+              name="public"
+              initialValue={true}
+            >
               <Select
                 style={{ width: "100%" }}
                 placeholder="Select tags"
-                defaultValue={true}
                 options={[
                   { value: false, label: "Private" },
                   { value: true, label: "Public" },
@@ -98,6 +130,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
               />
             </Form.Item>
           </div>
+
           <div className="mt-4">
             <h2 className="font-medium text-xl">Configuration</h2>
             <span className="text-gray-500">
@@ -168,7 +201,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
               }
               loading={isLoading}
             >
-              Create your Situational
+              {scenario ? "Update" : "Create"} your Situational
             </AppButton>
           </Form.Item>
         </Form>

@@ -23,8 +23,6 @@ export interface MessageProps {
 export const Message: FC<MessageProps> = (props) => {
   const { isSending, setMessages } = props
   const { lesson, messages } = useContext(ChatContext)
-  const [checkResult, setCheckResult] = useState<string>()
-  const [loading, setLoading] = useState(false)
   const [messageToCheck, setMessageToCheck] = useState<IMessage>()
 
   const reStart = (index: number) => {
@@ -39,12 +37,6 @@ export const Message: FC<MessageProps> = (props) => {
   useEffect(() => {
     if (!messageToCheck) return
 
-    if (messageToCheck.comment) {
-      setCheckResult(messageToCheck.comment)
-      return
-    }
-
-    setLoading(true)
     const bodyMessage: SendMessageBody[] = [
       {
         role: "user",
@@ -55,18 +47,15 @@ export const Message: FC<MessageProps> = (props) => {
     ChatService.checkGrammar(bodyMessage)
       .then((res) => {
         const result = res.data
-        console.log(result)
-        setCheckResult(result === "Perfect." ? "Câu trả lời hoàn hảo" : result)
         setMessages(
           [...messages].map((m) =>
             m.id === messageToCheck.id ? { ...m, comment: result } : m
           )
         )
       })
-      .finally(() => setLoading(false))
+      .finally(() => setMessageToCheck(undefined))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messageToCheck])
-  console.log("lesson.author", lesson?.author)
 
   return (
     <div
@@ -77,7 +66,7 @@ export const Message: FC<MessageProps> = (props) => {
       }}
     >
       {lesson?.author && (
-        <div className="bg-[#f7f7f7] rounded-xl p-4 mt-1 mb-3">
+        <div className="bg-zinc-100 rounded-xl p-4 mt-1 mb-3">
           <div className="flex gap-3">
             <div>
               <Avatar
@@ -113,12 +102,14 @@ export const Message: FC<MessageProps> = (props) => {
           <div className="text-sm p-0 mt-2">{lesson?.userInstruction}</div>
         </div>
       )}
+
       <div className="flex flex-col">
         <div className="grid grid-cols-12 gap-y-2 pb-10">
           {messages.map((message, index) =>
             message.role === "assistant" ? (
               <LeftMessage
                 {...props}
+                avatar={lesson?.botImage}
                 inputType={inputType}
                 message={message}
                 isLastItem={messages.at(-1)?.id === message.id}
@@ -130,6 +121,7 @@ export const Message: FC<MessageProps> = (props) => {
                 {...props}
                 avatar={user?.imageUrl}
                 message={message}
+                isCheckingGrammar={message.id === messageToCheck?.id}
                 reStart={() => reStart(index)}
                 setMessageToCheck={(msg) => setMessageToCheck(msg)}
               />
@@ -143,30 +135,6 @@ export const Message: FC<MessageProps> = (props) => {
           )}
         </div>
       </div>
-
-      <AppModal
-        title="Grammar checking"
-        open={!!messageToCheck}
-        onCancel={() => setMessageToCheck(undefined)}
-        footer={[
-          <AppButton
-            key={"as"}
-            size="middle"
-            onClick={() => setMessageToCheck(undefined)}
-          >
-            Đóng
-          </AppButton>,
-        ]}
-      >
-        <div className="grid gap-3">
-          <div>
-            Bạn đã trả lời:{" "}
-            <span className="font-medium">{messageToCheck?.content}</span>
-          </div>
-          <Divider className="m-0" />
-          <div>{loading ? <AppSpin /> : checkResult}</div>
-        </div>
-      </AppModal>
     </div>
   )
 }

@@ -8,80 +8,67 @@ import { Spin } from "antd/lib"
 import { AppButton } from "@/components/level1/antd/AppButton"
 import { AppInput } from "@/components/level1/antd/AppInput"
 import { tagOptions } from "@/components/template/create-scenario"
+import { useMounted } from "@/hooks/helpers/use-mounted"
 
 const ExploreBotClient = () => {
   const [searchValue, setSearchValue] = useState("")
   const [searchResult, setSearchResult] = useState<ScenarioInterface[]>([])
   const [page, setPage] = useState(0) // số trang hiện tại
   const [isLoading, setIsLoading] = useState(false) // hiện thị loading gọi api
-  const [reachedEnd, setReachedEnd] = useState(true) // kiểm tra xem người dùng scroll đến cuối trang chưa
-  // dùng state để theo dõi trạng thái của nút
   const [tagSelected, setTagSelected] = useState("")
-  //khi người nhập dừng 3000ms thì giá trị debounced được updete bằng giá trị mới nhất của searchValue
+  const [reachedEnd, setReachedEnd] = useState(true)
+
   const debounced = useDebounce(searchValue, 3000)
+
+  const isMounted = useMounted()
 
   useEffect(() => {
     function handleScroll() {
-      // console.log("handleScroll")
-      const scrollY = window.scrollY || window.pageYOffset // scrollY vị trí cuộn
-      const clientHeight = document.documentElement.clientHeight //clientHeight là kích thước màn hình
-      const scrollHeight = document.documentElement.scrollHeight // scrollHeight là chiều cao trang
+      const scrollY = window.scrollY || window.pageYOffset
+      const clientHeight = document.documentElement.clientHeight
+      const scrollHeight = document.documentElement.scrollHeight
 
       if (scrollY + clientHeight >= scrollHeight - 10) {
-        // Khi người dùng scroll đến cuối trang và reachedEnd chưa đc đánh dấu thì
-        // console.log("đã đến trang 2")
-        // rearchEnd là status để xác định xem còn dữ liệu để lấy hay k, bằng false vẫn còn trang kế tiếp
-        if (reachedEnd === false) {
+        console.log("đã đến trang 2")
+        if (!reachedEnd && !isLoading) {
           setPage(page + 1)
-          // Nếu chưa đến cuối trang (để tránh gọi API nhiều lần)
         }
       }
     }
-    // đăng kí sự kiện cuộn
     window.addEventListener("scroll", handleScroll)
-    // loại bỏ nó khi component bị huỷ
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [reachedEnd, page])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reachedEnd])
 
-  useEffect(() => {
-    onSearch(debounced)
-  }, [debounced, page, tagSelected])
-
-  const onSearch = async (debounce: string) => {
+  const onSearch = async () => {
     if (isLoading) {
       return
     }
-    setIsLoading(true)
-    setReachedEnd(true) // setReachedEnd(true) để người dùng scroll đến cuối k gọi api
+    setIsLoading(page < 1)
     const result = await BotService.get({
-      // truyền name, limit offset vào để tính số trang, ngắt trang
-      name: debounce,
+      name: debounced,
       limit: 5,
       offset: page * 5,
       tag: tagSelected,
     })
+    setIsLoading(false)
+    setReachedEnd(result.data.length < 1)
 
-    // nếu page = 0 thì tức là mới bắt đầu tìm kiếm, k phải đang scroll nên k cần nối
     if (page === 0) {
-      setSearchResult(result.data) // setSearchResult là mảng mới khi đã tìm kiếm
-    } else {
-      //
-      if (result.data.length > 0) {
-        // nếu độ dài result lớn hơn 0 thì
-        setReachedEnd(false) // xác định rằng vẫn chưa lấy hết dữ liệu vẫn có thể gọi đc trang kê tiếp
-        setSearchResult([...searchResult, ...result.data]) //nối dữ liệu cũ với dữ liệu trang mới dể hiện thị ra màn hình
-      } else {
-        setReachedEnd(true) // xét bằng true đã lấy hết dữ liệu k còn trang kế tiếp
-      }
+      setSearchResult(result.data)
+      return
     }
 
-    setIsLoading(false)
-    // console.log("result", result.data)
+    setSearchResult([...searchResult, ...result.data])
   }
 
-  // console.log("searchResult", searchResult)
+  useEffect(() => {
+    onSearch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounced, page, tagSelected])
+
   const handleChange = (e: any) => {
     const searchValueConten = e.target.value
     setSearchValue(searchValueConten)
@@ -90,7 +77,10 @@ const ExploreBotClient = () => {
     setTagSelected(tagOption)
     setPage(0)
   }
-  // màu nền của nút sẽ thay đổi dựa vào trạng thái nút
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <>
@@ -109,7 +99,7 @@ const ExploreBotClient = () => {
             <AppButton
               size="middle"
               onClick={() => handleOnClick("")}
-              type={!tagSelected ? "default" : "primary"}
+              type={tagSelected ? "default" : "primary"}
             >
               All
             </AppButton>
