@@ -18,7 +18,7 @@ const ExploreBotClient = () => {
   const [tagSelected, setTagSelected] = useState("")
   const [reachedEnd, setReachedEnd] = useState(true)
 
-  const debounced = useDebounce(searchValue, 3000)
+  const debounced = useDebounce(searchValue, 1000)
 
   const isMounted = useMounted()
 

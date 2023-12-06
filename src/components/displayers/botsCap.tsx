@@ -16,7 +16,7 @@ const PostCap = ({ bot }: { bot: ScenarioInterface }) => {
           shape="square"
         />
         <div className="">
-          <p className="font-medium m-0">{bot.name}</p>
+          <p className="font-medium m-0 text-base">{bot.name}</p>
 
           <span className="line-clamp-1 text-gray-500 text-sm">
             {bot.userInstruction}

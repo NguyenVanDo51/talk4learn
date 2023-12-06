@@ -34,12 +34,18 @@ button {
   text-transform: capitalize;
 }
 
+html {
+  font-size: 16px;
+}
 
 html,
 body {
   color: var(--main-text);
   height: 100%;
   background-color: var(--main-bg);
+}
+
+body {
   font-size: 14px;
 }
 

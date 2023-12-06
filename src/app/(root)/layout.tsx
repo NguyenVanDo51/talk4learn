@@ -29,7 +29,7 @@ export default async function RootLayout({
           </Link>
 
           <div className="flex gap-6 items-center">
-            {isPro ? "Pro Version" : <UpgradeButton />}
+            {/* {isPro ? "Pro Version" : <UpgradeButton />} */}
             <UserButton />
           </div>
         </header>

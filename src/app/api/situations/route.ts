@@ -27,12 +27,15 @@ export const GET = async (req: NextRequest) => {
         tag
       ) as CollectionReference<ScenarioInterface>
     }
-
+    console.log("name", name)
     if (name) {
       ref = ref
-        .where("name", ">=", name)
-        .where("name", "<=", name + "\uf8ff")
-        .orderBy("name", "asc") as CollectionReference<ScenarioInterface>
+        .where("nameLowercase", ">=", name)
+        .where("nameLowercase", "<=", name + "\uf8ff")
+        .orderBy(
+          "nameLowercase",
+          "asc"
+        ) as CollectionReference<ScenarioInterface>
     }
 
     if (userId) {
@@ -73,6 +76,7 @@ export const POST = async (req: Request) => {
     const payload: ScenarioInterface = {
       id,
       ...body,
+      nameLowercase: (body.name as string)?.toLowerCase(),
       used: 1,
       createdBy: user?.id,
       createdAt: new Date(),
