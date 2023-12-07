@@ -92,6 +92,6 @@ export const Logo = () => (
       </g>
       <defs v-gra="od"></defs>
     </svg>
-    <span className="italic ">beta</span>
+    <span className="italic">beta</span>
   </div>
 )

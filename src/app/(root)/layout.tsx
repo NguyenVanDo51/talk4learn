@@ -1,8 +1,7 @@
 import { Logo } from "@/components/level1/Logo"
-import { auth, redirectToSignIn, UserButton } from "@clerk/nextjs"
+import { auth, currentUser, redirectToSignIn, UserButton } from "@clerk/nextjs"
 import Link from "next/link"
 import { SidebarClient } from "./components/SidebarClient"
-import { UpgradeButton } from "./components/UpgradeButton"
 import { checkSubscription } from "@/libs/stripe"
 
 export default async function RootLayout({
@@ -10,18 +9,19 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { userId } = auth()
+  const user = await currentUser()
 
-  if (!userId) {
+  if (!user) {
     return redirectToSignIn()
   }
 
   const isPro = await checkSubscription()
+  console.log("user", user)
 
   return (
     <>
       <div className="bg-white h-fit min-h-full">
-        <header className="py-2 px-3 sm:px-6 border-b h-14 flex justify-between items-center sticky top-0 bg-white z-50">
+        <header className="py-1 px-3 sm:px-6 border-b h-12 flex justify-between items-center sticky top-0 bg-white z-50">
           <SidebarClient mobile />
 
           <Link href="/" className="flex items-center">
@@ -30,7 +30,12 @@ export default async function RootLayout({
 
           <div className="flex gap-6 items-center">
             {/* {isPro ? "Pro Version" : <UpgradeButton />} */}
-            <UserButton />
+            <span className="inline-flex items-center gap-2">
+              <span className="text-gray-700 font-medium">
+                {user?.username}
+              </span>
+              <UserButton />
+            </span>
           </div>
         </header>
 
