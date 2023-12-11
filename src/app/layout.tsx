@@ -10,6 +10,7 @@ import { Hanken_Grotesk } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
 import StyledComponentsRegistry from "../libs/AntdStyledComponentsRegistry"
 import { ProModal } from "@/components/template/pro-modal"
+import { ConfigProvider } from "antd"
 
 const inter = Hanken_Grotesk({
   weight: ["400", "500", "700", "800"],
@@ -25,7 +26,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        variables: {
+          colorPrimary: "#6366f1",
+        },
+      }}
+    >
       <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
           {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
@@ -35,7 +42,11 @@ export default function RootLayout({
           ></Script>
 
           <ReduxProvider>
-            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            <StyledComponentsRegistry>
+              <ConfigProvider theme={{ token: { colorPrimary: "#6366f1" } }}>
+                {children}
+              </ConfigProvider>
+            </StyledComponentsRegistry>
           </ReduxProvider>
 
           <Analytics />

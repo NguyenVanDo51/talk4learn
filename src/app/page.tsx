@@ -2,8 +2,15 @@ import { Logo } from "@/components/level1/Logo"
 import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import clsx from "clsx"
+import Image from "next/image"
 
-const LoginButton = ({ size = "normal" }: { size?: "normal" | "large" }) => {
+const LoginButton = ({
+  size = "normal",
+  className,
+}: {
+  size?: "normal" | "large"
+  className?: string
+}) => {
   return (
     <a
       href="/sign-in"
@@ -12,11 +19,12 @@ const LoginButton = ({ size = "normal" }: { size?: "normal" | "large" }) => {
         {
           "py-2 px-5": size === "normal",
           "py-2.5 px-5": size === "large",
-        }
+        },
+        className
       )}
     >
-      Get Started
-      <i className="fa-regular fa-arrow-right text-sm tracking-normal text-sky-300 group-hover:translate-x-0.5 transition-transform duration-150 ease-in-out ml-2"></i>
+      Try for free
+      <i className="fa-regular fa-arrow-right text-sm tracking-normal group-hover:translate-x-0.5 transition-transform duration-150 ease-in-out ml-2"></i>
     </a>
   )
 }
@@ -29,9 +37,9 @@ export default async function Home() {
   }
 
   return (
-    <div className="bg-[#0f172a] text-[#e2e8f0]">
+    <div className="">
       <header className="w-full">
-        <div className="px-20 py-4 flex items-center justify-between">
+        <div className="px-8 py-4 flex items-center justify-between bg-white">
           <div className="cursor-pointer">
             <Logo />
           </div>
@@ -42,43 +50,48 @@ export default async function Home() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl">
-        <section className="py-40 px-10 text-center">
-          <h1 className="text-6xl font-bold">
-            Design Your Dialogue: Master English through Personal Scenarios.
-          </h1>
+      <main className="bg-primary text-white">
+        <section className="py-40 px-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div className="flex flex-col items-center lg:items-start">
+            <h1 className="text-5xl font-bold">
+              Design Your Dialogue: Master English through Personal Scenarios.
+            </h1>
 
-          <p className="text-[#64748b] text-xl mt-3">
-            {`Chat with AI, craft your scenarios, explore others' situations - all
+            <p className="text-base mt-3">
+              {`Chat with AI, craft your scenarios, explore others' situations - all
             in one app for mastering English.`}
-          </p>
+            </p>
 
-          <div className="flex gap-3 justify-center mt-10">
-            <LoginButton size="large" />
+            <div className="mt-6">
+              <LoginButton
+                size="large"
+                className="bg-white hover:bg-white !text-text-primary"
+              />
+            </div>
+          </div>
 
-            <a
-              href="/sign-in"
-              className="bg-slate-700 hover:bg-slate-600 text-slate-300 font-medium transition-all shadow py-2.5 px-5 rounded"
-            >
-              Read Docs
-            </a>
+          <div>
+            <div className="bg-[#4f35db] rounded-2xl p-2">
+              <img
+                className="rounded-lg w-full h-auto"
+                src="https://img.freepik.com/free-photo/blank-catalog-magazines-book-mock-up-blue-background_1232-4969.jpg"
+                alt=""
+              />
+            </div>
           </div>
         </section>
       </main>
 
-      <footer>
+      <footer className="mx-auto max-w-screen-2xl mt-6">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="md:flex md:items-center md:justify-between pb-4 md:pb-8">
-            <div className="text-sm text-slate-600">
-              <a
-                className="text-slate-500 hover:text-slate-300 transition duration-150 ease-in-out"
-                href="/terms"
-              >
+            <div className="text-sm">
+              <a className=" transition duration-150 ease-in-out" href="/terms">
                 Terms
               </a>
               {" · "}
               <a
-                className="text-slate-500 hover:text-slate-300 transition duration-150 ease-in-out"
+                className=" transition duration-150 ease-in-out"
                 href="/privacy"
               >
                 Privacy Policy

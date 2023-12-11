@@ -11,6 +11,7 @@ module.exports = {
       colors: {
         primary: 'var(--primary)',
         'bg-primary': 'rgb(221, 244, 255)',
+        'text-primary': 'var(--main-text)',
         active: 'rgb(28, 176, 246)',
       },
       spacing: {
