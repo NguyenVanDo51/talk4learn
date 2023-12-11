@@ -27,8 +27,10 @@ export const useChat = (lesson: ScenarioInterface) => {
       messageObject.content = message
     } else {
       setIsWaiting(true)
-      const res = await ChatService.speechToText(message)
-      setIsWaiting(false)
+
+      const res = await ChatService.speechToText(message).finally(() =>
+        setIsWaiting(false)
+      )
 
       if (res.data) {
         messageObject.content = res.data
