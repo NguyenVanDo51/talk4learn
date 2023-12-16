@@ -1,8 +1,9 @@
 import Link from "next/link"
 import { Avatar } from "@/components/displayers/Avatar"
 import { ScenarioInterface } from "@/types/lesson/type"
+import { Tooltip } from "antd"
 
-const PostCap = ({ bot }: { bot: ScenarioInterface }) => {
+const SituationCard = ({ bot }: { bot: ScenarioInterface }) => {
   return (
     <>
       <Link
@@ -12,17 +13,21 @@ const PostCap = ({ bot }: { bot: ScenarioInterface }) => {
       >
         <Avatar
           src={bot.botImage || "/bot_placeholder.png"}
-          size={64}
+          size={68}
           shape="square"
         />
-        <div className="">
-          <p className="font-medium m-0 text-base">{bot.name}</p>
+        <div className="flex flex-col justify-between">
+          <div>
+            <p className="font-medium m-0 text-base leading-5">{bot.name}</p>
 
-          <span className="line-clamp-1 text-gray-500 text-sm">
-            {bot.userInstruction}
-          </span>
+            <Tooltip title={bot.userInstruction}>
+              <span className="line-clamp-1 text-gray-500 text-sm">
+                {bot.userInstruction}
+              </span>
+            </Tooltip>
+          </div>
 
-          <div className="flex flex-row text-xs items-center mt-1">
+          <div className="flex flex-row text-xs items-center">
             <span className="mr-2">
               {bot.used ?? 1} monthly user{bot.used > 1 ? "s" : ""}
             </span>
@@ -42,4 +47,4 @@ const PostCap = ({ bot }: { bot: ScenarioInterface }) => {
   )
 }
 
-export default PostCap
+export default SituationCard

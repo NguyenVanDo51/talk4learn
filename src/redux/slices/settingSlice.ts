@@ -12,12 +12,12 @@ export interface ISetting {
 }
 
 const initialState: ISetting = {
-  theme: 'dark',
+  theme: "light",
   lang: SettingLangEnum.VI,
   voice: VoiceDefault,
-  chatMode: 'voice',
-  inputType: 'voice',
-  speed: 1
+  chatMode: "voice",
+  inputType: "voice",
+  speed: 1,
 }
 
 export const settingSlice = createSlice({

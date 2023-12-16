@@ -23,7 +23,6 @@ export interface MessageProps {
 export const Message: FC<MessageProps> = (props) => {
   const { isSending, setMessages } = props
   const { lesson, messages } = useContext(ChatContext)
-  const [messageToCheck, setMessageToCheck] = useState<IMessage>()
 
   const reStart = (index: number) => {
     setMessages(messages.slice(0, index))
@@ -33,29 +32,6 @@ export const Message: FC<MessageProps> = (props) => {
 
   const inputHeight = inputType === "text" ? 75 : 85
   const { user } = useUser()
-
-  useEffect(() => {
-    if (!messageToCheck) return
-
-    const bodyMessage: SendMessageBody[] = [
-      {
-        role: "user",
-        content: messageToCheck.content,
-      },
-    ]
-
-    ChatService.checkGrammar(bodyMessage)
-      .then((res) => {
-        const result = res.data
-        setMessages(
-          [...messages].map((m) =>
-            m.id === messageToCheck.id ? { ...m, comment: result } : m
-          )
-        )
-      })
-      .finally(() => setMessageToCheck(undefined))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messageToCheck])
 
   return (
     <div
@@ -121,9 +97,7 @@ export const Message: FC<MessageProps> = (props) => {
                 {...props}
                 avatar={user?.imageUrl}
                 message={message}
-                isCheckingGrammar={message.id === messageToCheck?.id}
                 reStart={() => reStart(index)}
-                setMessageToCheck={(msg) => setMessageToCheck(msg)}
               />
             )
           )}

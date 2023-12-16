@@ -12,13 +12,29 @@ import { LoadingScreen } from "@/components/level1/Loading"
 import { useMounted } from "@/hooks/helpers/use-mounted"
 
 export const tagOptions = [
-  "working",
-  "school",
-  "interview",
-  "social",
-  "conversation",
-  "networking",
+  "Working",
+  "Social",
+  "School",
+  "Family",
+  "Travel",
+  "Health",
+  "Technology",
+  "Entertainment",
+  "Relationships",
+  "Hobbies",
+  "Finance",
+  "Culture",
+  "Food",
+  "Environment",
+  "Fashion",
+  "Sports",
+  "Personal Development",
+  "Challenges",
+  "Pets",
+  "Mindfulness",
+  "Other",
 ]
+
 interface CreateScenarioProps {
   scenario?: ScenarioInterface
 }
@@ -69,10 +85,6 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
   return (
     <div className="container max-w-4xl my-0 mx-auto">
       <div className="p-4">
-        <h1 className="font-medium text-xl">Situational Overview</h1>
-        <span className="text-gray-500">Basic information of sutiation</span>
-
-        <Divider className="mt-1 mb-6" />
         <div className="flex items-center justify-center">
           <ImageUpload
             value={botImage}
@@ -80,15 +92,23 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
           />
         </div>
 
-        <Form
+        <Form<ScenarioInterface>
           onFinish={onFinish}
           className="grid gap-2"
           layout="vertical"
           requiredMark="optional"
           form={form}
+          onValuesChange={(changedValue, values) => {
+            if (changedValue.tags && changedValue.tags.length > 0) {
+              form.setFieldValue(
+                "tags",
+                (changedValue.tags as string[]).slice(0, 3)
+              )
+            }
+          }}
         >
           <Form.Item<ScenarioInterface>
-            label="Name of sutiation"
+            label="Name of the sutiation"
             name="name"
             rules={[
               { required: true, message: "" },
@@ -99,7 +119,19 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
               ref={nameRef as any}
               min={10}
               max={50}
-              placeholder="e.g. Meeting New People"
+              placeholder="e.g. Introduce yourself to a foreigner"
+            />
+          </Form.Item>
+
+          <Form.Item<ScenarioInterface>
+            label="Description"
+            name="userInstruction"
+            help="Describe briefly the situation and your role in the situation."
+            rules={[{ required: true, message: "" }]}
+          >
+            <Input.TextArea
+              maxLength={400}
+              placeholder="e.g. In class, there's a friend from the United States. Introduce yourself and make friends with him."
             />
           </Form.Item>
 
@@ -131,35 +163,15 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
             </Form.Item>
           </div>
 
-          <div className="mt-4">
-            <h2 className="font-medium text-xl">Configuration</h2>
-            <span className="text-gray-500">
-              Detailed Configuration for sutiation
-            </span>
-          </div>
-          <Divider className="mt-1 mb-3" />
-
           <Form.Item<ScenarioInterface>
             label="Bot instruction"
             name="assistantInstruction"
-            help="Describe in detail your chatbot's backstory and relevant details."
+            help="Describe in detail about the bot (name, hobbies, personality, etc.), the bot's task (how it should act, what it should ask, etc.) in the situation."
             rules={[{ required: true, message: "" }]}
           >
             <Input.TextArea
               rows={5}
-              placeholder="e.g. Imagine you are at a social event. Initiate a conversation with a stranger."
-            />
-          </Form.Item>
-
-          <Form.Item<ScenarioInterface>
-            label="User instruction"
-            name="userInstruction"
-            help="Describe your tasks while talking with your bot"
-            rules={[{ required: true, message: "" }]}
-          >
-            <Input.TextArea
-              maxLength={400}
-              placeholder="e.g. Introduce yourself and try to find common topics to discuss."
+              placeholder="e.g. Since you're from the United States and the user wants to introduce themselves and make friends with you, you should ask the user to introduce themselves and inquire about their information."
             />
           </Form.Item>
 
@@ -168,7 +180,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
             name="assistantFirstMessage"
             help="The bot will send this message at the beginning of every conversation."
           >
-            <Input placeholder="e.g. Hello! My name is Braum. I'm here to help you practice socializing." />
+            <Input placeholder="e.g. Hello! What's your name?" />
           </Form.Item>
 
           <Form.Item<ScenarioInterface> className="flex justify-center mt-2">

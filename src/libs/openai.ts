@@ -32,10 +32,11 @@ export const generateLessonPrompt = (
 ): string => {
   const { assistantInstruction } = lesson
 
-  const prompt = `Your task is practice english with the user through a role-playing game.
-Situation: ${assistantInstruction}.
+  const prompt = `Your task is to practice English with the user through a role-playing game in the following situation:
+- ${assistantInstruction}.
+
 The Rules:
-- Provide concise answers.
+- The conversation must align closely with the situation.
 - Using simple words and sentences.
 - Maximum 50 words in 1 response.
 - In case the user responds with unrelated questions or statements, let them know.

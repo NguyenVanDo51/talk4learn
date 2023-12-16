@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import useDebounce from "@/hooks/debounce/useDebounce"
 import { BotService } from "@/service/bot/index.service"
-import PostCap from "@/components/displayers/botsCap"
+import SituationCard from "@/components/displayers/SituationCard"
 import { ScenarioInterface } from "@/types/lesson/type"
 import { Spin } from "antd/lib"
 import { AppButton } from "@/components/level1/antd/AppButton"
@@ -83,19 +83,19 @@ const ExploreBotClient = () => {
   }
 
   return (
-    <>
-      <div className="container max-w-2xl my-0 mx-auto p-3">
-        <div className="flex justify-center flex-col mt-[20px]">
-          <AppInput
-            value={searchValue}
-            onChange={handleChange}
-            spellCheck={false}
-            prefix={<i className="fa-regular fa-search text-sm"></i>}
-            placeholder="Search"
-            required
-          />
+    <div className="container max-w-2xl my-0 mx-auto p-3">
+      <div className="flex justify-center flex-col mt-[20px]">
+        <AppInput
+          value={searchValue}
+          onChange={handleChange}
+          spellCheck={false}
+          prefix={<i className="fa-regular fa-search text-sm"></i>}
+          placeholder="Search"
+          required
+        />
 
-          <div className="mt-3 flex gap-2 max-h-[72px] flex-wrap w-full overflow-auto no-scrollbar">
+        <div className="overflow-x-auto overflow-y-hidden no-scrollbar pb-2">
+          <div className="mt-3 flex gap-2 max-h-[72px] flex-wrap w-[1100px]">
             <AppButton
               size="middle"
               onClick={() => handleOnClick("")}
@@ -115,19 +115,19 @@ const ExploreBotClient = () => {
               </AppButton>
             ))}
           </div>
+        </div>
 
-          <div className="mt-3">
-            {isLoading ? (
-              <div className="text-center">
-                <Spin />
-              </div>
-            ) : (
-              searchResult?.map((bot) => <PostCap key={bot.id} bot={bot} />)
-            )}
-          </div>
+        <div className="mt-3">
+          {isLoading ? (
+            <div className="text-center">
+              <Spin />
+            </div>
+          ) : (
+            searchResult?.map((bot) => <SituationCard key={bot.id} bot={bot} />)
+          )}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

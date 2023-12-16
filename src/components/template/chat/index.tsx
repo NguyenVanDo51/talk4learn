@@ -4,12 +4,9 @@ import { InputBox } from "./components/InputBox"
 import { Message } from "./components/messages"
 import { IMessage } from "@/types/chat"
 import { Header } from "./components/Header"
-import { Translation } from "./components/Translation"
-import { Suggestions } from "./components/Suggestions"
 import { ChatContext } from "./context"
 import { ScenarioInterface } from "@/types/lesson/type"
 import { useChat } from "./hooks/useChat"
-import { useUser } from "@clerk/nextjs"
 
 export type IAnalystMessage = IMessage & { comment: string }
 

@@ -16,7 +16,6 @@ export default async function RootLayout({
   }
 
   const isPro = await checkSubscription()
-  console.log("user", user)
 
   return (
     <>

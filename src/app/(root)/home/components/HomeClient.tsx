@@ -1,4 +1,4 @@
-import PostCap from "@/components/displayers/botsCap"
+import SituationCard from "@/components/displayers/SituationCard"
 import { ScenarioInterface } from "@/types/lesson/type"
 
 export const HomeClient = ({ bots }: { bots: ScenarioInterface[] }) => {
@@ -7,7 +7,7 @@ export const HomeClient = ({ bots }: { bots: ScenarioInterface[] }) => {
       <h1 className="font-medium text-lg">Your bots</h1>
       <div className="flex flex-col mt-3">
         {bots?.length > 0
-          ? bots.map((bot) => <PostCap key={bot.id} bot={bot} />)
+          ? bots.map((bot) => <SituationCard key={bot.id} bot={bot} />)
           : "No Data"}
       </div>
     </div>

@@ -54,7 +54,6 @@ export const useChat = (lesson: ScenarioInterface) => {
     if (userMessage?.role !== "user") return
     if (userMessage.status === "success") return
 
-    setIsWaiting(true)
     const bodyMessage: SendMessageBody[] = [...messages, userMessage].map(
       (message) => ({
         role: message.role as SendMessageBody["role"],
@@ -64,7 +63,7 @@ export const useChat = (lesson: ScenarioInterface) => {
             : message.content,
       })
     )
-
+    setIsWaiting(true)
     ChatService.sendMessageInSituation(lesson, bodyMessage)
       .then((res: AxiosResponse<string>) => {
         let messageResponse = res.data
@@ -86,17 +85,25 @@ export const useChat = (lesson: ScenarioInterface) => {
   }, [lesson, messages])
 
   const getFirstMessage = useCallback(() => {
-    const messageResponse = lesson.assistantFirstMessage
+    setIsWaiting(true)
+    let newMesages: IMessage[] = []
+    ChatService.sendMessageInSituation(lesson, [{ role: "user", content: "." }])
+      .then((res: AxiosResponse<string>) => {
+        let messageResponse = res.data
+        SpeakerService.speak(messageResponse)
 
-    if (!messageResponse) return
-    const message: IMessage = {
-      id: v4(),
-      role: "assistant",
-      content: messageResponse,
-    }
-    SpeakerService.speak(messageResponse)
-    setMessages([message])
-  }, [lesson.assistantFirstMessage])
+        newMesages.push({
+          id: v4(),
+          role: "assistant",
+          content: messageResponse,
+        })
+        setMessages(newMesages)
+      })
+      .catch(() => {
+        setMessages(newMesages)
+      })
+      .finally(() => setIsWaiting(false))
+  }, [lesson])
 
   const reSend = () => {
     getAnswer()
@@ -109,12 +116,14 @@ export const useChat = (lesson: ScenarioInterface) => {
       getAnswer()
     }
 
-    localStorage.setItem(lesson.id, JSON.stringify(messages))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages])
+    if (messages?.length > 1) {
+      localStorage.setItem(lesson.id, JSON.stringify(messages))
+    }
+  }, [getAnswer, lesson.id, messages, newestMessage?.status])
 
   useEffect(() => {
     const oldMessageParsed = JSON.parse(localStorage.getItem(lesson.id) || "[]")
+    console.log("oldMessageParsed", oldMessageParsed)
     if (Array.isArray(oldMessageParsed) && oldMessageParsed?.length > 0) {
       setMessages(oldMessageParsed)
       return

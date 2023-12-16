@@ -10,15 +10,11 @@ import {
   useRef,
   useState,
 } from "react"
-import { Button } from "antd"
-import { AppTooltip } from "@/components/level1/antd/AppTooltip"
-import { AppNotifycation } from "@/components/level1/antd/AppNotification"
 import { ISetting, setInputType } from "@/redux/slices/settingSlice"
 import { useAppSelector } from "@/hooks/redux"
 import { useDispatch } from "react-redux"
 import { ScrollSelecter, scrollToBottom } from "@/libs/helpers/dom"
 import Image from "next/image"
-import { ChatService } from "../service"
 
 interface IProps {
   isWaiting: boolean

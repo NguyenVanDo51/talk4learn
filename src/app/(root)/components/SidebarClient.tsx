@@ -26,6 +26,11 @@ export const SidebarClient = ({ mobile }: { mobile?: boolean }) => {
       label: "Create",
       icon: <i className="fa-regular fa-plus"></i>,
     },
+    {
+      key: "/settings",
+      label: "Settings",
+      icon: <i className="fa-regular fa-gear"></i>,
+    },
   ]
 
   useEffect(() => {

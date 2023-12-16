@@ -6,13 +6,13 @@ import { NextRequest, NextResponse } from "next/server"
 export async function POST(request: NextRequest) {
   const body = await request.json()
   const lang: SettingLangEnum =
-    // (request.nextUrl.searchParams.get("lang") as SettingLangEnum) ||
+    (request.nextUrl.searchParams.get("lang") as SettingLangEnum) ||
     SettingLangEnum.EN
 
   const messages = [
     {
       role: "system",
-      content: `Bạn nhận một câu tiếng anh. Nhiệm vụ của bạn là giải thích ngắn gọn lỗi ngữ pháp của nó (nếu có). Phản hồi bằng ${SettingLangMapping[lang]}. Nếu không có lỗi ngữ pháp thì trả lời là "👍Good". `,
+      content: `Bạn nhận một câu tiếng anh. Nhiệm vụ của bạn là giải thích ngắn gọn lỗi ngữ pháp của nó (nếu có). Phản hồi bằng ${SettingLangMapping[lang]}. Nếu không có lỗi ngữ pháp thì trả lời là "👍 Good". `,
     },
     ...body.messages.map(({ content, ...m }: SendMessageBody) => ({
       ...m,
