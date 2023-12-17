@@ -10,11 +10,9 @@ import {
   useRef,
   useState,
 } from "react"
-import { ISetting, setInputType } from "@/redux/slices/settingSlice"
-import { useAppSelector } from "@/hooks/redux"
-import { useDispatch } from "react-redux"
 import { ScrollSelecter, scrollToBottom } from "@/libs/helpers/dom"
 import Image from "next/image"
+import { ISetting, useSettings } from "@/hooks/helpers/use-settings"
 
 interface IProps {
   isWaiting: boolean
@@ -28,13 +26,13 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   const [message, setMessage] = useState("")
   const [isRecording, setIsRecording] = useState(false)
   const [granted, setGranted] = useState(false)
-  const chatMode = useAppSelector((state) => state.setting.chatMode)
-  const inputType = useAppSelector((t) => t.setting.inputType)
-
-  const dispatch = useDispatch()
+  const { settings, setSettings } = useSettings()
+  const { chatMode, inputType } = settings
 
   const changeInputType = (type: ISetting["inputType"]) => {
-    dispatch(setInputType(type))
+    if (type !== inputType) {
+      setSettings({ ...settings, inputType: type })
+    }
   }
   const messageRef: MutableRefObject<HTMLInputElement | undefined> = useRef()
 

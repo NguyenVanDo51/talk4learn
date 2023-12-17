@@ -1,8 +1,8 @@
 import { SendMessageBody } from "./request"
 import { httpClient } from "../../../../service/httpClient"
-import store from "@/redux/store"
 import { IMessage } from "@/types/chat"
 import { ScenarioInterface } from "@/types/lesson/type"
+import { useSettings } from "@/hooks/helpers/use-settings"
 
 export class ChatService {
   static sendMessageInSituation = (
@@ -20,7 +20,7 @@ export class ChatService {
   }
 
   static checkGrammar = (messages: SendMessageBody[]) => {
-    const settings = store.getState().setting
+    const settings = useSettings.getState().settings
     const bodyMessages = [...messages]
     if (bodyMessages.length > 12) {
       bodyMessages.splice(1, bodyMessages.length - 10)

@@ -28,7 +28,7 @@ const SituationCard = ({ bot }: { bot: ScenarioInterface }) => {
           </div>
 
           <div className="flex flex-row text-xs items-center">
-            <span className="mr-2">
+            <span className="mr-2 whitespace-nowrap">
               {bot.used ?? 1} monthly user{bot.used > 1 ? "s" : ""}
             </span>
 

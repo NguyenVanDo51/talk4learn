@@ -1,7 +1,7 @@
-import { useAppSelector } from '@/hooks/redux'
-import { SpeakerService } from '@/service/speaker'
-import { useEffect, useMemo } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { useSpeech } from "@/hooks/helpers/use-speech"
+import { SpeakerService } from "@/service/speaker"
+import { useEffect, useMemo } from "react"
+import { v4 as uuidv4 } from "uuid"
 interface IProps {
   text: string
 }
@@ -11,7 +11,7 @@ export interface IAudioPlayerRef {
 }
 
 export const AudioPlayer = ({ text }: IProps) => {
-  const textSpeaking = useAppSelector((state) => state.app.textSpeaking)
+  const { textSpeaking } = useSpeech()
   const isPlaying = useMemo(() => text === textSpeaking, [textSpeaking, text])
 
   const onClick = () => {
@@ -33,15 +33,24 @@ export const AudioPlayer = ({ text }: IProps) => {
   const waveLength = Math.floor(text?.length / 1.5) || 1
 
   return (
-    <div className="flex gap-3 items-center cursor-pointer overflow-hidden" onClick={onClick}>
+    <div
+      className="flex gap-3 items-center cursor-pointer overflow-hidden"
+      onClick={onClick}
+    >
       <span className="cursor-pointer inline-block w-3 text-[#594ead]">
-        {isPlaying ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
+        {isPlaying ? (
+          <i className="fa-solid fa-pause"></i>
+        ) : (
+          <i className="fa-solid fa-play"></i>
+        )}
       </span>
 
-      <div className={`sound-wave ${isPlaying ? 'playing' : ''}`}>
-        {new Array(waveLength >= 50 ? 50 : waveLength).fill(null).map((_, index) => (
-          <span key={`node_${id}_${index}`} className="sound-wave-bar"></span>
-        ))}
+      <div className={`sound-wave ${isPlaying ? "playing" : ""}`}>
+        {new Array(waveLength >= 50 ? 50 : waveLength)
+          .fill(null)
+          .map((_, index) => (
+            <span key={`node_${id}_${index}`} className="sound-wave-bar"></span>
+          ))}
       </div>
     </div>
   )

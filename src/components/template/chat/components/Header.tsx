@@ -4,79 +4,30 @@ import { Button, Modal } from "antd"
 import { ExclamationCircleFilled } from "@ant-design/icons"
 import { BotService } from "@/service/bot/index.service"
 import { ScenarioInterface } from "@/types/lesson/type"
-import { FC } from "react"
+import { FC, useContext } from "react"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
+import { ChatContext } from "../context"
 
-interface IProps {
-  lesson: ScenarioInterface
-}
-export const Header: FC<IProps> = ({ lesson }) => {
-  const { confirm } = Modal
+interface IProps {}
 
-  const { isSignedIn, user, isLoaded } = useUser()
+export const Header: FC<IProps> = () => {
+  const { lesson, openInfo } = useContext(ChatContext)
+
   const router = useRouter()
 
-  const showDeleteConfirm = () => {
-    confirm({
-      title: "Are you sure delete this task?",
-      icon: <ExclamationCircleFilled />,
-      content: "Some descriptions",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk: async () => {
-        try {
-          // console.log(lesson)
-          // console.log("user", user)
-          const result = await BotService.delete(lesson.id)
-          console.log("OK")
-
-          // sau khi xoá thành công thì chuyển hướng về trang chủ dùng router.push
-          router.push("/")
-        } catch (error) {
-          console.log("Error deleting data:", error)
-        }
-      },
-      onCancel() {
-        console.log("Cancel")
-      },
-    })
-  }
-
   return (
-    <div className="flex justify-between items-center px-4 h-16 border-b">
-      <span onClick={() => router.push("/")} className="cursor-pointer">
-        <Image
-          width="32"
-          height="32"
-          src="https://img.icons8.com/pulsar-color/32/delete-sign.png"
-          alt="delete-sign"
-        />
+    <div className="flex justify-between items-center px-6 border-b py-2">
+      <span
+        onClick={() => router.push("/home")}
+        className="cursor-pointer text-lg"
+      >
+        <i className="fa-regular fa-arrow-left mr-1"></i>
       </span>
 
-      {lesson?.author?.username === user?.username ? (
-        <div className="flex gap-2">
-          <Link href={`/edit/${lesson.id}`}>
-            <Button
-              className="text-xl"
-              style={{ color: "#f45d5d" }}
-              type="dashed"
-            >
-              <i className="fa-regular fa-pen-to-square"></i>
-            </Button>
-          </Link>
-
-          <Button
-            className="text-xl"
-            style={{ color: "#f45d5d" }}
-            onClick={showDeleteConfirm}
-            type="dashed"
-          >
-            <i className="fa-solid fa-trash-can"></i>
-          </Button>
-        </div>
-      ) : null}
+      <span onClick={openInfo} className="cursor-pointer text-lg">
+        <i className="fa-regular fa-bars"></i>
+      </span>
     </div>
   )
 }

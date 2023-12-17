@@ -2,7 +2,6 @@ import "./globals.css"
 import "../styles/index.scss"
 import "../../public/fontawesome/css/all.css"
 import type { Metadata } from "next"
-import { ReduxProvider } from "@/redux/provider"
 import { Analytics } from "@vercel/analytics/react"
 import { APP_NAME } from "@/types/constants"
 import Script from "next/script"
@@ -41,14 +40,11 @@ export default function RootLayout({
             src="https://code.responsivevoice.org/responsivevoice.js?key=nU8Tvi5J"
           ></Script>
 
-          <ReduxProvider>
-            <StyledComponentsRegistry>
-              <ConfigProvider theme={{ token: { colorPrimary: "#6366f1" } }}>
-                {children}
-              </ConfigProvider>
-            </StyledComponentsRegistry>
-          </ReduxProvider>
-
+          <StyledComponentsRegistry>
+            <ConfigProvider theme={{ token: { colorPrimary: "#6366f1" } }}>
+              {children}
+            </ConfigProvider>
+          </StyledComponentsRegistry>
           <Analytics />
           <ProModal />
         </body>

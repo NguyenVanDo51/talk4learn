@@ -2,7 +2,6 @@ import { Logo } from "@/components/level1/Logo"
 import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import clsx from "clsx"
-import Image from "next/image"
 
 const LoginButton = ({
   size = "normal",

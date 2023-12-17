@@ -1,15 +1,15 @@
-import { setTextSpeaking } from "@/redux/slices/appSlice"
-import store from "@/redux/store"
+import { useSettings } from "@/hooks/helpers/use-settings"
+import { useSpeech } from "@/hooks/helpers/use-speech"
 import { VoiceDefault, Voices } from "@/types/constants/voices"
 
 class Speaker {
   cancel = () => {
-    store.dispatch(setTextSpeaking(""))
+    useSpeech.getState().setTextSpeaking("")
     responsiveVoice.cancel()
   }
 
   speak = (text: string, options: ResponsiveVoiceOption = {}) => {
-    const setting = store.getState().setting
+    const setting = useSettings.getState().settings
     const voicename = setting.voice ? Voices[setting.voice] : VoiceDefault
     const { speed } = setting
 
@@ -19,10 +19,10 @@ class Speaker {
         ...options,
         rate: speed || 1,
         onstart: () => {
-          store.dispatch(setTextSpeaking(text))
+          useSpeech.getState().setTextSpeaking(text)
         },
         onend: () => {
-          store.dispatch(setTextSpeaking(""))
+          useSpeech.getState().setTextSpeaking("")
           options?.onend?.()
         },
       })

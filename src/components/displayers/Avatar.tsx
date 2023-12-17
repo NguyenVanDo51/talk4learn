@@ -1,10 +1,11 @@
 import Image, { ImageProps } from "next/image"
 import { FC } from "react"
 
-interface IProps extends Omit<ImageProps, "alt"> {
+interface IProps extends Omit<ImageProps, "alt" | "src"> {
   alt?: string
   size?: number
   shape?: "circle" | "square"
+  src?: string
 }
 
 export const Avatar: FC<IProps> = ({
@@ -12,6 +13,7 @@ export const Avatar: FC<IProps> = ({
   className = "",
   shape = "circle",
   size = 64,
+  src = "",
   ...props
 }) => {
   return (
@@ -22,7 +24,8 @@ export const Avatar: FC<IProps> = ({
         shape === "square" ? "rounded-lg" : "rounded-full"
       } ${className} object-cover`}
       alt={alt}
-      style={{ width: size, height: size }}
+      style={{ width: size, minWidth: size, height: size }}
+      src={src}
       {...props}
     />
   )

@@ -30,9 +30,6 @@ export default async function RootLayout({
           <div className="flex gap-6 items-center">
             {/* {isPro ? "Pro Version" : <UpgradeButton />} */}
             <span className="inline-flex items-center gap-2">
-              <span className="text-gray-700 font-medium">
-                {user?.username}
-              </span>
               <UserButton />
             </span>
           </div>
