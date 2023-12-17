@@ -1,11 +1,10 @@
-import store from '@/redux/store'
-import { httpClient } from '../httpClient'
-import { AxiosResponse } from 'axios'
+import { httpClient } from "../httpClient"
+import { AxiosResponse } from "axios"
 
 export class TranslationService {
-  static translate = (text: string, fromLang = 'en', toLang = 'vi') => {
-    let url = '/api/translation?'
-    url += 'text=' + encodeURI(text)
+  static translate = (text: string, fromLang = "en", toLang = "vi") => {
+    let url = "/api/translation?"
+    url += "text=" + encodeURI(text)
     url += `&fromLang=${fromLang}`
     url += `&toLang=${toLang}`
 

@@ -2,7 +2,6 @@ import { AudioPlayer } from "@/components/level1/AudioPlayer"
 import { AppButton } from "@/components/level1/antd/AppButton"
 import { scrollToBottom, ScrollSelecter } from "@/libs/helpers/dom"
 import { speak } from "@/libs/helpers/speech"
-import { ISetting } from "@/redux/slices/settingSlice"
 import { SpeakerService } from "@/service/speaker"
 import { IMessage } from "@/types/chat"
 import { AIModels } from "@/types/chat/models"
@@ -10,6 +9,7 @@ import { Tooltip } from "antd"
 import { memo, useState, useEffect } from "react"
 import { MessageProps } from "."
 import { Avatar } from "@/components/displayers/Avatar"
+import { ISetting } from "@/hooks/helpers/use-settings"
 
 interface LeftMessageProps extends MessageProps {
   avatar: string | undefined

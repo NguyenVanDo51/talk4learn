@@ -1,4 +1,3 @@
-import store from "@/redux/store"
 import { httpClient } from "../httpClient"
 import { AxiosResponse } from "axios"
 import { ScenarioInterface } from "@/types/lesson/type"
@@ -19,4 +18,3 @@ export class BotService {
     return httpClient.delete("/api/situations/" + id)
   }
 }
- 
