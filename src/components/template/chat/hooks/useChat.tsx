@@ -123,7 +123,6 @@ export const useChat = (lesson: ScenarioInterface) => {
 
   useEffect(() => {
     const oldMessageParsed = JSON.parse(localStorage.getItem(lesson.id) || "[]")
-    console.log("oldMessageParsed", oldMessageParsed)
     if (Array.isArray(oldMessageParsed) && oldMessageParsed?.length > 0) {
       setMessages(oldMessageParsed)
       return
@@ -137,5 +136,12 @@ export const useChat = (lesson: ScenarioInterface) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newestMessage])
 
-  return { messages, isWaiting, setMessages, reSend, sendMessage }
+  return {
+    messages,
+    isWaiting,
+    setMessages,
+    reSend,
+    sendMessage,
+    getFirstMessage,
+  }
 }

@@ -6,6 +6,7 @@ interface IChatContext {
   messages: IMessage[]
   lesson?: ScenarioInterface
   openInfo?: () => void
+  newChat?: () => void
 }
 
 const initialValues = {

@@ -84,7 +84,7 @@ const ExploreBotClient = () => {
 
   return (
     <div className="container max-w-2xl my-0 mx-auto p-3">
-      <div className="flex justify-center flex-col mt-[20px]">
+      <div className="flex justify-center flex-col">
         <AppInput
           value={searchValue}
           onChange={handleChange}

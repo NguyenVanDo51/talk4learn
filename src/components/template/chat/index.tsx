@@ -17,14 +17,27 @@ interface IProps {
 }
 
 const AIChat: FC<IProps> = ({ lesson }) => {
-  const { messages, isWaiting, setMessages, reSend, sendMessage } =
-    useChat(lesson)
-  const router = useRouter()
-  const [open, setOpen] = useState(true)
+  const {
+    messages,
+    isWaiting,
+    setMessages,
+    reSend,
+    sendMessage,
+    getFirstMessage,
+  } = useChat(lesson)
+  const [open, setOpen] = useState(false)
+
+  const newChat = () => {
+    setOpen(false)
+    setMessages([])
+    setTimeout(() => {
+      getFirstMessage()
+    }, 400)
+  }
 
   return (
     <ChatContext.Provider
-      value={{ messages, lesson, openInfo: () => setOpen(true) }}
+      value={{ messages, lesson, openInfo: () => setOpen(true), newChat }}
     >
       <div className="h-full">
         <Header />

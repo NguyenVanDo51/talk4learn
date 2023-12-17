@@ -4,13 +4,16 @@ import { ChatContext } from "../context"
 import { BotProfile } from "./BotProfile"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
-import { BotService } from "@/service/bot/index.service"
 import { ExclamationCircleFilled } from "@ant-design/icons"
 import { useRouter } from "next/navigation"
+import { AppButton } from "@/components/level1/antd/AppButton"
+import { css } from "@emotion/css"
 
-export const ChatInfo: React.FC<DrawerProps> = ({ ...props }) => {
+type Props = DrawerProps & {}
+
+export const ChatInfo: React.FC<Props> = ({ ...props }) => {
   const { lesson } = useContext(ChatContext)
-  const { isSignedIn, user, isLoaded } = useUser()
+  const { user } = useUser()
   const router = useRouter()
 
   const showDeleteConfirm = () => {
@@ -23,11 +26,6 @@ export const ChatInfo: React.FC<DrawerProps> = ({ ...props }) => {
       cancelText: "No",
       onOk: async () => {
         try {
-          // console.log(lesson)
-          // console.log("user", user)
-          const result = await BotService.delete(lesson?.id as string)
-          console.log("OK")
-
           // sau khi xoá thành công thì chuyển hướng về trang chủ dùng router.push
           router.push("/")
         } catch (error) {
@@ -42,31 +40,33 @@ export const ChatInfo: React.FC<DrawerProps> = ({ ...props }) => {
 
   return (
     <>
-      <Drawer title="Situation Details" placement="right" {...props}>
-        <BotProfile bot={lesson} />
-
-        {lesson?.author?.username === user?.username ? (
-          <div className="flex gap-2">
+      <Drawer
+        title={
+          <div className="flex justify-between items-center">
+            <span className="font-regular">Situation Details</span>
             <Link href={`/edit/${lesson?.id}`}>
-              <Button
-                className="text-xl"
-                style={{ color: "#f45d5d" }}
-                type="dashed"
-              >
-                <i className="fa-regular fa-pen-to-square"></i>
-              </Button>
+              <AppButton
+                type="text"
+                icon={<i className="fa-solid fa-gear" />}
+              />
             </Link>
-
-            <Button
-              className="text-xl"
-              style={{ color: "#f45d5d" }}
-              onClick={showDeleteConfirm}
-              type="dashed"
-            >
-              <i className="fa-solid fa-trash-can"></i>
-            </Button>
           </div>
-        ) : null}
+        }
+        className={css({
+          ".ant-drawer-header": {
+            padding: "8px 12px",
+          },
+        })}
+        placement="right"
+        {...props}
+      >
+        <div className="flex flex-col justify-between h-full">
+          <BotProfile bot={lesson} type={2} />
+
+          {lesson?.author?.username === user?.username ? (
+            <div className="flex flex-col gap-2 items-center"></div>
+          ) : null}
+        </div>
       </Drawer>
     </>
   )

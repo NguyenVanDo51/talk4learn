@@ -23,7 +23,7 @@ export default async function RootLayout({
         <header className="py-1 px-3 sm:px-6 border-b h-12 flex justify-between items-center sticky top-0 bg-white z-50">
           <SidebarClient mobile />
 
-          <Link href="/" className="flex items-center">
+          <Link href="/home" className="flex items-center">
             <Logo />
           </Link>
 

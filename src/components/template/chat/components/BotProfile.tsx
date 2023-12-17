@@ -2,17 +2,22 @@ import { ScenarioInterface } from "@/types/lesson/type"
 import { FC, useContext } from "react"
 import { ChatContext } from "../context"
 import { Avatar } from "@/components/displayers/Avatar"
+import { AppButton } from "@/components/level1/antd/AppButton"
 
 type Props = {
   bot: ScenarioInterface | undefined
+  type?: 1 | 2
 }
-export const BotProfile: FC<Props> = ({ bot = {} as ScenarioInterface }) => {
-  const { openInfo } = useContext(ChatContext)
+export const BotProfile: FC<Props> = ({
+  bot = {} as ScenarioInterface,
+  type = 1,
+}) => {
+  const { openInfo, newChat } = useContext(ChatContext)
 
   return (
     <div className="bg-zinc-100 rounded-xl p-4 mt-1 mb-3">
       <div className="flex gap-3">
-        <div onClick={openInfo}>
+        <div onClick={openInfo} className="cursor-pointer">
           <Avatar
             alt="bot-image"
             src={bot?.botImage || "/bot_placeholder.png"}
@@ -20,7 +25,10 @@ export const BotProfile: FC<Props> = ({ bot = {} as ScenarioInterface }) => {
         </div>
 
         <div className="flex flex-col gap-0.5 justify-center">
-          <p className="font-medium m-0 text-lg" onClick={openInfo}>
+          <p
+            className="font-medium m-0 text-lg cursor-pointer"
+            onClick={openInfo}
+          >
             {bot?.name}
           </p>
 
@@ -38,10 +46,17 @@ export const BotProfile: FC<Props> = ({ bot = {} as ScenarioInterface }) => {
           </span>
         </div>
       </div>
+      {type === 2 && (
+        <div className="flex flex-col gap-3 mt-3">
+          <AppButton onClick={newChat}>New Chat</AppButton>
+        </div>
+      )}
 
-      <span className="mt-2 text-sm text-[#5d6565]">
-        {bot.used ?? 1} monthly user{bot.used > 1 ? "s" : ""}
-      </span>
+      {type === 1 && (
+        <span className="mt-2 text-sm text-[#5d6565]">
+          {bot.used ?? 1} monthly user{bot.used > 1 ? "s" : ""}
+        </span>
+      )}
 
       <div className="text-sm p-0 mt-2">{bot?.userInstruction}</div>
     </div>

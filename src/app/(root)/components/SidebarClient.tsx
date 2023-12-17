@@ -1,8 +1,6 @@
 "use client"
 import { Logo } from "@/components/level1/Logo"
 import { useSettings } from "@/hooks/helpers/use-settings"
-import { useUser } from "@clerk/nextjs"
-import { User } from "@clerk/nextjs/server"
 import { Drawer } from "antd"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -34,6 +32,11 @@ export const SidebarClient = ({ mobile }: { mobile?: boolean }) => {
       key: "/settings",
       label: "Settings",
       icon: <i className="fa-regular fa-gear"></i>,
+    },
+    {
+      key: "/about-us",
+      label: "About",
+      icon: <i className="fa-regular fa-square-info"></i>,
     },
   ]
 
