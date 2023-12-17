@@ -1,8 +1,16 @@
 import { httpClient } from "@/service/httpClient"
-import { SettingLangEnum } from "@/service/user/request"
 import { VoiceDefault } from "@/types/constants/voices"
-import { User } from "@clerk/nextjs/server"
 import { create } from "zustand"
+
+export enum SettingLangEnum {
+  EN = "en",
+  VI = "vi",
+}
+
+export const SettingLangMapping: { [key in SettingLangEnum]: string } = {
+  [SettingLangEnum.EN]: "English",
+  [SettingLangEnum.VI]: "Tiếng Việt",
+}
 
 export interface ISetting {
   theme: "dark" | "light"

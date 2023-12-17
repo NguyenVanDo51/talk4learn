@@ -2,8 +2,7 @@
 import { LoadingScreen } from "@/components/level1/Loading"
 import { AppSelect } from "@/components/level1/antd/AppSelect"
 import { useMounted } from "@/hooks/helpers/use-mounted"
-import { useSettings } from "@/hooks/helpers/use-settings"
-import { SettingLangEnum } from "@/service/user/request"
+import { SettingLangEnum, useSettings } from "@/hooks/helpers/use-settings"
 import { Form } from "antd"
 
 export const SettingClient = () => {
