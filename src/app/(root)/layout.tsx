@@ -3,6 +3,7 @@ import { auth, currentUser, redirectToSignIn, UserButton } from "@clerk/nextjs"
 import Link from "next/link"
 import { SidebarClient } from "./components/SidebarClient"
 import { checkSubscription } from "@/libs/stripe"
+import { AppFeedback } from "@/components/feedback"
 
 export default async function RootLayout({
   children,
@@ -19,6 +20,7 @@ export default async function RootLayout({
 
   return (
     <>
+      <AppFeedback />
       <div className="bg-white h-fit min-h-full">
         <header className="py-1 px-3 sm:px-6 border-b h-12 flex justify-between items-center sticky top-0 bg-white z-50">
           <SidebarClient mobile />

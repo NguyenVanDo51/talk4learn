@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://dtalk-tau.vercel.app/
+
+# Sitemaps
+Sitemap: https://dtalk-tau.vercel.app/sitemap.xml

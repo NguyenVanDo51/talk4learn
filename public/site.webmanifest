@@ -3,7 +3,7 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "name": "Dtalk",
-  "short_name": "Ranga",
+  "short_name": "dtalk",
   "description": "English learning with Chatbot",
   "scope": "/",
   "start_url": "/",

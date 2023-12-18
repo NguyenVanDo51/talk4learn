@@ -17,7 +17,7 @@ const inter = Hanken_Grotesk({
   display: "swap",
 })
 const title = `${APP_NAME} - Practice English with AI Chatbot`
-const description = `Practice English, improve grammar, and enhance your skills with Ranga, the AI-powered chatbot.`
+const description = `Practice English, improve grammar, and enhance your skills with Dtalk, the AI-powered chatbot.`
 
 export default function RootLayout({
   children,
@@ -60,9 +60,9 @@ export const metadata: Metadata = {
   applicationName: "andy510@gmail.com",
   referrer: "origin-when-cross-origin",
   keywords: [
-    "ranga",
-    "ranga ai",
-    "ranga chatbot",
+    "dtalk",
+    "dtalk ai",
+    "dtalk chatbot",
     "learn english",
     "english chating",
     "practice english with ai",

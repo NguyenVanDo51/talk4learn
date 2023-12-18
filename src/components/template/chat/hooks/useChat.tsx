@@ -85,8 +85,21 @@ export const useChat = (lesson: ScenarioInterface) => {
   }, [lesson, messages])
 
   const getFirstMessage = useCallback(() => {
-    setIsWaiting(true)
+    const messageResponse = lesson.assistantFirstMessage
+
+    if (messageResponse) {
+      const message: IMessage = {
+        id: v4(),
+        role: "assistant",
+        content: messageResponse,
+      }
+      SpeakerService.speak(messageResponse)
+      setMessages([message])
+      return
+    }
+
     let newMesages: IMessage[] = []
+    setIsWaiting(true)
     ChatService.sendMessageInSituation(lesson, [{ role: "user", content: "." }])
       .then((res: AxiosResponse<string>) => {
         let messageResponse = res.data

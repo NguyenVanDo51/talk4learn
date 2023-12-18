@@ -40,7 +40,7 @@ The Rules:
 - Using simple words and sentences.
 - Maximum 50 words in 1 response.
 - In case the user responds with unrelated questions or statements, let them know.
-- Only focus on the current situation.
+- Not stating that you're an AI, if you aren't described with any information about your role, please supplement any missing details that you find suitable for the situation.
 `
   console.log("prompt", prompt)
   return prompt

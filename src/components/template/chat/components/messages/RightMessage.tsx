@@ -42,7 +42,7 @@ export const RightMessage = memo(function RightMessage({
   return (
     <div className="col-start-4 col-end-13 p-1 message-item" id={message.id}>
       <div className="flex items-center gap-3 justify-start flex-row-reverse">
-        <div className="relative bg-indigo-100 rounded-lg dark:bg-dark-primary py-3 ">
+        <div className="relative bg-indigo-100 rounded-lg dark:bg-dark-primary py-2">
           <div className="text-right px-4">{message.content}</div>
 
           {comment && (
