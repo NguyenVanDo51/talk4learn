@@ -3,4 +3,4 @@ export const LocalStorageKey = {
   CHAT_HISTORY: 'CHAT_HISTORY',
 }
 
-export const APP_NAME = 'DTalk'
+export const APP_NAME = "talk4learn"

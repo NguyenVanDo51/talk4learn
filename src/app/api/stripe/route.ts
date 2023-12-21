@@ -42,8 +42,8 @@ export async function GET() {
           price_data: {
             currency: "USD",
             product_data: {
-              name: "Dtalk Pro",
-              description: "Dtalk Pro",
+              name: "talk4learn Pro",
+              description: "talk4learn Pro",
             },
             unit_amount: 499,
             recurring: {

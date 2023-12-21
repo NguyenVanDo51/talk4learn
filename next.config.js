@@ -21,8 +21,8 @@ const nextConfig = {
   redirects: async () => [
     {
       source: "/:path*",
-      has: [{ type: "host", value: "www.rangachat.com" }],
-      destination: "https://rangachat.com/:path*",
+      has: [{ type: "host", value: "www.talk4learn.com" }],
+      destination: "https://talk4learn.com/:path*",
       permanent: true,
     },
   ],

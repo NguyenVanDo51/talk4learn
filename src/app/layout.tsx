@@ -17,7 +17,7 @@ const inter = Hanken_Grotesk({
   display: "swap",
 })
 const title = `${APP_NAME} - Practice English with AI Chatbot`
-const description = `Practice English, improve grammar, and enhance your skills with Dtalk, the AI-powered chatbot.`
+const description = `Practice English, improve grammar, and enhance your skills with talk4learn.com, the AI-powered chatbot.`
 
 export default function RootLayout({
   children,
@@ -60,9 +60,9 @@ export const metadata: Metadata = {
   applicationName: "andy510@gmail.com",
   referrer: "origin-when-cross-origin",
   keywords: [
-    "dtalk",
-    "dtalk ai",
-    "dtalk chatbot",
+    "talk4learn",
+    "talk4learn ai",
+    "talk4learn chatbot",
     "learn english",
     "english chating",
     "practice english with ai",
@@ -85,11 +85,11 @@ export const metadata: Metadata = {
       "en-US": "/en-US",
     },
   },
-  metadataBase: new URL("https://rangachat.com/"),
+  metadataBase: new URL("https://talk4learn.com/"),
   openGraph: {
     title,
     description,
-    url: "https://rangachat.com/",
+    url: "https://talk4learn.com/",
     siteName: APP_NAME,
     locale: "en_US",
     type: "website",

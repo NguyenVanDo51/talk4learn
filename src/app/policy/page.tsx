@@ -48,7 +48,7 @@ function Policy() {
             <p>
               <strong>Company</strong> (referred to as either &quot;the
               Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot;
-              in this Agreement) refers to Dtalk.
+              in this Agreement) refers to talk4learn.
             </p>
           </li>
           <li>
@@ -101,13 +101,13 @@ function Policy() {
           </li>
           <li>
             <p>
-              <strong>Website</strong> refers to Dtalk, accessible from{" "}
+              <strong>Website</strong> refers to talk4learn, accessible from{" "}
               <Link
-                href="https://rangachat.com/"
+                href="https://talk4learn.com/"
                 rel="external nofollow noopener"
                 target="_blank"
               >
-                https://rangachat.com/
+                https://talk4learn.com/
               </Link>
             </p>
           </li>
