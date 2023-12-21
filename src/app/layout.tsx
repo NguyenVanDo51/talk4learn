@@ -17,7 +17,7 @@ const inter = Hanken_Grotesk({
   display: "swap",
 })
 const title = `${APP_NAME} - Practice English with AI Chatbot`
-const description = `Practice English, improve grammar, and enhance your skills with talk4learn.com, the AI-powered chatbot.`
+const description = `Practice English, improve grammar, and enhance your skills with talk4learn, the AI-powered chatbot.`
 
 export default function RootLayout({
   children,
@@ -145,6 +145,6 @@ export const metadata: Metadata = {
   },
   category: "education",
   other: {
-    "shortcut icon": "/images/favicon.ico",
+    "shortcut icon": "/favicon.ico",
   },
 }
