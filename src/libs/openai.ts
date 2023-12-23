@@ -1,5 +1,4 @@
 import { SendMessageBody } from "@/components/template/chat/service/request"
-import { VIP_KEY } from "@/types/constants/openapikey"
 import { ScenarioInterface } from "@/types/lesson/type"
 
 import OpenAI from "openai"
@@ -26,16 +25,13 @@ export const createChatCompletion = (
     .then((res) => res?.choices?.[0]?.message?.content)
 }
 
-export const generateLessonPrompt = (
-  lesson: ScenarioInterface,
-  isReverse: boolean = false
-): string => {
+export const generateLessonPrompt = (lesson: ScenarioInterface): string => {
   const { assistantInstruction } = lesson
 
   const prompt = `Your task is to practice English with the user through a role-playing game in the following situation:
 - ${assistantInstruction}.
 
-The Rules:
+Requirements:
 - The conversation must align closely with the situation.
 - Using simple words and sentences.
 - Maximum 50 words in 1 response.

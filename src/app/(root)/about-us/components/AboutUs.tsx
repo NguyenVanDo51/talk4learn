@@ -3,7 +3,7 @@ export const AboutUs = () => {
     <div className="mx-auto max-w-4xl p-4">
       <h1 className="text-xl">About talk4learn</h1>
       <p className="mt-4">
-        {`Welcome to talk4learn, your personal English learning companion! Born from
+        {`Welcome to talk4learn app, your personal English learning companion! Born from
         the challenges I faced while yearning to practice English without a
         suitable environment, talk4learn is crafted to be a safe haven for language
         learners. I've been there, fighting the uphill battle to conquer a new

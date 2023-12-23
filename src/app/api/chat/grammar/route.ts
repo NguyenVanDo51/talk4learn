@@ -12,11 +12,16 @@ export async function POST(request: NextRequest) {
     (request.nextUrl.searchParams.get("lang") as SettingLangEnum) ||
     SettingLangEnum.EN
 
+  const systemMessage = {
+    role: "system",
+    content: `You receive an English sentence. Your task is to provide a brief explanation of any grammatical errors in it (if there are any).
+    
+      Requirements:
+      - Response language: ${SettingLangMapping[lang]}.`,
+    // - The response should be encouraging to the learner.
+  }
   const messages = [
-    {
-      role: "system",
-      content: `Bạn nhận một câu tiếng anh. Nhiệm vụ của bạn là giải thích ngắn gọn lỗi ngữ pháp của nó (nếu có). Phản hồi bằng ${SettingLangMapping[lang]}. Nếu không có lỗi ngữ pháp thì trả lời là "👍 Good". `,
-    },
+    systemMessage,
     ...body.messages.map(({ content, ...m }: SendMessageBody) => ({
       ...m,
       content: `"${
