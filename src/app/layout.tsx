@@ -10,6 +10,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import StyledComponentsRegistry from "../libs/AntdStyledComponentsRegistry"
 import { ProModal } from "@/components/template/pro-modal"
 import { ConfigProvider } from "antd"
+import { PRIMARY_COLOR } from "@/libs/appConfig"
 
 const inter = Hanken_Grotesk({
   weight: ["400", "500", "700", "800"],
@@ -28,7 +29,7 @@ export default function RootLayout({
     <ClerkProvider
       appearance={{
         variables: {
-          colorPrimary: "#6366f1",
+          colorPrimary: PRIMARY_COLOR,
         },
       }}
     >
@@ -41,7 +42,7 @@ export default function RootLayout({
           ></Script>
 
           <StyledComponentsRegistry>
-            <ConfigProvider theme={{ token: { colorPrimary: "#6366f1" } }}>
+            <ConfigProvider theme={{ token: { colorPrimary: PRIMARY_COLOR } }}>
               {children}
             </ConfigProvider>
           </StyledComponentsRegistry>

@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Avatar } from "@/components/displayers/Avatar"
 import { ScenarioInterface } from "@/types/lesson/type"
 import { Tooltip } from "antd"
+import { AppTooltip } from "../level1/antd/AppTooltip"
 
 const SituationCard = ({ bot }: { bot: ScenarioInterface }) => {
   return (
@@ -20,11 +21,11 @@ const SituationCard = ({ bot }: { bot: ScenarioInterface }) => {
           <div>
             <p className="font-medium m-0 text-base leading-5">{bot.name}</p>
 
-            <Tooltip title={bot.userInstruction}>
+            <AppTooltip title={bot.userInstruction}>
               <span className="line-clamp-1 text-gray-500 text-sm">
                 {bot.userInstruction}
               </span>
-            </Tooltip>
+            </AppTooltip>
           </div>
 
           <div className="flex flex-row text-xs items-center">

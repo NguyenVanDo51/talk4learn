@@ -2,7 +2,7 @@
 
 import { FC, ReactNode, useState } from 'react'
 import { Button as AntButton, ButtonProps, Popconfirm } from 'antd'
-import { debounce, throttle } from 'lodash'
+
 interface AppButtonProps extends ButtonProps {
   children?: React.ReactNode
 }
@@ -14,7 +14,12 @@ export const AppButton: FC<AppButtonProps> = ({
   ...props
 }) => {
   return (
-    <AntButton type={type} size={size} {...props}>
+    <AntButton
+      type={type}
+      size={size}
+      {...props}
+      className={"[&.ant-btn-sm]:text-xs"}
+    >
       {children}
     </AntButton>
   )

@@ -97,7 +97,7 @@ const ExploreBotClient = () => {
         <div className="overflow-x-auto overflow-y-hidden no-scrollbar pb-2">
           <div className="mt-3 flex gap-2 max-h-[72px] flex-wrap w-[1100px]">
             <AppButton
-              size="middle"
+              size="small"
               onClick={() => handleOnClick("")}
               type={tagSelected ? "default" : "primary"}
             >
@@ -107,7 +107,7 @@ const ExploreBotClient = () => {
             {tagOptions?.map((tagOption, index) => (
               <AppButton
                 key={index}
-                size="middle"
+                size="small"
                 onClick={() => handleOnClick(tagOption)}
                 type={tagSelected !== tagOption ? "default" : "primary"}
               >
