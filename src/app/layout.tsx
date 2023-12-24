@@ -43,7 +43,11 @@ export default function RootLayout({
           ></Script>
 
           <StyledComponentsRegistry>
-            <ConfigProvider theme={{ token: { colorPrimary: PRIMARY_COLOR } }}>
+            <ConfigProvider
+              theme={{
+                token: { colorPrimary: PRIMARY_COLOR },
+              }}
+            >
               <Providers>{children}</Providers>
             </ConfigProvider>
           </StyledComponentsRegistry>

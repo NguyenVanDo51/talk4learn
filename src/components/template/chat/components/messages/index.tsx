@@ -27,7 +27,7 @@ export const Message: FC<MessageProps> = (props) => {
     settings: { inputType },
   } = useSettings()
 
-  const inputHeight = inputType === "text" ? 75 : 85
+  const inputHeight = inputType === "text" ? 75 : 90
   const { user } = useUser()
 
   return (
@@ -35,7 +35,7 @@ export const Message: FC<MessageProps> = (props) => {
       className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden p-2 lg:p-3"
       id="message-container"
       style={{
-        height: `calc(100vh - ${inputHeight + 64}px)`,
+        height: `calc(100vh - ${inputHeight + 45}px)`,
       }}
     >
       {lesson?.author && <BotProfile bot={lesson} />}

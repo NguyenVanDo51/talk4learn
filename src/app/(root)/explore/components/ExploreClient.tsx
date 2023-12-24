@@ -95,7 +95,7 @@ const ExploreBotClient = () => {
         />
 
         <div className="overflow-x-auto overflow-y-hidden no-scrollbar pb-2">
-          <div className="mt-3 flex gap-2 max-h-[72px] flex-wrap w-[1100px]">
+          <div className="mt-3 flex gap-2 max-h-[72px] flex-wrap w-[876px]">
             <AppButton
               size="small"
               onClick={() => handleOnClick("")}

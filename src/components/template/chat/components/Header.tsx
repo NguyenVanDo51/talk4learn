@@ -43,6 +43,13 @@ export const Header: FC<IProps> = () => {
         okText="Close"
       >
         <SettingTemplate />
+
+        <div>
+          <p className="font-medium text-base">Short cut: </p>
+          <div className="text-gray-500">
+            <p>Space: start/stop voice recording</p>
+          </div>
+        </div>
       </AppModal>
     </div>
   )

@@ -3,14 +3,28 @@
 import { FC } from 'react'
 import { ConfigProvider, Modal, ModalFuncProps, ModalProps } from 'antd'
 import { darkTheme } from '@/theme/themeConfig'
+import clsx from "clsx"
+import { css } from "@emotion/css"
 
 export interface AppModalProps extends ModalProps {
   children: React.ReactNode
 }
 
-export const AppModal: FC<AppModalProps> = ({ children, ...props }) => {
+export const AppModal: FC<AppModalProps> = ({
+  children,
+  className,
+  ...props
+}) => {
   return (
-    <Modal centered {...props}>
+    <Modal
+      centered
+      {...props}
+      className={css({
+        ".ant-modal-title": {
+          fontWeight: 500,
+        },
+      })}
+    >
       {children}
     </Modal>
   )

@@ -58,7 +58,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
     })
   }, [sendMessage])
 
-  const handleRecord = () => {
+  const handleRecord = useCallback(() => {
     if (!rec) {
       requestAccessMicro().then(() => {
         handleRecord()
@@ -76,7 +76,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
     setMessage("")
     rec.start()
     setIsRecording(true)
-  }
+  }, [isRecording, requestAccessMicro])
 
   const handleSendMessage = () => {
     if (isWaiting) return
@@ -131,6 +131,25 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
       setMessage("")
     }
   }, [message, sendMessage, inputType])
+
+  useEffect(() => {
+    if (inputType !== "voice") {
+      return
+    }
+
+    const handle = (e: KeyboardEvent) => {
+      console.log("e", e)
+      if (e.code === "Space") {
+        handleRecord()
+      }
+    }
+
+    window.addEventListener("keypress", handle)
+
+    return () => {
+      window.removeEventListener("keypress", handle)
+    }
+  }, [handleRecord, inputType])
 
   const changeIcon = (
     <AppButton

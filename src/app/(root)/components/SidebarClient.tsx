@@ -77,7 +77,7 @@ export const SidebarClient = ({ mobile }: { mobile?: boolean }) => {
         placement="left"
         closable={false}
         onClose={() => setIsOpen(false)}
-        width={200}
+        width={350}
         open={isOpen}
       >
         <Logo />
