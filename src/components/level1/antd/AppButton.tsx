@@ -2,6 +2,7 @@
 
 import { FC, ReactNode, useState } from 'react'
 import { Button as AntButton, ButtonProps, Popconfirm } from 'antd'
+import clsx from "clsx"
 
 interface AppButtonProps extends ButtonProps {
   children?: React.ReactNode
@@ -9,6 +10,7 @@ interface AppButtonProps extends ButtonProps {
 
 export const AppButton: FC<AppButtonProps> = ({
   children,
+  className,
   type = "primary",
   size = "middle",
   ...props
@@ -18,7 +20,7 @@ export const AppButton: FC<AppButtonProps> = ({
       type={type}
       size={size}
       {...props}
-      className={"[&.ant-btn-sm]:text-xs"}
+      className={clsx(className, "[&.ant-btn-sm]:text-xs")}
     >
       {children}
     </AntButton>
