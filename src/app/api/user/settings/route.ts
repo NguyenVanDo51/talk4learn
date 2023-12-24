@@ -1,7 +1,7 @@
 import { firestore } from "@/service/firestore"
 import { NextRequest, NextResponse } from "next/server"
 import { currentUser } from "@clerk/nextjs/server"
-import { initialSettingState } from "@/hooks/helpers/use-settings"
+import { initialSettingState } from "@/types/setting"
 
 export async function POST(req: NextRequest) {
   const user = await currentUser()

@@ -5,6 +5,7 @@ import { createContext } from "react"
 interface IChatContext {
   messages: IMessage[]
   lesson?: ScenarioInterface
+  remainSeconds?: number
   openInfo?: () => void
   newChat?: () => void
 }

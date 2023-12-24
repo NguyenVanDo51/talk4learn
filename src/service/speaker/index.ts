@@ -1,6 +1,7 @@
-import { useSettings } from "@/hooks/helpers/use-settings"
+import { queryClient } from "@/app/Provider"
 import { useSpeech } from "@/hooks/helpers/use-speech"
 import { VoiceDefault, Voices } from "@/types/constants/voices"
+import { ISetting } from "@/types/setting"
 
 class Speaker {
   cancel = () => {
@@ -9,9 +10,10 @@ class Speaker {
   }
 
   speak = (text: string, options: ResponsiveVoiceOption = {}) => {
-    const setting = useSettings.getState().settings
-    const voicename = setting.voice ? Voices[setting.voice] : VoiceDefault
-    const { speed } = setting
+    const settings =
+      queryClient.getQueryData<ISetting>(["settings"]) ?? ({} as ISetting)
+    const voicename = settings?.voice ? Voices[settings.voice] : VoiceDefault
+    const { speed } = settings
 
     try {
       SpeakerService.cancel()

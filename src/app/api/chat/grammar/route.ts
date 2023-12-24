@@ -1,9 +1,6 @@
 import { SendMessageBody } from "@/components/template/chat/service/request"
-import {
-  SettingLangEnum,
-  SettingLangMapping,
-} from "@/hooks/helpers/use-settings"
 import { createChatCompletion, openai } from "@/libs/openai"
+import { SettingLangEnum, SettingLangMapping } from "@/types/setting"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {

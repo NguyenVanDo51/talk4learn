@@ -52,11 +52,11 @@ export const BotProfile: FC<Props> = ({
         </div>
       )}
 
-      {type === 1 && (
+      {/* {type === 1 && (
         <span className="mt-2 text-sm text-[#5d6565]">
           {bot.used ?? 1} monthly user{bot.used > 1 ? "s" : ""}
         </span>
-      )}
+      )} */}
 
       <div className="text-sm p-0 mt-2">{bot?.userInstruction}</div>
     </div>

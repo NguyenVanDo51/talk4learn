@@ -12,7 +12,7 @@ export const POST = async (
   const messages = [
     {
       role: "system",
-      content: generateLessonPrompt(lesson as ScenarioInterface, true),
+      content: generateLessonPrompt(lesson as ScenarioInterface),
     },
     ...body.messages,
   ]

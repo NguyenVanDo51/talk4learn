@@ -5,6 +5,6 @@ export const Voices: { [key in string]: string } = {
   USEnglishMale: 'US English Male',
 }
 
-export const VoiceDefault = 'US English Female'
+export const VoiceDefault = "US English Male"
 
 export const VoiceOptions = Object.keys(Voices).map((key) => ({ value: key, label: Voices[key] }))

@@ -47,6 +47,7 @@ export const GET = async (req: NextRequest) => {
     }
 
     const result = await ref
+      .where("public", "==", true)
       .orderBy("used", "desc")
       .offset(offset)
       .limit(limit)

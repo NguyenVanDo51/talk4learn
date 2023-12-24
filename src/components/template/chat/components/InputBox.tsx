@@ -12,7 +12,10 @@ import {
 } from "react"
 import { ScrollSelecter, scrollToBottom } from "@/libs/helpers/dom"
 import Image from "next/image"
-import { ISetting, useSettings } from "@/hooks/helpers/use-settings"
+import { useSettings } from "@/hooks/helpers/use-settings"
+import { useSpeech } from "@/hooks/helpers/use-speech"
+import { SpeakerService } from "@/service/speaker"
+import { ISetting } from "@/types/setting"
 
 interface IProps {
   isWaiting: boolean
@@ -27,7 +30,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   const [isRecording, setIsRecording] = useState(false)
   const [granted, setGranted] = useState(false)
   const { settings, setSettings } = useSettings()
-  const { chatMode, inputType } = settings
+  const { chatMode, inputType, automationMode } = settings
 
   const changeInputType = (type: ISetting["inputType"]) => {
     if (type !== inputType) {
@@ -69,6 +72,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
       return
     }
 
+    SpeakerService.cancel()
     setMessage("")
     rec.start()
     setIsRecording(true)
@@ -156,7 +160,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
         <div className="flex gap-6 justify-center flex-grow items-center relative">
           <span className="absolute top-[18px] left-0">{changeIcon}</span>
 
-          {isRecording ? (
+          {/* {isRecording ? (
             <span onClick={handleRecord} className="cursor-pointer">
               <Image
                 src="/images/gif-recording.gif"
@@ -166,20 +170,20 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
                 height={54}
               />
             </span>
-          ) : (
-            <DebouncedButton
-              onClick={handleRecord}
-              className={`!w-[4rem] !h-[4rem] flex items-center justify-center !text-[1.6rem] !rounded-full ${
-                isRecording ? "!bg-red-400" : ""
-              }`}
-            >
-              {isRecording ? (
-                <i className="fa-solid fa-pause"></i>
-              ) : (
-                <i className="fa-solid fa-microphone"></i>
-              )}
-            </DebouncedButton>
-          )}
+          ) : ( */}
+          <DebouncedButton
+            onClick={handleRecord}
+            className={`!w-[4rem] !h-[4rem] flex items-center justify-center !text-[1.6rem] !rounded-full ${
+              isRecording ? "!bg-red-500" : ""
+            }`}
+          >
+            {isRecording ? (
+              <i className="fa-solid fa-stop"></i>
+            ) : (
+              <i className="fa-solid fa-microphone"></i>
+            )}
+          </DebouncedButton>
+          {/* )} */}
         </div>
       ) : (
         <>

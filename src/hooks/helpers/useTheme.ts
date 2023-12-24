@@ -1,5 +1,5 @@
+import { ISetting } from "@/types/setting"
 import { useEffect } from "react"
-import { ISetting } from "./use-settings"
 
 export const useTheme = () => {
   const theme = ""

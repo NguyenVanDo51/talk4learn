@@ -11,6 +11,7 @@ import StyledComponentsRegistry from "../libs/AntdStyledComponentsRegistry"
 import { ProModal } from "@/components/template/pro-modal"
 import { ConfigProvider } from "antd"
 import { PRIMARY_COLOR } from "@/libs/appConfig"
+import Providers from "./Provider"
 
 const inter = Hanken_Grotesk({
   weight: ["400", "500", "700", "800"],
@@ -43,7 +44,7 @@ export default function RootLayout({
 
           <StyledComponentsRegistry>
             <ConfigProvider theme={{ token: { colorPrimary: PRIMARY_COLOR } }}>
-              {children}
+              <Providers>{children}</Providers>
             </ConfigProvider>
           </StyledComponentsRegistry>
           <Analytics />

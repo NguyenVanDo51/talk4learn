@@ -8,7 +8,6 @@ import { useEffect, useState } from "react"
 
 export const SidebarClient = ({ mobile }: { mobile?: boolean }) => {
   const pathname = usePathname()
-  const { initSettings } = useSettings()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -43,11 +42,6 @@ export const SidebarClient = ({ mobile }: { mobile?: boolean }) => {
   useEffect(() => {
     setIsOpen(false)
   }, [pathname])
-
-  useEffect(() => {
-    initSettings()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const menu = (
     <ul className="space-y-1 sm:space-y-2">

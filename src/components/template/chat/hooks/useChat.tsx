@@ -7,10 +7,15 @@ import { v4 } from "uuid"
 import { ChatService } from "../service"
 import { SendMessageBody } from "../service/request"
 import { ScenarioInterface } from "@/types/lesson/type"
+import { useSettings } from "@/hooks/helpers/use-settings"
 
 export const useChat = (lesson: ScenarioInterface) => {
   const [messages, setMessages] = useState<IMessage[]>([])
   const [isWaiting, setIsWaiting] = useState(false)
+  const [remainSeconds, setRemainSeconds] = useState<number>()
+  const {
+    settings: { automationMode },
+  } = useSettings()
 
   const sendMessage = async (message: string | Blob, recorded?: string) => {
     if (isWaiting) return
@@ -24,16 +29,15 @@ export const useChat = (lesson: ScenarioInterface) => {
     }
 
     if (typeof message === "string") {
-      messageObject.content = message
+      messageObject.content = message?.trim()
     } else {
       setIsWaiting(true)
 
       const res = await ChatService.speechToText(message).finally(() =>
         setIsWaiting(false)
       )
-
-      if (res.data) {
-        messageObject.content = res.data
+      if (res.data?.trim()?.length > 0) {
+        messageObject.content = res.data.trim()
       }
     }
 
@@ -67,7 +71,6 @@ export const useChat = (lesson: ScenarioInterface) => {
     ChatService.sendMessageInSituation(lesson, bodyMessage)
       .then((res: AxiosResponse<string>) => {
         let messageResponse = res.data
-        SpeakerService.speak(messageResponse)
 
         newMesages[messages.length - 1].status = "success"
         newMesages.push({
@@ -93,7 +96,6 @@ export const useChat = (lesson: ScenarioInterface) => {
         role: "assistant",
         content: messageResponse,
       }
-      SpeakerService.speak(messageResponse)
       setMessages([message])
       return
     }
@@ -103,7 +105,6 @@ export const useChat = (lesson: ScenarioInterface) => {
     ChatService.sendMessageInSituation(lesson, [{ role: "user", content: "." }])
       .then((res: AxiosResponse<string>) => {
         let messageResponse = res.data
-        SpeakerService.speak(messageResponse)
 
         newMesages.push({
           id: v4(),
@@ -123,6 +124,20 @@ export const useChat = (lesson: ScenarioInterface) => {
   }
 
   const newestMessage = messages.at(-1)
+
+  useEffect(() => {
+    if (
+      newestMessage?.role === "assistant" &&
+      newestMessage?.status !== "error" &&
+      newestMessage?.status !== "sent"
+    ) {
+      SpeakerService.speak(newestMessage.content)
+      if (automationMode) {
+        setRemainSeconds(3)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newestMessage])
 
   useEffect(() => {
     if (newestMessage?.status !== "error") {
@@ -152,6 +167,7 @@ export const useChat = (lesson: ScenarioInterface) => {
   return {
     messages,
     isWaiting,
+    remainSeconds,
     setMessages,
     reSend,
     sendMessage,

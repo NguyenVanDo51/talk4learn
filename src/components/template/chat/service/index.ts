@@ -2,7 +2,8 @@ import { SendMessageBody } from "./request"
 import { httpClient } from "../../../../service/httpClient"
 import { IMessage } from "@/types/chat"
 import { ScenarioInterface } from "@/types/lesson/type"
-import { useSettings } from "@/hooks/helpers/use-settings"
+import { ISetting } from "@/types/setting"
+import { queryClient } from "@/app/Provider"
 
 export class ChatService {
   static sendMessageInSituation = (
@@ -20,12 +21,13 @@ export class ChatService {
   }
 
   static checkGrammar = (messages: SendMessageBody[]) => {
-    const settings = useSettings.getState().settings
+    const settings = queryClient.getQueryData<ISetting>(["settings"])
+
     const bodyMessages = [...messages]
     if (bodyMessages.length > 12) {
       bodyMessages.splice(1, bodyMessages.length - 10)
     }
-    return httpClient.post(`/api/chat/grammar?lang=${settings.lang}`, {
+    return httpClient.post(`/api/chat/grammar?lang=${settings?.lang}`, {
       messages: bodyMessages,
     })
   }
