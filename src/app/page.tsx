@@ -56,7 +56,7 @@ export default async function Home() {
           <main className="grid lg:grid-cols-5 place-items-center relative">
             <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial from-indigo-200 right-0 top-0"></div>
             <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial from-purple-200 right-56 top-10"></div>
-            <div className="max-w-sm md:max-w-max lg:col-span-2">
+            <div className="md:max-w-max lg:col-span-2">
               <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold lg:tracking-tight xl:tracking-tighter [text-wrap:balance] text-center lg:text-start">
                 Design Your Dialogue: Master English through Personal Scenarios.
               </h1>
