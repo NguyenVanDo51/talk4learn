@@ -12,6 +12,7 @@ import { ProModal } from "@/components/template/pro-modal"
 import { ConfigProvider } from "antd"
 import { PRIMARY_COLOR } from "@/libs/appConfig"
 import Providers from "./Provider"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Hanken_Grotesk({
   weight: ["400", "500", "700", "800"],
@@ -52,6 +53,7 @@ export default function RootLayout({
             </ConfigProvider>
           </StyledComponentsRegistry>
           <Analytics />
+          <SpeedInsights />
           <ProModal />
         </body>
       </html>
@@ -101,7 +103,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/mac-perview.png",
+        url: "/images/mac-preview.png",
         width: 800,
         height: 600,
       },
@@ -115,7 +117,7 @@ export const metadata: Metadata = {
     creatorId: "1467726470533754880",
     images: [
       {
-        url: "/mac-perview.png",
+        url: "/images/mac-preview.png",
         width: 800,
         height: 600,
       },
@@ -135,12 +137,12 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/logo125.png",
-    shortcut: "/logo125.png",
-    apple: "/logo125.png",
+    icon: "/apple-touch-icon.png",
+    shortcut: "/apple-touch-icon.png",
+    apple: "/apple-touch-icon.png",
     other: {
-      rel: "/logo125.png",
-      url: "/logo125.png",
+      rel: "/apple-touch-icon.png",
+      url: "/apple-touch-icon.png",
     },
   },
   manifest: "/site.webmanifest",

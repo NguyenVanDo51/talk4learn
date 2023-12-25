@@ -58,10 +58,10 @@ export default async function Home() {
             <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial from-purple-200 right-56 top-10"></div>
             <div className="md:max-w-max lg:col-span-2">
               <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold lg:tracking-tight xl:tracking-tighter [text-wrap:balance] text-center lg:text-start">
-                Design Your Dialogue: Master English through Personal Scenarios.
+                Improve your language skills through Personal Scenarios.
               </h1>
               <p className="text-lg mt-4 max-w-lg text-slate-600 [text-wrap:balance] text-center lg:text-start">
-                {`Chat with AI, craft your scenarios, explore others' situations - all
+                {`Speak and Listen to AI, craft your scenarios, explore others' situations - all
             in one app for mastering English.`}
               </p>
               <div className="mt-6 flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-3">
@@ -74,7 +74,7 @@ export default async function Home() {
                 <img
                   className="rounded-lg w-full h-auto"
                   src="/images/mac-preview.png"
-                  alt=""
+                  alt="talk4learn-speak-and-listen-to-an-AI-in-personal-scenarios"
                 />
               </div>
             </div>
