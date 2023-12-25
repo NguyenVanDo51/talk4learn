@@ -10,6 +10,11 @@ import { useRouter } from "next/navigation"
 import { AppNotifycation } from "@/components/level1/antd/AppNotification"
 import { LoadingScreen } from "@/components/level1/Loading"
 import { useMounted } from "@/hooks/helpers/use-mounted"
+import { AppInput, AppInputTextarea } from "@/components/level1/antd/AppInput"
+import { AppTooltip } from "@/components/level1/antd/AppTooltip"
+import { AppSelect } from "@/components/level1/antd/AppSelect"
+import { ISetting } from "@/types/setting"
+import { TranslationService } from "@/service/translation/index.service"
 
 export const tagOptions = [
   "Working",
@@ -43,6 +48,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
   const isMounted = useMounted()
   const [botImage, setBotImage] = useState("/bot_placeholder.png")
   const [isLoading, setIsLoading] = useState(false)
+  const [textTranslating, setTextTranslating] = useState("")
   const router = useRouter()
 
   const nameRef = useRef<HTMLInputElement>()
@@ -65,6 +71,18 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
       })
   }
 
+  const translate = (field: keyof ScenarioInterface) => {
+    const value = form.getFieldValue(field)?.trim()
+
+    setTextTranslating(value)
+    if (!value) return
+    if (textTranslating === value) return
+
+    TranslationService.translate(value, "", "en").then((result) => {
+      form.setFieldValue(field, result)
+    })
+  }
+
   useEffect(() => {
     if (!scenario) return
     nameRef.current?.focus()
@@ -85,7 +103,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
   return (
     <div className="container max-w-4xl my-0 mx-auto">
       <div className="p-4">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mb-4">
           <ImageUpload
             value={botImage}
             onChange={(src: string) => setBotImage(src)}
@@ -108,14 +126,22 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
           }}
         >
           <Form.Item<ScenarioInterface>
-            label="Name of the sutiation"
+            label={
+              <span>
+                Name of the sutiation
+                <i
+                  onClick={() => translate("name")}
+                  className="fa-regular fa-language cursor-pointer ml-1"
+                ></i>
+              </span>
+            }
             name="name"
             rules={[
               { required: true, message: "" },
               { min: 10, message: "Name must be at least 10 characters" },
             ]}
           >
-            <Input
+            <AppInput
               ref={nameRef as any}
               min={10}
               max={50}
@@ -124,7 +150,15 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
           </Form.Item>
 
           <Form.Item<ScenarioInterface>
-            label="Description"
+            label={
+              <span>
+                Description
+                <i
+                  onClick={() => translate("userInstruction")}
+                  className="fa-regular fa-language cursor-pointer ml-1"
+                ></i>
+              </span>
+            }
             name="userInstruction"
             help="Describe briefly the situation and your role in the situation."
             rules={[{ required: true, message: "" }]}
@@ -137,10 +171,9 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <Form.Item<ScenarioInterface> label="Tags" name="tags">
-              <Select
+              <AppSelect
                 mode="multiple"
                 allowClear
-                style={{ width: "100%" }}
                 placeholder="Select tags"
                 maxLength={3}
                 options={tagOptions.map((t) => ({ value: t, label: t }))}
@@ -152,11 +185,10 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
               name="public"
               initialValue={true}
             >
-              <Select
-                style={{ width: "100%" }}
+              <AppSelect
                 placeholder="Select tags"
                 options={[
-                  { value: false, label: "Private" },
+                  { value: false as any, label: "Private" },
                   { value: true, label: "Public" },
                 ]}
               />
@@ -164,23 +196,39 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
           </div>
 
           <Form.Item<ScenarioInterface>
-            label="Bot instruction"
+            label={
+              <span>
+                Bot instruction
+                <i
+                  onClick={() => translate("assistantInstruction")}
+                  className="fa-regular fa-language cursor-pointer ml-1"
+                ></i>
+              </span>
+            }
             name="assistantInstruction"
             help="Describe in detail about the bot (name, hobbies, personality, etc.), the bot's task (how it should act, what it should ask, etc.) in the situation."
             rules={[{ required: true, message: "" }]}
           >
-            <Input.TextArea
+            <AppInputTextarea
               rows={5}
               placeholder="e.g. Since you're from the United States and the user wants to introduce themselves and make friends with you, you should ask the user to introduce themselves and inquire about their information."
             />
           </Form.Item>
 
           <Form.Item<ScenarioInterface>
-            label="Greeting message"
+            label={
+              <span>
+                Greeting message
+                <i
+                  onClick={() => translate("assistantFirstMessage")}
+                  className="fa-regular fa-language cursor-pointer ml-1"
+                ></i>
+              </span>
+            }
             name="assistantFirstMessage"
             help="The bot will send this message at the beginning of every conversation."
           >
-            <Input placeholder="e.g. Hello! What's your name?" />
+            <AppInput placeholder="e.g. Hello! What's your name?" />
           </Form.Item>
 
           <Form.Item<ScenarioInterface> className="flex justify-center mt-2">

@@ -78,7 +78,7 @@ export const POST = async (
   try {
     const res = await createChatCompletion(messages, {
       max_tokens: 500,
-      temperature: 1.5,
+      temperature: 0.5,
     })
     return NextResponse.json(res)
   } catch (e: any) {

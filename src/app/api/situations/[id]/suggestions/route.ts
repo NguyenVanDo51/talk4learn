@@ -17,7 +17,7 @@ export const POST = async (
     ...body.messages,
   ]
 
-  return createChatCompletion(messages, { max_tokens: 200, temperature: 1.2 })
+  return createChatCompletion(messages, { max_tokens: 200, temperature: 0.5 })
     .then((data) => {
       return NextResponse.json(
         data?.toLowerCase().includes("done_message") ? "ok" : data

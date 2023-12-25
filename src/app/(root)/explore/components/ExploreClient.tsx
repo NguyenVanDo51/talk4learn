@@ -49,8 +49,8 @@ const ExploreBotClient = () => {
     setIsLoading(page < 1)
     const result = await BotService.get({
       name: debounced,
-      limit: 5,
-      offset: page * 5,
+      limit: 25,
+      offset: page * 25,
       tag: tagSelected,
     })
     setIsLoading(false)

@@ -52,10 +52,8 @@ export default async function Home() {
       </header>
 
       <div className="overflow-x-clip">
-        <div className="max-w-screen-xl mx-auto px-5">
-          <main className="grid lg:grid-cols-5 place-items-center relative">
-            <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial from-indigo-200 right-0 top-0"></div>
-            <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial from-purple-200 right-56 top-10"></div>
+        <div className="max-w-screen-2xl mx-auto px-5">
+          <main className="grid gap-4 py-10 lg:grid-cols-5 place-items-center relative">
             <div className="md:max-w-max lg:col-span-2">
               <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold lg:tracking-tight xl:tracking-tighter [text-wrap:balance] text-center lg:text-start">
                 Improve your language skills through Personal Scenarios.
@@ -69,7 +67,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="lg:col-span-3 lg:-mr-44 py-10">
+            <div className="lg:col-span-3 py-10">
               <div className="bg-black rounded-2xl p-2 max-w-[660px]">
                 <img
                   className="rounded-lg w-full h-auto"
@@ -260,7 +258,7 @@ export default async function Home() {
         <div className="mt-14 pt-8 px-5 border-t border-slate-200">
           <div className="max-w-screen-xl mx-auto px-5">
             <p className="text-center text-sm text-slate-600 [text-wrap:balance]">
-              Copyright © 2023 Astroship. All rights reserved.
+              Copyright © 2023 talk4learn. All rights reserved.
             </p>
             <p className="text-center text-xs text-slate-600 mt-2">
               <a href="/terms" className="hover:text-indigo-500">
