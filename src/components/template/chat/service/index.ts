@@ -23,11 +23,13 @@ export class ChatService {
   static checkGrammar = (messages: SendMessageBody[]) => {
     const settings = queryClient.getQueryData<ISetting>(["settings"])
 
-    // const bodyMessages = [...messages]
-    // if (bodyMessages.length > 12) {
-    //   bodyMessages.splice(1, bodyMessages.length - 10)
-    // }
-    return httpClient.post(`/api/chat/grammar?lang=${settings?.lang}`)
+    const bodyMessages = [...messages]
+    if (bodyMessages.length > 12) {
+      bodyMessages.splice(1, bodyMessages.length - 10)
+    }
+    return httpClient.post(`/api/chat/grammar?lang=${settings?.lang}`, {
+      messages: bodyMessages,
+    })
   }
 
   static speechToText = (audio: Blob) => {
