@@ -41,17 +41,7 @@ export const ChatInfo: React.FC<Props> = ({ ...props }) => {
   return (
     <>
       <Drawer
-        title={
-          <div className="flex justify-between items-center">
-            <span className="font-regular">Situation Details</span>
-            <Link href={`/edit/${lesson?.id}`}>
-              <AppButton
-                type="text"
-                icon={<i className="fa-solid fa-gear" />}
-              />
-            </Link>
-          </div>
-        }
+        title="Situation Details"
         className={css({
           ".ant-drawer-header": {
             padding: "8px 12px",
@@ -62,10 +52,6 @@ export const ChatInfo: React.FC<Props> = ({ ...props }) => {
       >
         <div className="flex flex-col justify-between h-full">
           <BotProfile bot={lesson} type={2} />
-
-          {lesson?.author?.username === user?.username ? (
-            <div className="flex flex-col gap-2 items-center"></div>
-          ) : null}
         </div>
       </Drawer>
     </>
