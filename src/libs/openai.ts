@@ -14,8 +14,8 @@ export const createChatCompletion = (
   const { max_tokens, temperature } = options || {}
   return openai.chat.completions
     .create({
-      // model: "gpt-3.5-turbo",
-      model: "gpt-4",
+      model: "gpt-3.5-turbo",
+      // model: "gpt-4",
       messages,
       temperature: temperature ?? 0,
       max_tokens: max_tokens ?? 500,

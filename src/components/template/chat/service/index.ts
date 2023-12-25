@@ -11,9 +11,9 @@ export class ChatService {
     messages: SendMessageBody[]
   ) => {
     const bodyMessages = [...messages]
-    if (bodyMessages.length > 12) {
-      bodyMessages.splice(1, bodyMessages.length - 10)
-    }
+    // if (bodyMessages.length > 32) {
+    //   bodyMessages.splice(0, bodyMessages.length - 10)
+    // }
     return httpClient.post("/api/situations/" + lesson.id, {
       lesson,
       messages: bodyMessages,
@@ -23,13 +23,11 @@ export class ChatService {
   static checkGrammar = (messages: SendMessageBody[]) => {
     const settings = queryClient.getQueryData<ISetting>(["settings"])
 
-    const bodyMessages = [...messages]
-    if (bodyMessages.length > 12) {
-      bodyMessages.splice(1, bodyMessages.length - 10)
-    }
-    return httpClient.post(`/api/chat/grammar?lang=${settings?.lang}`, {
-      messages: bodyMessages,
-    })
+    // const bodyMessages = [...messages]
+    // if (bodyMessages.length > 12) {
+    //   bodyMessages.splice(1, bodyMessages.length - 10)
+    // }
+    return httpClient.post(`/api/chat/grammar?lang=${settings?.lang}`)
   }
 
   static speechToText = (audio: Blob) => {
