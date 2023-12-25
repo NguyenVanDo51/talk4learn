@@ -261,7 +261,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
               }
               loading={isLoading}
             >
-              {scenario ? "Update" : "Create"} your Situational
+              {scenario ? "Update" : "Create"} your Situation
             </AppButton>
           </Form.Item>
         </Form>
