@@ -32,15 +32,14 @@ export const Message: FC<MessageProps> = (props) => {
 
   return (
     <div
-      className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden p-2 lg:p-3"
+      className="flex flex-1 flex-col items-center overflow-y-auto overflow-x-hidden p-2 lg:p-3 w-full"
       id="message-container"
       style={{
         height: `calc(100vh - ${inputHeight + 45}px)`,
       }}
     >
-      {lesson?.author && <BotProfile bot={lesson} />}
-
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full md:w-[768px]">
+        {lesson?.author && <BotProfile bot={lesson} />}
         <div className="grid grid-cols-12 gap-y-2 pb-10">
           {messages.map((message, index) =>
             message.role === "assistant" ? (

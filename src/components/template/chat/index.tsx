@@ -42,15 +42,13 @@ const AIChat: FC<IProps> = ({ lesson }) => {
       <div className="h-full">
         <Header />
 
-        <div className="w-full md:w-[768px] mx-auto">
+        <div className="">
           <ChatInfo open={open} onClose={() => setOpen(false)} />
-
           <Message
             isSending={isWaiting}
             setMessages={setMessages}
             reSend={reSend}
           />
-
           <InputBox sendMessage={sendMessage} isWaiting={isWaiting} />
         </div>
 

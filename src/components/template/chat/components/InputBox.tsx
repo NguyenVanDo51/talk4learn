@@ -174,7 +174,7 @@ export const InputBox: FC<IProps> = ({ isWaiting, sendMessage }) => {
   )
 
   return (
-    <div className="flex gap-1 flex-row items-center min-h-16 h-fit rounded-xl w-full p-2 lg:p-3">
+    <div className="flex gap-1 flex-row items-center min-h-16 h-fit rounded-xl w-full md:w-[768px] mx-auto p-2 lg:p-3">
       {inputType === "voice" ? (
         <div className="flex gap-6 justify-center flex-grow items-center relative">
           <span className="absolute top-[18px] left-0">{changeIcon}</span>
