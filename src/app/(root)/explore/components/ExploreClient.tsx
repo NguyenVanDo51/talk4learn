@@ -1,4 +1,5 @@
 "use client"
+
 import { useEffect, useState } from "react"
 import useDebounce from "@/hooks/debounce/useDebounce"
 import { BotService } from "@/service/bot/index.service"
@@ -9,6 +10,7 @@ import { AppButton } from "@/components/level1/antd/AppButton"
 import { AppInput } from "@/components/level1/antd/AppInput"
 import { tagOptions } from "@/components/template/create-scenario"
 import { useMounted } from "@/hooks/helpers/use-mounted"
+import { Empty } from "@/components/level1/antd/Empty"
 
 const ExploreBotClient = () => {
   const [searchValue, setSearchValue] = useState("")
@@ -118,13 +120,18 @@ const ExploreBotClient = () => {
         </div>
 
         <div className="mt-3">
-          {isLoading ? (
+          {isLoading && (
             <div className="text-center">
               <Spin />
             </div>
-          ) : (
-            searchResult?.map((bot) => <SituationCard key={bot.id} bot={bot} />)
           )}
+
+          {!isLoading && searchResult.length < 1 && <Empty />}
+
+          {!isLoading &&
+            searchResult?.map((bot) => (
+              <SituationCard key={bot.id} bot={bot} />
+            ))}
         </div>
       </div>
     </div>

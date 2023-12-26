@@ -35,10 +35,11 @@ export const SettingTemplate = () => {
             label: SettingLangMapping[key as SettingLangEnum],
           }))}
           className="w-fit"
+          size="middle"
         />
       </Form.Item>
 
-      <Form.Item<ISetting> label="Autiomation mode" shouldUpdate>
+      {/* <Form.Item<ISetting> label="Autiomation mode" shouldUpdate>
         <Switch
           className="bg-[rgba(0,0,0,0.45)]"
           checked={settings.automationMode}
@@ -46,7 +47,7 @@ export const SettingTemplate = () => {
             setSettings({ ...settings, automationMode: checked })
           }
         />
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   )
 }
