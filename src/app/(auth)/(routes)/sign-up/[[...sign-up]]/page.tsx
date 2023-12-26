@@ -1,7 +1,7 @@
 import { SignUp } from "@clerk/nextjs"
 
 const SignUpPage = () => {
-  return <SignUp afterSignInUrl={"/home"} />
+  return <SignUp />
 }
 
 export default SignUpPage
