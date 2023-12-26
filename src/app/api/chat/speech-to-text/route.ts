@@ -15,10 +15,10 @@ export async function POST(req: any) {
   }
 
   const buffer = Buffer.from(await blob.arrayBuffer())
-  const filename = `file.webm`
+  const filename = `fileasas.webm`
   let filepath = IS_DEV
     ? path.join(process.cwd(), "public", "uploads", filename)
-    : path.join("tmp", filename)
+    : "/tmp/" + filename
 
   try {
     fs.writeFileSync(filepath, buffer)
