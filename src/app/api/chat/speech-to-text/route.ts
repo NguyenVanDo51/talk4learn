@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import { openai } from "@/libs/openai"
 import { IS_DEV } from "@/libs/appConfig"
+import { uniqueId } from "lodash"
 
 export async function POST(req: any) {
   const form = await req.formData()
@@ -15,7 +16,8 @@ export async function POST(req: any) {
   }
 
   const buffer = Buffer.from(await blob.arrayBuffer())
-  const filename = `fileasas.webm`
+  const filename = `file_${Math.floor(Math.random() * 10)}.webm`
+
   let filepath = IS_DEV
     ? path.join(process.cwd(), "public", "uploads", filename)
     : "/tmp/" + filename
