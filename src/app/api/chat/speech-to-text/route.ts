@@ -18,7 +18,7 @@ export async function POST(req: any) {
   const filename = `file.webm`
   let filepath = IS_DEV
     ? path.join(process.cwd(), "public", "uploads", filename)
-    : "/tmp/talk4learn/uploads/" + filename
+    : path.join("tmp", filename)
 
   try {
     fs.writeFileSync(filepath, buffer)
@@ -32,8 +32,8 @@ export async function POST(req: any) {
       })
     }
   } catch (e: any) {
-    return new Response(e, {
-      status: 200,
+    return new Response(JSON.stringify(e), {
+      status: 500,
     })
   }
 
