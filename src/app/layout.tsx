@@ -19,8 +19,9 @@ const inter = Hanken_Grotesk({
   subsets: ["latin"],
   display: "swap",
 })
-const title = `${APP_NAME} - Practice English with AI Chatbot`
-const description = `Practice English, improve grammar, and enhance your skills with talk4learn, the AI-powered chatbot.`
+const title = `${APP_NAME} - Improve your language skills through Personal Scenarios`
+const description = `Speak and Listen to AI, craft your scenarios, explore others' situations - all
+in one app for mastering English.`
 
 export default function RootLayout({
   children,

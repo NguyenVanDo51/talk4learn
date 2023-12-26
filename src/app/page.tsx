@@ -107,7 +107,7 @@ export default async function Home() {
               </a>
               <p className="mt-4 text-sm text-slate-700 max-w-xs">
                 talk4learn is a English learning application that allows you
-                chat with AI in customize situations
+                talk with AI in customize situations
               </p>
               <div className="flex gap-3 mt-4 items-center">
                 <a
