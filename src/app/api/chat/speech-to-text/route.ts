@@ -32,8 +32,8 @@ export async function POST(req: any) {
       })
     }
   } catch (e: any) {
-    return new Response(JSON.stringify(e), {
-      status: 500,
+    return new Response(e, {
+      status: 200,
     })
   }
 
@@ -46,12 +46,12 @@ export async function POST(req: any) {
       temperature: 0,
       prompt: "transcrip correct content of audio",
     })
-
+    fs.unlinkSync(filepath)
     return new Response(result, {
       status: 200,
     })
   } catch (error: any) {
-    return new Response(error, {
+    return new Response("", {
       status: 200,
     })
   }
