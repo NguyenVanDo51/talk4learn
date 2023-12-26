@@ -11,8 +11,9 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const user = await currentUser()
+  console.log("home", user)
 
-  if (!user) {
+  if (!user?.id) {
     return redirectToSignIn()
   }
 

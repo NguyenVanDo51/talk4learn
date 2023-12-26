@@ -1,8 +1,8 @@
 import { Logo } from "@/components/level1/Logo"
-import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import clsx from "clsx"
 import Link from "next/link"
+import { currentUser } from "@clerk/nextjs"
 
 export const LoginButton = ({
   size = "normal",
@@ -32,7 +32,7 @@ export const LoginButton = ({
 
 export default async function Home() {
   const user = await currentUser()
-
+  console.log("user", user)
   if (user?.id) {
     return redirect("/home")
   }
