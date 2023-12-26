@@ -1,6 +1,6 @@
 "use client"
 
-import { Divider, Form, Input, Select } from "antd"
+import { Form, Input, message } from "antd"
 import { FC, useEffect, useRef, useState } from "react"
 import { AppButton } from "@/components/level1/antd/AppButton"
 import { ImageUpload } from "@/components/inputs/image-upload"
@@ -11,9 +11,7 @@ import { AppNotifycation } from "@/components/level1/antd/AppNotification"
 import { LoadingScreen } from "@/components/level1/Loading"
 import { useMounted } from "@/hooks/helpers/use-mounted"
 import { AppInput, AppInputTextarea } from "@/components/level1/antd/AppInput"
-import { AppTooltip } from "@/components/level1/antd/AppTooltip"
 import { AppSelect } from "@/components/level1/antd/AppSelect"
-import { ISetting } from "@/types/setting"
 import { TranslationService } from "@/service/translation/index.service"
 
 export const tagOptions = [
@@ -61,9 +59,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
 
     BotService.create({ ...(scenario ?? {}), ...values, botImage })
       .then(() => {
-        AppNotifycation.success({
-          message: "Your topic is created successfully",
-        })
+        message.success("Success")
         router.push("/")
       })
       .finally(() => {

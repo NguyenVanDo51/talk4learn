@@ -10,7 +10,6 @@ export const HomeClient = () => {
   const { data: bots, isLoading } = useQuery<ScenarioInterface[]>({
     queryKey: ["my_situations"],
     queryFn: () => httpClient.get("/api/situations/mine").then((r) => r.data),
-    refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
 
