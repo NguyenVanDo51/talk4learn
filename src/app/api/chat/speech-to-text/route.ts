@@ -15,8 +15,7 @@ export async function POST(req: any) {
 
   const buffer = Buffer.from(await blob.arrayBuffer())
   const filename = `file.webm`
-  let filepath = `${path.join("public", "uploads", filename)}`
-
+  let filepath = `${path.join(process.cwd(), "public", "uploads", filename)}`
   fs.writeFileSync(filepath, buffer)
 
   const minFileSize = 18000 // bytes
