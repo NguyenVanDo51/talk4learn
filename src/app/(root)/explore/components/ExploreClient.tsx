@@ -83,7 +83,9 @@ const ExploreBotClient = () => {
   if (!isMounted) {
     return null
   }
-
+  if (searchResult) {
+    console.log("searchResult", searchResult)
+  }
   return (
     <div className="container max-w-2xl my-0 mx-auto p-3">
       <div className="flex justify-center flex-col">

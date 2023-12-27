@@ -5,6 +5,7 @@ import { Tooltip } from "antd"
 import { AppTooltip } from "../level1/antd/AppTooltip"
 
 const SituationCard = ({ bot }: { bot: ScenarioInterface }) => {
+  // console.log("bot", bot)
   return (
     <>
       <Link
