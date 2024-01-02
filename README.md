@@ -10,15 +10,14 @@ npm run dev
 yarn dev
 ```
 
-Start prisma studio
-```bash
-npx prisma studio
-```
-
-## Init database
-```bash
-npx prisma migrate dev
-```
+### Todo-list
+- Sửa trang giới thiệu
+- Cảm ơn rõ ràng hơn khi người dùng feedback
+- Tìm cách lưu lại email của người feedback
+- Fix lỗi speech-to-text trên safari
+- Thêm roalmap
+- Đánh giá trôi chảy
+- Tạo bản mobile
 
 restore-code:
 payonner: VWM67SC7
