@@ -236,6 +236,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
           <div className="flex gap-2 justify-center">
             {scenario && (
               <button
+                type="button"
                 onClick={handleCancel}
                 className="border mt-2 rounded-lg text-base border-gray-400 w-[80px] h-[40px]"
               >
