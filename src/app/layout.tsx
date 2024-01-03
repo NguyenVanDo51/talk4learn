@@ -20,8 +20,8 @@ const inter = Hanken_Grotesk({
   display: "swap",
 })
 const title = `${APP_NAME} - Improve your language skills through Personal Scenarios`
-const description = `Speak and Listen to AI, craft your scenarios, explore others' situations - all
-in one app for mastering English.`
+const description =
+  "Speak and Listen to AI, craft your scenarios, explore others' situations - all in one app for mastering English."
 
 export default function RootLayout({
   children,
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   title,
   description,
   generator: "andy510@gmail.com",
-  applicationName: "andy510@gmail.com",
+  applicationName: "talk4learn",
   referrer: "origin-when-cross-origin",
   keywords: [
     "talk4learn",
@@ -137,23 +137,20 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  manifest: "/site.webmanifest",
   icons: {
     icon: "/apple-touch-icon.png",
     shortcut: "/apple-touch-icon.png",
     apple: "/apple-touch-icon.png",
     other: {
-      rel: "/apple-touch-icon.png",
+      rel: "apple-touch-icon-precomposed",
       url: "/apple-touch-icon.png",
     },
   },
-  manifest: "/site.webmanifest",
   verification: {
     google: "google",
     yandex: "yandex",
     yahoo: "yahoo",
   },
   category: "education",
-  other: {
-    "shortcut icon": "/favicon.ico",
-  },
 }

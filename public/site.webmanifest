@@ -1,12 +1,6 @@
 {
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone",
-  "name": "talk4learn.com",
-  "short_name": "talk4learn",
-  "description": "Improve your language skills through Personal Scenarios",
-  "scope": "/",
-  "start_url": "/",
+  "name": "",
+  "short_name": "",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -15,18 +9,11 @@
     },
     {
       "src": "/android-chrome-512x512.png",
-      "sizes": "256x256",
-      "type": "image/png"
-    },
-    {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "384x384",
-      "type": "image/png"
-    },
-    {
-      "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
 }
