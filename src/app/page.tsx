@@ -30,6 +30,15 @@ export const LoginButton = ({
   )
 }
 
+export const offline = [
+  "No location limits",
+  "Unlimited talk time",
+  "Vast conversation scenarios",
+  "Huge selection of voice tones",
+  "Real-time evaluation and feedback",
+  "Low cost",
+]
+
 export default async function Home() {
   const user = await currentUser()
   console.log("user", user)
@@ -80,6 +89,148 @@ export default async function Home() {
         </div>
       </div>
 
+      <div className="max-w-screen-xl flex w-full flex-col justify-center p-5 items-center mx-auto">
+        <h2 className="text-[36px] leading-[100%] font-bold">
+          Talk4learn VS Others
+        </h2>
+        <div className="mt-6 flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-3">
+          <LoginButton size="large" />
+        </div>
+
+        <div className="grid  lg:grid-cols-3 mt-[48px] justify-center mx-auto items-center gap-4">
+          <div className="border rounded-xl px-6 py-4">
+            <h3 className="text-xl font-bold mb-4 mt-5">
+              Offline Language School
+            </h3>
+            <hr />
+            <div className="mt-3">
+              {offline.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className=" flex items-center gap-2 mt-3 py-4 text-lg"
+                  >
+                    <i className="fa-solid fa-circle-xmark text-gray-300"></i>
+                    <p>{item}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          <div className="border rounded-xl px-6 py-4">
+            <h3 className="text-xl font-bold mb-4 mt-5">Traditional App</h3>
+            <hr />
+            <div className="mt-3">
+              {offline.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className=" flex items-center gap-2 mt-3 py-4 text-lg"
+                  >
+                    {index === 0 || index === 1 ? (
+                      <>
+                        <i className="fa-solid fa-circle-check text-primary"></i>
+                        <p>{item}</p>
+                      </>
+                    ) : null}
+                    {index >= 2 && index <= 4 ? (
+                      <>
+                        <i className="fa-solid fa-circle-xmark text-gray-300"></i>
+                        <p>{item}</p>
+                      </>
+                    ) : null}
+                    {index === 5 && (
+                      <>
+                        <i className="fa-solid fa-circle-check text-primary"></i>
+                        <p>{item}</p>
+                      </>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          <div className="border border-primary rounded-xl px-6 py-4">
+            <h3 className="text-xl text-primary font-bold mb-4 mt-5">
+              Talk4learn
+            </h3>
+            <hr />
+            <div className="mt-3">
+              {offline.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className=" flex items-center gap-2 mt-3 py-4 text-lg"
+                  >
+                    <i className="fa-solid fa-circle-check text-primary"></i>
+                    <p>{item}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col justify-center items-center">
+        <h2 className="text-[36px] leading-[100%] font-bold mt-[4rem] mb-3">
+          How does it work?
+        </h2>
+        <p className="mt-4 mb-3 text-base text-center w-[60%] text-gray-600">
+          Talk4learn is powered by the most advanced AI technology, which can
+          create an authentic language-speaking experience that just feels like
+          talking to a native speaker.
+        </p>
+        <div className="flex items-center w-[70%] mt-8 justify-between mb-6">
+          <div className="w-[24%]">
+            <p className="text-center" style={{ fontSize: "80px" }}>
+              🤖
+            </p>
+            <p
+              style={{
+                fontSize: "14px",
+                marginBottom: "1rem",
+                textAlign: "center",
+              }}
+            >
+              Choose your favorite situations to chat with
+            </p>
+          </div>
+
+          <div className="w-[24%]">
+            <p className="text-center" style={{ fontSize: "80px" }}>
+              🗣️
+            </p>
+            <p
+              style={{
+                fontSize: "14px",
+                marginBottom: "1rem",
+                textAlign: "center",
+              }}
+            >
+              Talk to your tutor with confidence
+            </p>
+          </div>
+
+          <div className="w-[24%]">
+            <p className="text-center" style={{ fontSize: "80px" }}>
+              💯
+            </p>
+            <p
+              style={{
+                fontSize: "14px",
+                marginBottom: "1rem",
+                textAlign: "center",
+              }}
+            >
+              Get personalized feedback instantly
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="bg-gradient-to-bl from-indigo-900 to-indigo-700 p-8 md:px-20 md:py-20 mt-20 flex flex-col items-center text-center">
         <h2 className="text-white text-4xl md:text-6xl tracking-tight">
           Ready to improve your language skills?
@@ -103,10 +254,10 @@ export default async function Home() {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
             <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
               <a href="/" className="text-lg flex items-center">
-                <span className="font-bold text-primary">talk4learn</span>
+                <span className="font-bold text-primary">Talk4learn</span>
               </a>
               <p className="mt-4 text-sm text-slate-700 max-w-xs">
-                talk4learn is a English learning application that allows you
+                Talk4learn is a English learning application that allows you
                 talk with AI in customize situations
               </p>
               <div className="flex gap-3 mt-4 items-center">
@@ -258,7 +409,7 @@ export default async function Home() {
         <div className="mt-14 pt-8 px-5 border-t border-slate-200">
           <div className="max-w-screen-xl mx-auto px-5">
             <p className="text-center text-sm text-slate-600 [text-wrap:balance]">
-              Copyright © 2023 talk4learn. All rights reserved.
+              Copyright © 2023 Talk4learn. All rights reserved.
             </p>
             <p className="text-center text-xs text-slate-600 mt-2">
               <a href="/terms" className="hover:text-indigo-500">

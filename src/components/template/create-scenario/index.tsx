@@ -14,7 +14,6 @@ import { AppInput, AppInputTextarea } from "@/components/level1/antd/AppInput"
 import { AppSelect } from "@/components/level1/antd/AppSelect"
 import { TranslationService } from "@/service/translation/index.service"
 
-
 export const tagOptions = [
   "Working",
   "Social",
@@ -38,7 +37,12 @@ export const tagOptions = [
   "Mindfulness",
   "Other",
 ]
-
+export type ImageBots = { image: string }
+export const imageBots: string[] = [
+  "/images/anime-chibi-1.jpg",
+  "/images/anime-chibi-5.jpg",
+  "/images/anh-anime-chibi-2.jpg",
+]
 interface CreateScenarioProps {
   scenario?: ScenarioInterface
 }
@@ -50,6 +54,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
   const [textTranslating, setTextTranslating] = useState("")
   const router = useRouter()
 
+  console.log(botImage)
   const nameRef = useRef<HTMLInputElement>()
 
   const [form] = Form.useForm<ScenarioInterface>()
@@ -106,11 +111,32 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
   return (
     <div className="container max-w-4xl my-0 mx-auto">
       <div className="p-4">
-        <div className="flex items-center justify-center mb-4">
-          <ImageUpload
-            value={botImage}
-            onChange={(src: string) => setBotImage(src)}
-          />
+        <div>
+          <div className="flex items-center justify-center mb-4">
+            <ImageUpload
+              value={botImage}
+              onChange={(src: string) => setBotImage(src)}
+            />
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            {imageBots.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`${
+                    botImage === item
+                      ? "border-2 border-dashed rounded-lg px-1 py-1 border-blue-400"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setBotImage(item)
+                  }}
+                >
+                  <img className="h-16 w-16" src={item} alt="upload1" />
+                </div>
+              )
+            })}
+          </div>
         </div>
 
         <Form<ScenarioInterface>
@@ -285,4 +311,3 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
 function useNavigate() {
   throw new Error("Function not implemented.")
 }
-
