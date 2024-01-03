@@ -14,6 +14,7 @@ import { AppInput, AppInputTextarea } from "@/components/level1/antd/AppInput"
 import { AppSelect } from "@/components/level1/antd/AppSelect"
 import { TranslationService } from "@/service/translation/index.service"
 
+
 export const tagOptions = [
   "Working",
   "Social",
@@ -52,6 +53,12 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
   const nameRef = useRef<HTMLInputElement>()
 
   const [form] = Form.useForm<ScenarioInterface>()
+
+  const history = useRouter()
+
+  const handleCancel = () => {
+    history.back()
+  }
 
   const onFinish = (values: ScenarioInterface) => {
     if (isLoading) return
@@ -226,42 +233,55 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
           >
             <AppInput placeholder="e.g. Hello! What's your name?" />
           </Form.Item>
-
-          <Form.Item<ScenarioInterface> className="flex justify-center mt-2">
-            <AppButton
-              htmlType="submit"
-              className="inline-flex !h-10"
-              size="large"
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-4 h-4"
-                >
-                  <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"></path>
-                  <path d="m14 7 3 3"></path>
-                  <path d="M5 6v4"></path>
-                  <path d="M19 14v4"></path>
-                  <path d="M10 2v2"></path>
-                  <path d="M7 8H3"></path>
-                  <path d="M21 16h-4"></path>
-                  <path d="M11 3H9"></path>
-                </svg>
-              }
-              loading={isLoading}
-            >
-              {scenario ? "Update" : "Create"} your Situation
-            </AppButton>
-          </Form.Item>
+          <div className="flex gap-2 justify-center">
+            {scenario && (
+              <button
+                onClick={handleCancel}
+                className="border mt-2 rounded-lg text-base border-gray-400 w-[80px] h-[40px]"
+              >
+                Cancel
+              </button>
+            )}
+            <Form.Item<ScenarioInterface> className="flex justify-center mt-2">
+              <AppButton
+                htmlType="submit"
+                className="inline-flex !h-10"
+                size="large"
+                icon={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-4 h-4"
+                  >
+                    <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"></path>
+                    <path d="m14 7 3 3"></path>
+                    <path d="M5 6v4"></path>
+                    <path d="M19 14v4"></path>
+                    <path d="M10 2v2"></path>
+                    <path d="M7 8H3"></path>
+                    <path d="M21 16h-4"></path>
+                    <path d="M11 3H9"></path>
+                  </svg>
+                }
+                loading={isLoading}
+              >
+                {scenario ? "Update" : "Create"} your Situation
+              </AppButton>
+            </Form.Item>
+          </div>
         </Form>
       </div>
     </div>
   )
 }
+function useNavigate() {
+  throw new Error("Function not implemented.")
+}
+
