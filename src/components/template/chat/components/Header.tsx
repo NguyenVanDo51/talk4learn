@@ -3,20 +3,18 @@ import { FC, useContext, useState } from "react"
 import { ChatContext } from "../context"
 import { AppModal } from "@/components/level1/antd/AppModal"
 import { SettingTemplate } from "../../settings/SettingTemplate"
-import Attention from "./Attention"
+
 
 interface IProps {}
 
 export const Header: FC<IProps> = () => {
   const { openInfo } = useContext(ChatContext)
   const [openSettings, setOpenSettings] = useState<boolean>(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+
   const params = useParams()
 
   const router = useRouter()
-  const showModal = () => {
-    setIsModalOpen(true)
-  }
+
   return (
     <div className="flex justify-between items-center px-6 border-b py-2">
       <span
@@ -33,11 +31,6 @@ export const Header: FC<IProps> = () => {
         >
           <i className="fa-regular fa-gear"></i>
         </span>
-
-        <span className="cursor-pointer text-lg mr-4" onClick={showModal}>
-          <i className="fa-solid fa-clipboard"></i>
-        </span>
-        <Attention isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 
         <span onClick={openInfo} className="cursor-pointer text-lg">
           <i className="fa-regular fa-bars"></i>

@@ -50,8 +50,14 @@ export const ChatInfo: React.FC<Props> = ({ ...props }) => {
         placement="right"
         {...props}
       >
-        <div className="flex flex-col justify-between h-full">
-          <BotProfile bot={lesson} type={2} />
+        <div className="h-full">
+          <div className="flex flex-col justify-between">
+            <BotProfile bot={lesson} type={2} />
+          </div>
+          <div>
+            <span className="text-lg font-bold">Bot Instruction</span>
+            <p className="pt-3">{lesson?.assistantInstruction}</p>
+          </div>
         </div>
       </Drawer>
     </>
