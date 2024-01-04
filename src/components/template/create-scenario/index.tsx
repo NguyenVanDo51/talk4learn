@@ -133,7 +133,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
                   key={index}
                   className={`${
                     botImage === item
-                      ? "border-2 border-dashed rounded-lg px-1 py-1 border-blue-400"
+                      ? "border-2 rounded-lg px-1 py-1 border-blue-400"
                       : ""
                   }`}
                   onClick={() => {
