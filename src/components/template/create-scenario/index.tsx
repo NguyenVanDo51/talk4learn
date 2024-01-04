@@ -7,7 +7,6 @@ import { ImageUpload } from "@/components/inputs/image-upload"
 import { ScenarioInterface } from "@/types/lesson/type"
 import { BotService } from "@/service/bot/index.service"
 import { useRouter } from "next/navigation"
-import { AppNotifycation } from "@/components/level1/antd/AppNotification"
 import { LoadingScreen } from "@/components/level1/Loading"
 import { useMounted } from "@/hooks/helpers/use-mounted"
 import { AppInput, AppInputTextarea } from "@/components/level1/antd/AppInput"
@@ -315,7 +314,4 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
       </div>
     </div>
   )
-}
-function useNavigate() {
-  throw new Error("Function not implemented.")
 }
