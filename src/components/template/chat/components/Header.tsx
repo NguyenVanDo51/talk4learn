@@ -4,7 +4,6 @@ import { ChatContext } from "../context"
 import { AppModal } from "@/components/level1/antd/AppModal"
 import { SettingTemplate } from "../../settings/SettingTemplate"
 
-
 interface IProps {}
 
 export const Header: FC<IProps> = () => {
@@ -17,10 +16,7 @@ export const Header: FC<IProps> = () => {
 
   return (
     <div className="flex justify-between items-center px-6 border-b py-2">
-      <span
-        onClick={() => router.push("/home")}
-        className="cursor-pointer text-lg"
-      >
+      <span onClick={() => router.back()} className="cursor-pointer text-lg">
         <i className="fa-regular fa-arrow-left mr-1"></i>
       </span>
 
