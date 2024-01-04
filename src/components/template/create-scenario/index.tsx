@@ -39,9 +39,17 @@ export const tagOptions = [
 ]
 export type ImageBots = { image: string }
 export const imageBots: string[] = [
-  "/images/anime-chibi-1.jpg",
-  "/images/anime-chibi-5.jpg",
-  "/images/anh-anime-chibi-2.jpg",
+  "/images/bot/8.jpeg",
+  "/images/bot/1.jpeg",
+  "/images/bot/2.jpeg",
+  "/images/bot/3.jpeg",
+  "/images/bot/4.jpeg",
+  "/images/bot/5.jpeg",
+  "/images/bot/6.jpeg",
+  "/images/bot/7.jpeg",
+  "/images/bot/cat.jpeg",
+  "/images/bot/dog.jpeg",
+  "/images/bot/gau.jpeg",
 ]
 interface CreateScenarioProps {
   scenario?: ScenarioInterface
@@ -118,7 +126,7 @@ export const CreateScenario: FC<CreateScenarioProps> = ({ scenario }) => {
               onChange={(src: string) => setBotImage(src)}
             />
           </div>
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-2 mb-7">
             {imageBots.map((item, index) => {
               return (
                 <div
