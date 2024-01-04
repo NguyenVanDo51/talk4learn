@@ -21,10 +21,16 @@ export const RightMessage = memo(function RightMessage({
 }: RightMessageProps) {
   const [comment, setComment] = useState()
   const [isGetComment, setIsGetComment] = useState<boolean>(false)
+  const [openComment, setOpenComment] = useState<boolean>(false)
 
   const getComment = () => {
     if (isGetComment) return
 
+    setOpenComment(!openComment)
+
+    if (comment) {
+      return
+    }
     const bodyMessage: SendMessageBody[] = [
       {
         role: "user",
@@ -32,20 +38,36 @@ export const RightMessage = memo(function RightMessage({
       },
     ]
     setIsGetComment(true)
+
     ChatService.checkGrammar(bodyMessage)
       .then((res) => {
         const result = res.data
         setComment(result)
       })
-      .finally(() => setIsGetComment(false))
+      .finally(() => {
+        setIsGetComment(false)
+      })
   }
+
+  const renderCommentIcon = () => {
+    if (isGetComment) {
+      return <AppSpin size="small" />
+    }
+
+    if (!isGetComment && openComment && comment) {
+      return <i className="fa-regular fa-chevron-up"></i>
+    }
+
+    return <i className="fa-regular fa-chart-mixed"></i>
+  }
+
   return (
     <div className="col-start-4 col-end-13 p-1 message-item" id={message.id}>
-      <div className="flex items-center gap-3 justify-start flex-row-reverse">
-        <div className="relative flex  flex-col items-end bg-indigo-100 rounded-lg dark:bg-dark-primary py-2">
+      <div className="flex items-center justify-start flex-row-reverse">
+        <div className="relative flex  flex-col items-end ml-2 bg-indigo-100 rounded-lg dark:bg-dark-primary py-2">
           <div className="px-4">{message.content}</div>
 
-          {comment && (
+          {comment && openComment && (
             <>
               <Divider className="my-2 !border-indigo-200" />
               <div className=" text-gray-800 italic px-4 whitespace-break-spaces">
@@ -54,6 +76,10 @@ export const RightMessage = memo(function RightMessage({
             </>
           )}
         </div>
+
+        <span className=" cursor-pointer p-2" onClick={getComment}>
+          {renderCommentIcon()}
+        </span>
 
         {message.status === "error" ? (
           <AppButton
@@ -68,20 +94,6 @@ export const RightMessage = memo(function RightMessage({
         ) : (
           <div className="message-actions flex items-center gap-2">
             <AppDeleteButton onConfirm={reStart} title="Delete" type="link" />
-
-            {!comment && (
-              <AppButton
-                icon={
-                  isGetComment ? (
-                    <AppSpin size="small" />
-                  ) : (
-                    <i className="fa-regular fa-chart-mixed"></i>
-                  )
-                }
-                type="text"
-                onClick={getComment}
-              />
-            )}
 
             {message.recorded && (
               <AppButton

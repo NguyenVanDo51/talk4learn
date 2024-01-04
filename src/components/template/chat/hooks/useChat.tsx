@@ -8,6 +8,7 @@ import { ChatService } from "../service"
 import { SendMessageBody } from "../service/request"
 import { ScenarioInterface } from "@/types/lesson/type"
 import { useSettings } from "@/hooks/helpers/use-settings"
+import { useUser } from "@clerk/nextjs"
 
 export const useChat = (lesson: ScenarioInterface) => {
   const [messages, setMessages] = useState<IMessage[]>([])
@@ -16,6 +17,8 @@ export const useChat = (lesson: ScenarioInterface) => {
   const {
     settings: { automationMode },
   } = useSettings()
+
+  const user = useUser()
 
   const sendMessage = async (message: string | Blob, recorded?: string) => {
     if (isWaiting) return
@@ -145,18 +148,20 @@ export const useChat = (lesson: ScenarioInterface) => {
     }
 
     if (messages?.length > 1) {
-      localStorage.setItem(lesson.id, JSON.stringify(messages))
+      localStorage.setItem(user?.user?.id + lesson.id, JSON.stringify(messages))
     }
-  }, [getAnswer, lesson.id, messages, newestMessage?.status])
+  }, [getAnswer, lesson.id, messages, newestMessage?.status, user?.user?.id])
 
   useEffect(() => {
-    const oldMessageParsed = JSON.parse(localStorage.getItem(lesson.id) || "[]")
+    const oldMessageParsed = JSON.parse(
+      localStorage.getItem(user?.user?.id + lesson.id) || "[]"
+    )
     if (Array.isArray(oldMessageParsed) && oldMessageParsed?.length > 0) {
       setMessages(oldMessageParsed)
       return
     }
     getFirstMessage()
-  }, [getFirstMessage, lesson.id])
+  }, [getFirstMessage, lesson.id, user?.user?.id])
 
   useEffect(() => {
     scrollToBottom(ScrollSelecter.Message)
