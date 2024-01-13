@@ -10,6 +10,7 @@ export default authMiddleware({
     "/api/bio/(.*)",
     "/about",
     "/_vercel/speed-insights/vitals",
+    "/api/gsa/(.*)",
   ],
 })
 
