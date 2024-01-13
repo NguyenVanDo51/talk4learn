@@ -7,10 +7,10 @@ export default authMiddleware({
   publicRoutes: [
     "/",
     "/api/webhooks/(.*)",
-    "/api/bio/(.*)",
+    "/api/bio",
     "/about",
     "/_vercel/speed-insights/vitals",
-    "/api/gsa/(.*)",
+    "/api/gsa/parent-categories",
   ],
 })
 
