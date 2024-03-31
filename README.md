@@ -1,15 +1,3 @@
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm i
-
-npm run dev
-# or
-yarn dev
-```
-
 ### Todo-list
 - Sửa trang giới thiệu
 - Cảm ơn rõ ràng hơn khi người dùng feedback
