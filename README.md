@@ -7,6 +7,3 @@
 - Đánh giá trôi chảy
 - Tạo bản mobile
 
-restore-code:
-payonner: VWM67SC7
-stripe: kjzm-zgsw-fsgu-utlv-piri
