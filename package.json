@@ -17,7 +17,7 @@
     "@ant-design/cssinjs": "^1.18.0-alpha.5",
     "@ant-design/icons": "^5.2.6",
     "@auth/firebase-adapter": "^1.0.0",
-    "@clerk/nextjs": "^4.27.1",
+    "@clerk/nextjs": "^4.29.3",
     "@emotion/css": "^11.11.2",
     "@google-cloud/translate": "^8.0.2",
     "@stripe/react-stripe-js": "^2.4.0",
